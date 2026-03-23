@@ -1,0 +1,44 @@
+% === pic/ch2-Review/OccuMetrics.tex ===
+\small
+\setlength{\tabcolsep}{3pt} % 列間余白
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{
+    p{1.5cm}   % Author
+    p{3.5cm}   % Detection
+    >{\centering\arraybackslash}p{2.0cm} % Room utilization
+    >{\centering\arraybackslash}p{2.0cm} % Zone Occ Ratio
+    >{\centering\arraybackslash}p{2.0cm} % Occ density
+    >{\centering\arraybackslash}p{2.0cm} % Occ variability
+}
+\toprule
+\textbf{Case} & \textbf{Detection} &
+\textbf{Room Utilization} &
+\textbf{Occupancy Ratio} &
+\textbf{Occupancy Density} &
+\textbf{Occupancy Variability} \\
+\midrule
+\cite{stojanovic_impact_2024} &
+Wifi connection &
+\(\bigcirc\) & \(\bigcirc\) & - & \(\bigcirc\) \\
+\addlinespace
+\cite{motuziene_office_2022} &
+PIR sensor + Vision &
+\(\bigcirc\) & \(\bigcirc\) & \(\bigcirc\) & - \\
+\addlinespace
+\cite{pitchforth_work_2020} &
+IR sensor &
+\(\bigcirc\) & \(\bigcirc\) & \(\bigcirc\) & - \\
+\addlinespace
+\cite{pan_environmental_2025} &
+IR sensor &
+\(\bigcirc\) & \(\bigcirc\) & \(\bigcirc\) & - \\
+\addlinespace
+\cite{gocer_overlaps_2022} &
+Provided by other organization &
+\(\bigcirc\) & \(\bigcirc\) & - & - \\
+\addlinespace
+\cite{brambilla_potential_2021} &
+Wifi connection &
+\(\bigcirc\) & \(\bigcirc\) & - & - \\
+\bottomrule
+\end{tabularx}
