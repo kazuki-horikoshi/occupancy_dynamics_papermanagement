@@ -1,0 +1,367 @@
+%% 
+%% Copyright 2019-2020 Elsevier Ltd
+%% This file is part of the 'CAS Bundle'.
+%% --------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% The list of all files belonging to the 'CAS Bundle' is
+%% given in the file `manifest.txt'. 
+%% Template article for cas-sc documentclass for 
+%% double column output.
+%\PassOptionsToPackage{numbers,sort&compress}{natbib}
+
+\documentclass[a4paper,fleqn]{cas-sc}
+
+%\documentclass[a4paper,fleqn,authoryear]{cas-sc}
+%\documentclass[a4paper,fleqn,longmktitle]{cas-sc}
+
+\usepackage[square,numbers,sort&compress]{natbib}
+\bibliographystyle{model1-num-names}
+
+\usepackage{placeins}
+\usepackage{array}
+\usepackage{makecell}
+\usepackage{subcaption}
+\usepackage[range-units=single, per-mode=symbol]{siunitx}
+\sisetup{
+  group-separator = {,},
+  group-minimum-digits = 4
+}
+% \sisetup{
+%   range-phrase = -- % Sets the separator to an en-dash
+% }
+
+\usepackage[printonlyused]{acronym}
+\usepackage{tabularx}
+\usepackage{booktabs}
+% \usepackage{biblatex}
+\usepackage{enumitem}
+
+\usepackage[en-GB, showseconds=false]{datetime2}
+\DTMsetstyle{iso}
+% \usepackage{appendix}
+% \usepackage{float}
+% \usepackage{stfloats}
+% \usepackage{dblfloatfix}
+
+\newcommand\mycite[1]{\citeauthor{#1}~(\citeyear{#1})}
+
+%%% Handy commands for image/figure insertion
+\newcommand*{\RootPicDir}{pic}
+\newcommand*{\PicDir}{\RootPicDir}
+\newcommand*{\ResetPicDir}{\renewcommand*{\PicDir}{\RootPicDir}}
+\newcommand*{\SetPicSubDir}[1]{\renewcommand*{\PicDir}{\RootPicDir /#1}}
+\newcommand*{\Pic}[2]{\PicDir /#2.#1}
+
+%%%Author definitions
+\def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}
+\tsc{WGM}
+\tsc{QE}
+\tsc{EP}
+\tsc{PMS}
+\tsc{BEC}
+\tsc{DE}
+%%%
+
+% Uncomment and use as if needed
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newdefinition{rmk}{Remark}
+%\newproof{pf}{Proof}
+%\newproof{pot}{Proof of Theorem \ref{thm}}
+
+% put this after all packages
+% \makeatletter
+% \def\fps@figure{htbp}
+% \def\fps@table{htbp}
+% \makeatother
+
+\begin{document}
+
+\let\WriteBookmarks\relax
+
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+% Short title
+\shorttitle{XXX}
+
+% Short author
+\shortauthors{K Horikoshi et al.}
+
+% Main title of the paper
+\title [mode = title]{XXX}                      
+% Title footnote mark
+% eg: \tnotemark[1]
+% \tnotemark[1,2]
+
+% Title footnote 1.
+% eg: \tnotetext[1]{Title footnote text}
+% \tnotetext[<tnote number>]{<tnote text>} 
+% \tnotetext[1]{This document is the results of the research
+%    project funded by the National Science Foundation.}
+
+% \tnotetext[2]{The second title footnote which is a longer text matter
+%    to fill through the whole text width and overflow into
+%    another line in the footnotes area of the first page.}
+
+\author[1]{Kazuki Horikoshi}[type=editor,
+                        auid=000,bioid=1,
+                        % role=Researcher,
+                        orcid=0009-0003-0521-3099]
+
+% Footnote of the first author
+%\fnmark[1]
+% \fntext[fn1]{This is the first author footnote. but is common to third author as well.}
+
+% Email id of the first author
+\ead{hkazuki@u.nus.edu}
+% URL of the first author
+%\ead[url]{www.cvr.cc, cvr@sayahna.org}
+
+%  Credit authorship
+\credit{Writing – review & editing, Writing – original draft, Visualization, Methodology, Investigation, Analysis, Data curation, Conceptualization.}
+
+% Address/affiliation
+\affiliation[1]{organization={Department of the Built Environment, National University of Singapore},
+    %addressline={}, 
+    city={Singapore},
+    % citysep={}, % Uncomment if no comma needed between city and postcode
+    postcode={117566}, 
+    % state={},
+    country={Singapore}}
+
+% Third author
+\author[1]{Adrian Chong}[%
+   % role=Co-ordinator,
+   ]
+% Corresponding author indication
+\cormark[1]
+
+%\fnmark[3]
+\ead{adrian.chong@nus.edu.sg}
+%\ead[URL]{www.xxx.org}
+
+\credit{Writing – review & editing, Supervision, Methodology, Conceptualization}
+
+% Corresponding author text
+\cortext[cor1]{Corresponding author}
+%\cortext[cor2]{Principal corresponding author}
+
+% For a title note without a number/mark
+% \nonumnote{This note has no numbers. In this work we demonstrate $a_b$ the formation Y\_1 of a new type of polariton on the interface between a cuprous oxide slab and a polystyrene micro-sphere placed on the slab.
+%   }
+
+\acresetall
+
+\begin{abstract}
+XXX
+
+\end{abstract}
+
+% Use if graphical abstract is present
+% \begin{graphicalabstract}
+% \includegraphics{figs/grabs.pdf}
+% \end{graphicalabstract}
+
+% Research highlights
+\begin{highlights}
+\item XXX
+\item XXX
+\end{highlights}
+
+% Keywords Each keyword is seperated by \sep
+\begin{keywords}
+XXX \sep XXX \sep
+\end{keywords}
+
+\maketitle
+
+\section*{Nomenclature}
+\renewcommand{\baselinestretch}{0.75}\normalsize
+\renewcommand{\aclabelfont}[1]{\textsc{\acsfont{#1}}}
+\begin{acronym}[longest]
+
+    \acro{tdb}[$t_{db}$]{dry-bulb air temperature\acroextra{, $^{\circ}$C}}
+    \acro{twb}[$t_{wb}$]{wet-bulb air temperature\acroextra{, $^{\circ}$C}}
+    \acro{ti}[$t_{i}$]{indoor air temperature\acroextra{, $^{\circ}$C}}
+    \acro{tout}[$t_{out}$]{outdoor air temperature\acroextra{, $^{\circ}$C}}
+    \acro{tos}[$t_{out,switch}$]{switch-over outdoor temperature\acroextra{, $^{\circ}$C}}
+    \acro{to}[$t_{o}$]{operative air temperature\acroextra{, $^{\circ}$C}}
+    \acro{tcl}[$t_{cl}$]{clothing temperature\acroextra{, $^{\circ}$C}}
+    \acro{tg}[$t_{g}$]{globe temperature\acroextra{, $^{\circ}$C}}
+    \acro{rh}[$RH$]{relative humidity\acroextra{, \%}}
+    \acro{v}[$V$]{measured air speed\acroextra{, m/s}}
+    \acro{vr}[$V_{r}$]{relative air speed\acroextra{, m/s}}
+    \acro{vo}[$V_{o}$]{outdoor wind speed\acroextra{, m/s}}
+    \acro{tr}[$\overline{t_{r}}$]{mean radiant temperature\acroextra{, $^{\circ}$C}}
+    \acro{clo}[$I_{cl}$]{intrinsic clothing insulation from the skin to the outer surface under reference conditions\acroextra{, clo}}
+    \acro{clor}[$I_{cl,r}$]{actual intrinsic clothing insulation under given environmental and activities\acroextra{, clo}}
+    \acro{met}[$M$]{rate of metabolic heat production\acroextra{, W/m\textsuperscript{2}}}
+    \acro{work}[$W$]{rate of mechanical work accomplished\acroextra{, W/m\textsuperscript{2}}}
+    
+    \acro{pmv}[PMV]{Predicted Mean Vote}
+    \acro{ppd}[PPD]{Predicted Percentage of Dissatisfied\acroextra{, \%}}
+    \acro{set}[SET]{Standard Effective Temperature\acroextra{, $^{\circ}$C}}
+    \acro{tsv}[TSV]{Thermal Sensation Vote}
+    \acro{tpv}[TPV]{Thermal Preference Vote}
+
+\end{acronym}
+\renewcommand{\baselinestretch}{1}\normalsize
+
+\section{Introduction}
+
+\input{chapters/ch1-Intro}
+\FloatBarrier
+
+\section{Method}
+\input{chapters/ch3-Method}
+\FloatBarrier
+
+\section{Results}
+\input{chapters/ch4-Results}
+\FloatBarrier
+
+\section{Discussion}
+\input{chapters/ch5-Discussion}
+\FloatBarrier
+
+\input{chapters/ch6-Conclusion}
+\FloatBarrier
+
+% \begin{figure}[pos=hbt!]
+%     \centering
+%     \includegraphics[width=0.95\linewidth]{figure/3.Method/EMLdiagram.png}
+%     \caption{Data input, calculation and Evaluation flow}
+%     % todo - FT - could you please add more information to the caption?->I refined but am not confident if it follows what you expect
+%     \label{fig:AnaFlow}
+% \end{figure}
+
+\section{Result}
+XXX
+
+
+\section{Discussion}
+\subsection{XXX}
+
+
+\FloatBarrier
+
+\subsection{Limitations}
+XXX
+
+\acresetall
+\section{Conclusion}
+XXX
+
+% \section{Cross-references}
+% In electronic publications, articles may be internally
+% hyperlinked. Hyperlinks are generated from proper
+% cross-references in the article.  For example, the words
+% \textcolor{black!80}{Fig.~1} will never be more than simple text,
+% whereas the proper cross-reference \verb+\ref{tiger}+ may be
+% turned into a hyperlink to the figure itself:
+% \textcolor{blue}{Fig.~1}.  In the same way,
+% the words \textcolor{blue}{Ref.~[1]} will fail to turn into a
+% hyperlink; the proper cross-reference is \verb+\cite{Knuth96}+.
+% Cross-referencing is possible in \LaTeX{} for sections,
+% subsections, formulae, figures, tables, and literature
+% references.
+
+% \section{Bibliography}
+
+% Two bibliographic style files (\verb+*.bst+) are provided ---
+% {model1-num-names.bst} and {model2-names.bst} --- the first one can be
+% used for the numbered scheme. This can also be used for the numbered
+% with new options of {natbib.sty}. The second one is for the author year
+% scheme. When  you use model2-names.bst, the citation commands will be
+% like \verb+\citep+,  \verb+\citet+, \verb+\citealt+ etc. However when
+% you use model1-num-names.bst, you may use only \verb+\cite+ command.
+
+% \verb+thebibliography+ environment.  Each reference is a\linebreak
+% \verb+\bibitem+ and each \verb+\bibitem+ is identified by a label,
+% by which it can be cited in the text:
+
+% \noindent In connection with cross-referencing and
+% possible future hyperlinking it is not a good idea to collect
+% more that one literature item in one \verb+\bibitem+.  The
+% so-called Harvard or author-year style of referencing is enabled
+% by the \LaTeX{} package {natbib}. With this package the
+% literature can be cited as follows:
+
+% \begin{enumerate}[\textbullet]
+% \item Parenthetical: \verb+\citep{WB96}+ produces (Wettig \& Brown, 1996).
+% \item Textual: \verb+\citet{ESG96}+ produces Elson et al. (1996).
+% \item An affix and part of a reference:\break
+% \verb+\citep[e.g.][Ch. 2]{Gea97}+ produces (e.g. Governato et
+% al., 1997, Ch. 2).
+% \end{enumerate}
+
+% In the numbered scheme of citation, \verb+\cite{<label>}+ is used,
+% since \verb+\citep+ or \verb+\citet+ has no relevance in the numbered
+% scheme.  {natbib} package is loaded by {cas-sc} with
+% \verb+numbers+ as default option.  You can change this to author-year
+% or harvard scheme by adding option \verb+authoryear+ in the class
+% loading command.  If you want to use more options of the {natbib}
+% package, you can do so with the \verb+\biboptions+ command.  For
+% details of various options of the {natbib} package, please take a
+% look at the {natbib} documentation, which is part of any standard
+% \LaTeX{} installation.
+
+\pagebreak
+
+% Loading bibliography database
+\bibliography{references}
+
+\pagebreak
+
+\appendix
+\label{appendix:XXX}
+
+\input{chapters/chap-appendices}
+\FloatBarrier
+
+
+% Appendix sections are coded under \verb+\appendix+.
+
+% \verb+\printcredits+ command is used after appendix sections to list 
+% author credit taxonomy contribution roles tagged using \verb+\credit+ 
+% in frontmatter.
+
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\renewcommand{\thetable}{A.\arabic{table}}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+
+XXX
+
+\section{XXX}
+\label{appendix:XXX}
+
+\renewcommand{\thetable}{B.\arabic{table}}
+\renewcommand{\thefigure}{B.\arabic{figure}}
+
+
+%\vskip3pt
+
+% \bio{}
+% Author biography without author photo.
+% Author biography. Author biography. Author biography.
+% \endbio
+
+% \bio{figs/pic1}
+% Author biography with author photo.
+% Author biography. Author biography. Author biography.
+% \endbio
+
+% \bio{figs/pic1}
+% Author biography with author photo.
+% Author biography. Author biography. Author biography.
+% \endbio
+
+\end{document}
