@@ -1,22 +1,51 @@
-\SetPicSubDir{ch4-Results}
+\subsection{Causality}
+\SetPicSubDir{ch4-Results/causality}
 
-\subsection{ch4-Results}
+Figure \autoref{fig:partialR2} shows the partial R2 based on Static and Realtime group comfort models, along different number of sample K at session, showed in the three \ac{ml} model.
+The results indicate that in the small number of session such as 1 to 6, the Realtime group comfort models' model convergence is superior than that of Static group comfort models.
+Within k = 4 to 5, Static group model's partial R2 become close to 0, while Realtime group model's partial R2 is around 0.1, which indicates that Static group comfort models doesn't show additional information rather than environmental and personal information, while Realtime group comfort model shows additional information.
+When the number of sampled K increase to 7 to 8, Realtime group comfort models' Partial R2 get close to similar level as Static group comfort models nearly zero, which indicates that the Realtime group comfort model's additional information is not significant when the number of session is large enough.
 
-This research is poised to deliver significant contributions to both academic and industrial practice by addressing critical, unresolved challenges in the real-world implementation of Occupant-Centric Control (OCC).
-By moving beyond the conventional assumption of static occupancy and tackling the operational burden of comfort modeling, this study offers a novel, validated framework with far-reaching implications. 
-The specific contributions are detailed below.
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{section14_partial_r2_noocc_model_compare_cap10}}
+    \caption{Partial R2}
+    \label{fig:partialR2}
+\end{figure}
 
-\section{Contributions to Academia}
+These results indicate that Realtime group comfort models are able to show consistency with actual comfort vote when the occupancy count at the time is smaller than 6, however, its consistency converge to zero when occupancy count is close to 8.
 
-\begin{itemize}
-    \item It systematically quantifies the impact of dynamic occupancy patterns (e.g., variability, turnover) on the performance of different OCC strategies, addressing a critical gap left by prior studies that have largely assumed static occupancy.
-    \item It provides a novel, empirically-validated operational framework for maintaining comfort models with minimal survey effort in live, multi-occupant settings. This moves beyond theoretical proposals by demonstrating a practical solution to the critical barrier of survey fatigue.
-    % \item It introduces a robust methodology for evaluating OCC performance in realistic scenarios, bridging the gap between simplified simulations and complex real-world building dynamics.
-\end{itemize}
+\subsection{Agentic simulation}
+\SetPicSubDir{ch4-Results/agentic}
 
-\section{Contributions to Industry}
-\begin{itemize}
-    \item It delivers actionable guidance for facility managers to make data-driven, high-ROI decisions on where to deploy advanced OCC, targeting specific zones based on their occupancy patterns rather than relying on a costly building-wide approach.
-    \item It offers a cost-effective and scalable framework that directly addresses industry concerns over the high operational cost and occupant disruption of frequent surveys, making advanced OCC more economically viable for widespread adoption.
-    \item The proposed solution enhances building asset value by better supporting modern flexible work styles (e.g., Activity-Based Working) and contributes to the dual goals of energy efficiency and occupant well-being.
-\end{itemize}
+Figure \autoref{fig:ComfAchi} shows comfort achievement ratio with different number of sub-group size with four office rooms.
+Figure \autoref{fig:ComfImp} shows the improvement ratio from baseline control(24 degree) along different sub-group size.
+
+\autoref{fig:ComfAchi} and \autoref{fig:ComfImp} shows that the improvement of using static group comfort models easily converge to zero, with room types with 3-4 users. 
+In contrast, the improvement of real-time group comfort models and daily group comfort model can maintain a certain level of improvement even with maximum room user size, which ranges 6 to 10.
+The difference between using daily group comfort models and realtime comfort models get wider as the room size get larger.
+This indicates that with larger room size, the real-time group comfort models benefit with more dynamic occupant transitions, while daily group comfort models are not able to capture the dynamic group comfort tendency with occupancy transitions.
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{a6p_static_realtime_daily_by_subgroup}}
+    \caption{Comfort achievement ratio with different comfort representation control}
+    \label{fig:ComfAchi}
+\end{figure}
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{a6p_improvement_vs24_by_subgroup}}
+    \caption{Comfort improvement from baseline control}
+    \label{fig:ComfImp}
+\end{figure}
+
+\autoref{fig:MeanOccuComfImp} shows the relation of daily mean occupancy and comfort ratio improvement with sub group size of 4, 6, 8 and whole sub-group size including 2-10.
+The figure shows that even in same sub-group size, the comfort improvement tend to decrease with higher mean occupancy, which indicates that the occupancy count at the time is an important factor to consider when using group comfort models for control.
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis7_mean_occupancy_contour_k4_k6_k8_all}}
+    \caption{Relation of daily mean occupancy and comfort ratio improvement with different sub-group size}
+    \label{fig:MeanOccuComfImp}
+\end{figure}
