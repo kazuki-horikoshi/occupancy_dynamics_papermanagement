@@ -18,34 +18,50 @@ These results indicate that Realtime group comfort models are able to show consi
 \subsection{Agentic simulation}
 \SetPicSubDir{ch4-Results/agentic}
 
-Figure \autoref{fig:ComfAchi} shows comfort achievement ratio with different number of sub-group size with four office rooms.
-Figure \autoref{fig:ComfImp} shows the improvement ratio from baseline control(24 degree) along different sub-group size.
+Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows comfort achievement ratio with different number of sub-group size with four office rooms.
+Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows the improvement ratio from baseline control(24 degree) along different sub-group size.
 
-\autoref{fig:ComfAchi} and \autoref{fig:ComfImp} shows that the improvement of using static group comfort models easily converge to zero, with room types with 3-4 users. 
+Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} and Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} show that the improvement of using static group comfort models easily converge to zero, with room types with 3-4 users. 
 In contrast, the improvement of real-time group comfort models and daily group comfort model can maintain a certain level of improvement even with maximum room user size, which ranges 6 to 10.
 The difference between using daily group comfort models and realtime comfort models get wider as the room size get larger.
 This indicates that with larger room size, the real-time group comfort models benefit with more dynamic occupant transitions, while daily group comfort models are not able to capture the dynamic group comfort tendency with occupancy transitions.
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{a6p_static_realtime_daily_by_subgroup}}
-    \caption{Comfort achievement ratio with different comfort representation control}
-    \label{fig:ComfAchi}
+    \begin{subfigure}{0.97\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{a6p_static_realtime_daily_by_subgroup}}
+        \caption{Comfort achievement ratio with different comfort representation control}
+        \label{fig:ComfAchi}
+    \end{subfigure}
+
+    \medskip
+
+    \begin{subfigure}{0.97\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{a6p_improvement_vs24_by_subgroup}}
+        \caption{Comfort improvement from baseline control}
+        \label{fig:ComfImp}
+    \end{subfigure}
+    \caption{Agentic simulation results with different sub-group sizes.}
+    \label{fig:ComfAgentic}
+\end{figure}
+
+\autoref{fig:DynSpStepHist} shows distribution of temperature adjustment range using dynamic group comfort models along different sub-group size.
+
+\autoref{fig:CtrlWindowRatio} shows the daily standard deviation of occupancy counts in the room and ratio of timesteps that are required to adjust tempearaute over 0.5 decree.
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis8_dyn_sp_mean_abs_step_when_changed_hist_all_k4_k6_k8}}
+    \caption{Distribution of temperature adjustment range with dynamic group model control}
+    \label{fig:DynSpStepHist}
 \end{figure}
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{a6p_improvement_vs24_by_subgroup}}
-    \caption{Comfort improvement from baseline control}
-    \label{fig:ComfImp}
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis8_action_window_contour_sd_occupancy_all_k4_k6_k8}}
+    \caption{Relation of daily SD of occupancy counts to ratio of control actions required}
+    \label{fig:CtrlWindowRatio}
 \end{figure}
 
-\autoref{fig:MeanOccuComfImp} shows the relation of daily mean occupancy and comfort ratio improvement with sub group size of 4, 6, 8 and whole sub-group size including 2-10.
-The figure shows that even in same sub-group size, the comfort improvement tend to decrease with higher mean occupancy, which indicates that the occupancy count at the time is an important factor to consider when using group comfort models for control.
 
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis7_mean_occupancy_contour_k4_k6_k8_all}}
-    \caption{Relation of daily mean occupancy and comfort ratio improvement with different sub-group size}
-    \label{fig:MeanOccuComfImp}
-\end{figure}
