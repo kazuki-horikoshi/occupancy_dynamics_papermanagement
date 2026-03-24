@@ -47,6 +47,19 @@ This indicates that with larger room size, the real-time group comfort models be
     \label{fig:ComfAgentic}
 \end{figure}
 
+Figure~\autoref{fig:MeanOccuConf} shows the improvement ratio from baseline control(24 degree) along daily mean occupancy counts values.
+This figure indicate that the effectiveness using real-time group comfort models yields more in sparce occupancy conditions.
+Even when room size (sub-group size) if fixed, actual
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis7_mean_occupancy_contour_k4_k6_k8_all}}
+    \caption{Distribution of temperature adjustment range with dynamic group model control}
+    \label{fig:MeanOccuConf}
+\end{figure}
+
+\subsection{Effect to control adjustment}
+
 \autoref{fig:DynSpStepHist} shows distribution of temperature adjustment range using dynamic group comfort models along different sub-group size.
 
 \autoref{fig:CtrlWindowRatio} shows the daily standard deviation of occupancy counts in the room and ratio of timesteps that are required to adjust tempearaute over 0.5 decree.
