@@ -4,14 +4,37 @@
 
 \autoref{fig:partialR2} compares the \ac{pr2} of the \ac{sgcm} and \ac{rtgcm} across different subsample sizes ($k$) within each of the three model classes. In both cases, \ac{pr2} decreases as $k$ increases. At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronger convergence than the \ac{sgcm}. For $k = 4$--5, the \ac{pr2} of the \ac{sgcm} is close to zero, whereas that of the \ac{rtgcm} remains around 0.1. This suggests that the \ac{sgcm} adds little information beyond the environmental and personal covariates, while the \ac{rtgcm} retains meaningful additional explanatory power. When $k$ increases to 7--8, the \ac{pr2} of the \ac{rtgcm} also approaches zero and becomes similar to that of the \ac{sgcm}, indicating that its incremental value diminishes when the session sample size is sufficiently large.
 
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \includegraphics[width=0.97\linewidth]{\Pic{png}{section14_partial_r2_noocc_model_compare_cap10}}
+%     \caption{\acs{pr2}}
+%     \label{fig:partialR2}
+% \end{figure}
+
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{section14_partial_r2_noocc_model_compare_cap10}}
-    \caption{\acs{pr2}}
-    \label{fig:partialR2}
+    \begin{subfigure}{0.97\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{section23_realized_k_partial_r2}}
+        \caption{\acs{pr2} along different size of sessions}
+        \label{fig:partialR2}
+    \end{subfigure}
+
+    \medskip
+
+    \begin{subfigure}{0.97\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{section23_realized_k_increment_accuracy}}
+        \caption{Incrument accuracies along different size of sessions}
+        \label{fig:IncrementAccu}
+    \end{subfigure}
+    \caption{Agentic simulation results for different subgroup sizes.}
+    \label{fig:CausalPrfm}
 \end{figure}
 
 These results suggest that the \ac{rtgcm} aligns with observed comfort votes when the occupancy count is relatively small, particularly below about six occupants, but that this advantage largely disappears when occupancy approaches eight occupants.
+
+
 
 
 \subsection{Agentic Simulation}
