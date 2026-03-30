@@ -3,7 +3,7 @@
 \subsection{Research Purpose and Hypothesis}
 \label{sec:Method}
 
-This experiment will identify the room usage pattern in which utilizing dynamic occupancy and personal comfort models becomes effective;
+This experiment aims to identify the room-usage patterns under which dynamic occupancy information and \acp{pcm} are most effective.
 
 % \begin{figure}[pos=htbp!]
 % \centering
@@ -13,7 +13,7 @@ This experiment will identify the room usage pattern in which utilizing dynamic 
 % \end{figure}
 
 Modern flexible work arrangements have led to highly dynamic and variable occupancy patterns in office environments. 
-Conventional HVAC systems, which often rely on fixed, static temperature setpoints (e.g., based on the PMV model), frequently fail to respond effectively to these fluctuations. 
+Conventional \ac{hvac} systems, which often rely on fixed, static temperature setpoints (e.g., based on the \ac{pmv} model), frequently fail to respond effectively to these fluctuations. 
 This mismatch can result in both occupant discomfort and unnecessary energy consumption.
 
 This experiment is designed to address this challenge by systematically identifying the occupancy conditions under which dynamic, personalized thermal control strategies offer the most significant benefits over static approaches. 
@@ -21,8 +21,8 @@ Building on prior work that investigated the impact of group size and control gr
 
 The specific aims of this experiment are to:
 \begin{enumerate}
-    \item Characterize real-world occupancy patterns in different office spaces by calculating key metrics such as the average occupancy number, occupancy variability, and user flow rate.
-    \item Analyze the relationship between the identified occupancy patterns and the performance benefits of a dynamic Group Comfort Model (GCM) using personal-level occupancy location data compared to a static setpoint.
+    \item Characterize real-world occupancy patterns in different office spaces by calculating key metrics such as average occupancy count, occupancy variability, and \ac{utr}.
+    \item Analyze the relationship between the identified occupancy patterns and the performance benefits of a dynamic \ac{gcm} using personal-level occupancy location data compared with a static setpoint.
 \end{enumerate}
 
 \subsection{Experimental Design and Procedure}
@@ -49,7 +49,7 @@ Data collection will be limited to the following rooms to capture a variety of o
 
 The target zones are served by a central air conditioning system using Variable Air Volume (VAV) capable of individual zone control. 
 In this study, the Controlled Variable is the Zone Air Temperature Setpoint ($T_{\mathrm{set}}$). 
-The Building Management System (BMS) regulates the terminal unit such as airflow dampers or valve positions to maintain the measured indoor air temperature ($T_{\mathrm{in}}$) at the target $T_{\mathrm{set}}$.
+The Building Management System (BMS) regulates the terminal unit such as airflow dampers or valve positions to maintain the measured \ac{ti} at the target $T_{\mathrm{set}}$.
 In Experiment 1, $T_{\mathrm{set}}$ is manipulated experimentally to collect data, whereas in Experiment 2, $T_{\mathrm{set}}$ is dynamically optimized based on the proposed framework.
 
 \subsection{Participant Recruitment and Ethical Considerations}
@@ -66,7 +66,7 @@ All location and survey data will be anonymized by the building administrator be
 \subsection{Data Collection}
 
 Two primary types of field data will be collected: real-time occupancy logs and subjective thermal comfort surveys.
-In addition, indoor environmental data (indoor air temperature and humidity) will be obtained from the Building Management System and from compact sensors installed in the target rooms.
+In addition, indoor environmental data, including \ac{ti} and \ac{rh}, will be obtained from the Building Management System and from compact sensors installed in the target rooms.
 
 \subsubsection{Occupancy Log Tracking}
 Dynamic occupancy patterns will be reconstructed from anonymized, timestamped location data provided by the building's management system.
@@ -105,51 +105,51 @@ Responses within 20 minutes of room entry will be excluded to avoid thermal tran
 Environmental parameters will be monitored in parallel with occupancy and survey data:
 
 \begin{itemize}[noitemsep]
-    \item \textbf{Indoor air temperature and humidity:} Compact thermometers will be installed in each target room to supplement Building Management System (BMS) logs and ensure accurate condition monitoring.
-    \item \textbf{Air velocity and mean radiant temperature:} Portable anemometers and globe thermometers will be deployed periodically. 
+    \item \textbf{Indoor air temperature (\acs{ti}) and relative humidity (\acs{rh}):} Compact thermometers will be installed in each target room to supplement Building Management System (BMS) logs and ensure accurate condition monitoring.
+    \item \textbf{Measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}):} Portable anemometers and globe thermometers will be deployed periodically. 
     These measurements are used not as model inputs but as diagnostic checks to detect any anomalies.
 \end{itemize}
 
 \subsection{Response-Level Analysis of Comfort Representations}
 \label{subsec:response_level_analysis}
 
-To complement the occupancy-pattern and simulation analyses, a response-level comparison of alternative comfort representations will be conducted using the field observations. The unit of analysis is each survey response. A session is defined by the combination of date, merged time slot, and room, and the binary outcome is actual comfort,
+To complement the occupancy-pattern and simulation analyses, a response-level comparison of alternative comfort representations will be conducted using the field observations. The unit of analysis is an individual survey response. A session is defined as the combination of date, merged time slot, and room. The binary outcome, actual comfort, is defined as
 \[
 Y_{\mathrm{actual\_comfort}} = \mathbb{1}(\texttt{thermal\_preference\_num}=0).
 \]
-The main observed covariates are indoor air temperature, relative humidity, clothing insulation, metabolic rate, and occupant count. All sample splitting is performed with GroupKFold ($n=5$) using session ID as the grouping variable so that responses from the same session are never split across training and evaluation folds.
+The main observed covariates are \ac{ti}, \ac{rh}, \ac{clo}, \ac{met}, and occupant count. All sample splitting is performed with GroupKFold ($n=5$) using session ID as the grouping variable so that responses from the same session are never split across training and evaluation folds.
 
-Several treatment representations are compared. A physics-based benchmark is derived from PMV/PPD calculated with the ISO 7730 implementation in \texttt{pythermalcomfort}, and transformed as $T_{\mathrm{PMV}} = 1-\mathrm{PPD}/100$. In parallel, participant-specific comfort probabilities are estimated from the environmental variables using fold-safe out-of-fold predictions from individual PCMs. Depending on data availability, these PCMs are fit with participant-level classification models such as logistic regression, gradient-boosted trees, and multilayer perceptrons; when participant-specific training data are too sparse, predictions fall back to the training-fold mean and, if unavailable, to 0.5. These individual predictions are then aggregated into group-level representations, including (i) a \emph{Realtime} representation based on the mean prediction of the occupants actually observed in the same session, (ii) a \emph{Static} representation based on the room's registered regular members evaluated under the session-average environment, and (iii) a \emph{SubsessionRealtime} representation based on exact-$k$ subsets of observed respondents within the same session. For SubsessionRealtime, the candidate subset always includes the focal respondent and is constructed only from respondents actually observed in that session.
+Several treatment representations are compared. A physics-based benchmark is derived from \ac{pmv}/\ac{ppd} calculated with the ISO 7730 implementation in \texttt{pythermalcomfort} and transformed as $T_{\mathrm{PMV}} = 1-\mathrm{PPD}/100$. In parallel, participant-specific comfort probabilities are estimated from the environmental variables using fold-safe out-of-fold predictions from individual \acp{pcm}. Depending on data availability, these \acp{pcm} are fit with participant-level classification models such as logistic regression, gradient-boosted trees, and multilayer perceptrons; when participant-specific training data are too sparse, predictions fall back to the training-fold mean and, if unavailable, to 0.5. These individual predictions are then aggregated into group-level representations, including (i) a real-time representation based on the mean prediction of the occupants actually observed in the same session, corresponding to an \ac{rtgcm}; (ii) a static representation based on the room's registered regular members evaluated under the session-average environment, corresponding to an \ac{sgcm}; and (iii) a subsession real-time representation based on exact-$k$ subsets of observed respondents within the same session. For the subsession real-time representation, the candidate subset always includes the focal respondent and is constructed only from respondents actually observed in that session.
 
 The estimation follows a cross-fitted residualization pipeline rather than a packaged DML estimator. For each fold and each treatment representation $T$, nuisance functions $\widehat{E}[Y \mid W]$ and $\widehat{E}[T \mid W]$ are estimated, and residuals are constructed as
 \[
 Y^{\mathrm{res}} = Y_{\mathrm{actual\_comfort}} - \widehat{E}[Y \mid W], \qquad
 T^{\mathrm{res}} = T - \widehat{E}[T \mid W].
 \]
-Treatment effects are then summarized by regressing $Y^{\mathrm{res}}$ on $T^{\mathrm{res}}$ with both intercept and no-intercept specifications. The primary estimand is the residual-regression coefficient $\theta$, reported together with its standard error, $p$-value, 95\% confidence interval, and partial $R^2$. To reduce dependence on a single nuisance specification, additional reruns average outcome residuals across multiple cross-fitted models and random seeds. Supplementary subgroup analyses also examine information-rich conditions in which the baseline predicted comfort probability is close to 0.5.
+Treatment effects are then summarized by regressing $Y^{\mathrm{res}}$ on $T^{\mathrm{res}}$ with both intercept and no-intercept specifications. The primary estimand is the residual-regression coefficient $\theta$, reported together with its standard error, $p$-value, 95\% confidence interval, and \ac{pr2}. To reduce dependence on a single nuisance specification, additional reruns average outcome residuals across multiple cross-fitted models and random seeds. Supplementary subgroup analyses also examine information-rich conditions in which the baseline predicted comfort probability is close to 0.5.
 
-The final rerun reported in the Results chapter retains this observed-subsession exact-$k$ design while relaxing the sampling constraints used in earlier exploratory runs and re-estimating the outcome residuals under multiple model specifications. The main comparison focuses on the Static and SubsessionRealtime representations in the full sample, while subgroup and specification checks are treated as supplementary analyses.
+The final rerun reported in the Results chapter retains this observed-subsession exact-$k$ design while relaxing the sampling constraints used in earlier exploratory runs and re-estimating the outcome residuals under multiple model specifications. The main comparison focuses on the \ac{sgcm} and the subsession real-time representation in the full sample, while subgroup and specification checks are treated as supplementary analyses.
 
 \subsection{Personal Comfort Model Development and Metrics}
 
 \subsubsection{Personal Comfort Model (PCM)}
-PCMs will be developed for each participant to predict thermal preference based on indoor temperature.
+Individual \acp{pcm} will be developed for each participant to predict thermal preference based on indoor air temperature.
 Environmental variables will be sourced from:
-(i) the BMS (room-level temperature logs) and
-(ii) compact indoor environment sensors (temperature and relative humidity).
+(i) the BMS (room-level indoor air temperature (\acs{ti}) logs) and
+(ii) compact indoor environment sensors (indoor air temperature (\acs{ti}) and relative humidity (\acs{rh})).
 
 %% TO DO - The model is not based on Daum et al.
-The baseline PCM will be a logistic regression–based model proposed by Daum et al.~\cite{daum_personalized_2011}, widely adopted in prior studies~\cite{jung_comparative_2019,lee_implementation_2019,zhang_impact_2023,meimand_personal_2024,topak_collective_2023,gupta_incentive-based_2018}.
+The baseline \ac{pcm} will be a logistic regression-based model proposed by Daum et al.~\cite{daum_personalized_2011}, widely adopted in prior studies~\cite{jung_comparative_2019,lee_implementation_2019,zhang_impact_2023,meimand_personal_2024,topak_collective_2023,gupta_incentive-based_2018}.
 
 Specific model inputs and outputs are defined as follows:
 \begin{itemize}
-    \item \textbf{Input vector $\mathbf{x}$:} The primary feature is the indoor air temperature ($T_{\text{in}}$) obtained from the compact sensors nearest to the occupant's zone.
-    Relative humidity is recorded as context features but not included in the baseline regression to avoid overfitting given the limited sample size per person.
+    \item \textbf{Input vector $\mathbf{x}$:} The primary feature is indoor air temperature (\acs{ti}) obtained from the compact sensors nearest to the occupant's zone.
+    Relative humidity (\acs{rh}) is recorded as a contextual feature but not included in the baseline regression to avoid overfitting given the limited sample size per person.
     \item \textbf{Output vector $\mathbf{y}$:} The model predicts the probability distribution over three thermal preference classes: $S_{th} \in \{+1 (\text{Warmer}), 0 (\text{No change}), -1 (\text{Cooler})\}$.
 \end{itemize}
 
 \[
-P(S_{th} = s \mid T_{\text{in}})\,.
+P(S_{th} = s \mid t_i)\,.
 \]
 
 \begin{figure}[pos=!bt]
@@ -159,7 +159,7 @@ P(S_{th} = s \mid T_{\text{in}})\,.
     \label{fig:ComChara}
 \end{figure}
 
-From each participant’s PCM, individual metrics will be derived:
+From each participant’s \ac{pcm}, individual metrics will be derived:
 
 \begin{description}
   \item[Preferred Temperature $T^p_i$:]
@@ -177,9 +177,9 @@ From each participant’s PCM, individual metrics will be derived:
 \end{description}
 
 \subsubsection{Group Comfort Model (GCM)}
-A dynamic Group Comfort Model (GCM) will be constructed by aggregating the PCMs of all occupants present in a room at a given time.
+A dynamic \ac{gcm} will be constructed by aggregating the \acp{pcm} of all occupants present in a room at a given time.
 Let $t$ index 15-minute timesteps and $S_t$ be the set of occupants present at time $t$.
-Each occupant $i$ has a time-invariant preferred temperature $\theta_i$ obtained from the PCM (so $\theta_i \equiv T_i^p$).
+Each occupant $i$ has a time-invariant preferred temperature $\theta_i$ obtained from the \ac{pcm} (so $\theta_i \equiv T_i^p$).
 The \emph{Dynamic} group-optimal setpoint at time $t$ is
 \[
 \mu_t \;=\; \frac{1}{|S_t|}\sum_{i\in S_t}\theta_i \;\equiv\; T_{\mathrm{opt,GCM}}(t)\,.
@@ -205,8 +205,8 @@ To capture short-horizon fluctuations in room load, a windowed dispersion of cou
 \end{equation}
 Greater variability indicates volatile attendance and is expected to increase $|\Delta T|$.
 
-\paragraph{User Turnover Rate (UTR).}
-The data is quantified in terms of short-horizon replacement of attendees via a rolling Jaccard turnover, denoted as the User Turnover Rate (UTR):
+\paragraph{\ac{utr}.}
+The data are quantified in terms of short-horizon replacement of attendees via a rolling Jaccard turnover, denoted as \ac{utr}:
 \begin{equation}
 \mathrm{UTR}^{(W)}_t \;=\; 1 \;-\; \frac{|S_t \cap S_{t-W}|}{|S_t \cup S_{t-W}|}.
 \label{eq:rolling_turnover}
@@ -334,11 +334,11 @@ and contrasts
 \subsubsection{Energy Impact Estimation under Dynamic GCM}
 \label{subsec:energy_impact}
 
-The counterfactual energy use will be estimated under each policy by combining actual exogenous conditions with policy-specific setpoint schedules.
+The counterfactual energy use will be estimated under each policy by combining actual exogenous conditions, including outdoor air temperature (\acs{tout}), with policy-specific setpoint schedules.
 
 Let $E_k(t)$ denote an energy or power variable from the BMS at time $t$ for component $k \in \mathcal{K}$ (e.g., supply fan power, cooling/heating coil energy etc).
 \[
-\mathbf{x}(t) \;=\; \bigl(T_{\mathrm{out}}(t),\, T_{\mathrm{set}}(t),\, N_t,\, \ldots \bigr).
+\mathbf{x}(t) \;=\; \bigl(t_{out}(t),\, T_{\mathrm{set}}(t),\, N_t,\, \ldots \bigr).
 \]
 
 
@@ -354,11 +354,11 @@ f_k\!\bigl(\mathbf{x}(t)\bigr) \;+\; \varepsilon_{k,t},
 where $f_k(\cdot)$ is a flexible nonparametric function and $\varepsilon_{k,t}$ captures residual variability.
 
 % Counterfactual evaluation
-Holding actual exogenous series fixed (e.g., $T_{\mathrm{out}}(t)$, $N_t$), the counterfactual energy under each policy is generated by feeding the corresponding setpoint schedule:
+Holding actual exogenous series fixed (e.g., $t_{out}(t)$ and $N_t$), the counterfactual energy under each policy is generated by feeding the corresponding setpoint schedule:
 \[
 \widehat{E}_{k}^{\mathrm{policy}}(t)
 \;=\;
-\widehat{f}_k\!\bigl(T_{\mathrm{out}}(t),\, T_{\mathrm{set}}^{\mathrm{policy}}(t),\, N_t,\, \ldots \bigr).
+\widehat{f}_k\!\bigl(t_{out}(t),\, T_{\mathrm{set}}^{\mathrm{policy}}(t),\, N_t,\, \ldots \bigr).
 \]
 % \[
 % \widehat{E}_{k}^{\mathrm{policy}}(t)
@@ -384,16 +384,16 @@ The total amount will be reported by component and overall, along with uncertain
 % (i) occupancy and weather are exogenous to the control policy and (ii) control schedules other than temperature setpoints remain unchanged across counterfactuals.
 
 \subsubsection{Baselines and deviations}
-The Dynamic GCM setpoint $\mu_t$ will be compared with two baselines.
+The dynamic \ac{gcm} setpoint $\mu_t$ will be compared with two baselines.
 
-(i) a \emph{Static} setpoint:
+(i) a \emph{Static} setpoint associated with the \ac{sgcm}:
 \[
 T_{\mathrm{static}} \;=\; \frac{1}{|R|}\sum_{i\in R}\theta_i,
 \quad
 R=\text{regular users assigned to the room over the study period};
 \]
 
-(ii) a \emph{Daily} setpoint:
+(ii) a \emph{Daily} setpoint associated with the \ac{dgcm}:
 \[
 T_{\mathrm{daily}}(d) \;=\; \frac{1}{|A_d|}\sum_{i\in A_d}\theta_i,
 \quad

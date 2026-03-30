@@ -1,37 +1,33 @@
 \subsection{Causality}
 \SetPicSubDir{ch4-Results/causality}
+\label{subsec:causality}
 
-Figure \autoref{fig:partialR2} shows the partial R2 based on Static and Realtime group comfort models, along different number of sample K at session, showed in the three \ac{ml} model.
-The results indicate that in the small number of session such as 1 to 6, the Realtime group comfort models' model convergence is superior than that of Static group comfort models.
-Within k = 4 to 5, Static group model's partial R2 become close to 0, while Realtime group model's partial R2 is around 0.1, which indicates that Static group comfort models doesn't show additional information rather than environmental and personal information, while Realtime group comfort model shows additional information.
-When the number of sampled K increase to 7 to 8, Realtime group comfort models' Partial R2 get close to similar level as Static group comfort models nearly zero, which indicates that the Realtime group comfort model's additional information is not significant when the number of session is large enough.
+\autoref{fig:partialR2} compares the \ac{pr2} of the \ac{sgcm} and \ac{rtgcm} across different subsample sizes ($k$) within each of the three model classes. In both cases, \ac{pr2} decreases as $k$ increases. At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronger convergence than the \ac{sgcm}. For $k = 4$--5, the \ac{pr2} of the \ac{sgcm} is close to zero, whereas that of the \ac{rtgcm} remains around 0.1. This suggests that the \ac{sgcm} adds little information beyond the environmental and personal covariates, while the \ac{rtgcm} retains meaningful additional explanatory power. When $k$ increases to 7--8, the \ac{pr2} of the \ac{rtgcm} also approaches zero and becomes similar to that of the \ac{sgcm}, indicating that its incremental value diminishes when the session sample size is sufficiently large.
 
 \begin{figure}[pos=htbp!]
     \centering
     \includegraphics[width=0.97\linewidth]{\Pic{png}{section14_partial_r2_noocc_model_compare_cap10}}
-    \caption{Partial R2}
+    \caption{\acs{pr2}}
     \label{fig:partialR2}
 \end{figure}
 
-These results indicate that Realtime group comfort models are able to show consistency with actual comfort vote when the occupancy count at the time is smaller than 6, however, its consistency converge to zero when occupancy count is close to 8.
+These results suggest that the \ac{rtgcm} aligns with observed comfort votes when the occupancy count is relatively small, particularly below about six occupants, but that this advantage largely disappears when occupancy approaches eight occupants.
 
-\subsection{Agentic simulation}
+
+\subsection{Agentic Simulation}
 \SetPicSubDir{ch4-Results/agentic}
+\label{subsec:AgenticSim}
 
-Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows comfort achievement ratio with different number of sub-group size with four office rooms.
-Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows the improvement ratio from baseline control(24 degree) along different sub-group size.
+Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows the comfort achievement ratio for different subgroup sizes across four office rooms. Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows the improvement ratio relative to the baseline control ($24^\circ\mathrm{C}$) across subgroup sizes.
 
-Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} and Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} show that the improvement of using static group comfort models easily converge to zero, with room types with 3-4 users. 
-In contrast, the improvement of real-time group comfort models and daily group comfort model can maintain a certain level of improvement even with maximum room user size, which ranges 6 to 10.
-The difference between using daily group comfort models and realtime comfort models get wider as the room size get larger.
-This indicates that with larger room size, the real-time group comfort models benefit with more dynamic occupant transitions, while daily group comfort models are not able to capture the dynamic group comfort tendency with occupancy transitions.
+Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} and Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} show that the benefit of the \ac{sgcm} rapidly converges to zero in smaller rooms, especially those with 3--4 users. In contrast, the \ac{rtgcm} and \ac{dgcm} maintain a certain level of improvement even at the maximum room sizes considered, which range from 6 to 10 users. The performance gap between the \ac{dgcm} and \ac{rtgcm} widens as room size increases. This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
 
 \begin{figure}[pos=htbp!]
     \centering
     \begin{subfigure}{0.97\linewidth}
         \centering
         \includegraphics[width=\linewidth]{\Pic{png}{a6p_static_realtime_daily_by_subgroup}}
-        \caption{Comfort achievement ratio with different comfort representation control}
+        \caption{Comfort achievement ratio with different comfort-representation controls}
         \label{fig:ComfAchi}
     \end{subfigure}
 
@@ -40,41 +36,40 @@ This indicates that with larger room size, the real-time group comfort models be
     \begin{subfigure}{0.97\linewidth}
         \centering
         \includegraphics[width=\linewidth]{\Pic{png}{a6p_improvement_vs24_by_subgroup}}
-        \caption{Comfort improvement from baseline control}
+        \caption{Comfort improvement relative to the baseline control}
         \label{fig:ComfImp}
     \end{subfigure}
-    \caption{Agentic simulation results with different sub-group sizes.}
+    \caption{Agentic simulation results for different subgroup sizes.}
     \label{fig:ComfAgentic}
 \end{figure}
 
-Figure~\autoref{fig:MeanOccuConf} shows the improvement ratio from baseline control(24 degree) along daily mean occupancy counts values.
-This figure indicate that the effectiveness using real-time group comfort models yields more in sparce occupancy conditions.
-Even when room size (sub-group size) if fixed, actual
+\autoref{fig:MeanOccuConf} shows the improvement ratio relative to the baseline control ($24^\circ\mathrm{C}$) as a function of daily mean occupancy. The figure presents the relationship between daily mean occupancy and improvement for the real-time and static group comfort models using density contours and fitted linear regression lines. Most observations are concentrated in regions where the improvement ratio is below 20\%. The fitted lines further indicate that the real-time group comfort model is more effective under sparse occupancy conditions. As mean occupancy increases to around 4--5 occupants, the improvement ratio approaches zero. This suggests that, even when room size (subgroup size) is fixed, the actual mean occupancy level still affects the achievable improvement.
 
 \begin{figure}[pos=htbp!]
     \centering
     \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis72_mean_occupancy_contour_all_k4_k6_k8}}
-    \caption{Distribution of temperature adjustment range with dynamic group model control}
+    \caption{Improvement ratio relative to the baseline control across daily mean occupancy levels}
     \label{fig:MeanOccuConf}
 \end{figure}
 
-\subsection{Effect to control adjustment}
+\subsection{Implications for Control Adjustment}
 
-\autoref{fig:DynSpStepHist} shows distribution of temperature adjustment range using dynamic group comfort models along different sub-group size.
+\autoref{fig:DynSpStepHist} shows the distribution of temperature adjustment magnitudes under the dynamic group comfort model across different subgroup sizes.
 
-\autoref{fig:CtrlWindowRatio} shows the daily standard deviation of occupancy counts in the room and ratio of timesteps that are required to adjust tempearaute over 0.5 decree.
 \begin{figure}[pos=htbp!]
     \centering
     \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis8_dyn_sp_mean_abs_step_when_changed_hist_all_k4_k6_k8}}
-    \caption{Distribution of temperature adjustment range with dynamic group model control}
+    \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
     \label{fig:DynSpStepHist}
 \end{figure}
+
+\autoref{fig:CtrlWindowRatio} shows the relationship between the daily standard deviation of occupancy count and the ratio of timesteps requiring a temperature adjustment greater than $0.5^\circ\mathrm{C}$.
 
 \begin{figure}[pos=htbp!]
     \centering
     \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis8_action_window_contour_sd_occupancy_all_k4_k6_k8}}
-    \caption{Relation of daily SD of occupancy counts to ratio of control actions required}
+    \caption{Relationship between daily occupancy-count standard deviation and the ratio of required control actions}
     \label{fig:CtrlWindowRatio}
 \end{figure}
 
-
+The figure includes separate cases for each room size ($k = 4, 6, 8$) as well as the pooled sample. A clear positive trend is observed: as the standard deviation of occupancy count increases, the share of timesteps requiring control action also increases. This indicates that larger occupancy fluctuations lead to more frequent setpoint adjustments. The trend is more pronounced for larger room sizes, especially at $k = 8$, where many observations cluster around an occupancy-count standard deviation of about 1.5 and a control-required window ratio of about 20\%.
