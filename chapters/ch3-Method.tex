@@ -1,44 +1,51 @@
 \SetPicSubDir{ch3-method}
-\subsection{Research Purpose and Hypothesis}
 \label{sec:Method}
-
-This experiment aims to identify the room-usage patterns under which dynamic occupancy information and \acp{pcm} are most effective.
-
-This experiment is designed to address this challenge by systematically identifying the occupancy conditions under which dynamic, personalized thermal control strategies offer the most significant benefits over static approaches. 
-Building on prior work that investigated the impact of group size and control granularity \cite{ono_effects_2022,jung_energy_2020}, this study introduces temporal occupancy variability as a key dimension of analysis.
-
-The specific aims of this experiment are to:
-\begin{enumerate}
-    \item Characterize real-world occupancy patterns in different office spaces by calculating key metrics such as average occupancy count, occupancy variability, and \ac{utr}.
-    \item Analyze the relationship between the identified occupancy patterns and the performance benefits of a dynamic \ac{gcm} using personal-level occupancy location data compared with a static setpoint.
-\end{enumerate}
-
-\subsection{Data collection}
-\label{subsec:DataCollect}
-
-The overall procedural flow of this experiment is illustrated in \autoref{fig:ex1_flow}.
-The study will be conducted in a real-world office building over a four-week period.
-
+This study consists of two phase analysis, useing data collected in a real-world office building.
+The first part is causality analysis which employees \ac{dml} to verify the consistency of different types of \ac{gcm} to actual comfort vote.
+The second part employes agentic-simulation analysis to explore the relationship between occupancy-related parameters to the effect of control performance based on different types of \ac{gcm}.
+The overall procedural flow of this experiment is illustrated in \autoref{fig:ex_flow}.
 \begin{figure}[pos=htbp!]
     \centering
     \includegraphics[width=0.97\linewidth]{\Pic{png}{ex1_procedure}}
-    \caption{Overall procedure flow of Experiment 1}
-    \label{fig:ex1_flow}
+    \caption{Overall procedure flow(Placeholder)}
+    \label{fig:ex_flow}
 \end{figure}
 
-\subsubsection{Timeline}
-The data collection period is planned for 29 September to 24 October 2025 (4 weeks), subject to final approval from NUS-IRB and The GEAR’s internal processes.
+\subsection{Collected Data}
+\label{subsec:DataCollect}
+For both analysis, three primary types of field data were collected: real-time occupancy logs, subjective thermal comfort surveys and environmental measurement logs.
+
+\subsubsection{Occupancy Log Tracking}
+Dynamic occupancy patterns will be reconstructed from anonymized, timestamped location data provided by the building's management system.
+From a raw stream of access events, a structured “stay log” is generated to represent continuous periods of presence for each participant in each room.
+The resulting log, which contains an anonymized ID, location, and start–end times, is then used to compute occupancy metrics.
+The detailed procedure for this reconstruction is described in Appendices~\ref{app:occupancy_reconstruction}.
+
+\subsubsection{Thermal Comfort Survey}
+Subjective survey answers were collected via a brief web survey during work hours. 
+Items and scales follow ANSI/ASHRAE Standard 55:2023, Appendix~L \cite{ashrae_ansiashrae_2022}.
+The survey contents are summarized in \autoref{table:comfsurvey}.
+
+To ensure sufficient variability, indoor setpoints were cycled between \qtyrange{22}{27}{\celsius} in \qty{1}{\celsius} steps, with randomized order across days.  
+On selected days, morning and afternoon setpoints differed to expand diversity.  
+Participants were prompted with a target of 4–6 responses per workday.  
+Responses within 20 minutes of room entry were excluded to avoid thermal transient effects.
+
+\subsubsection{Indoor Environmental Measurements}
+Indoor environmental data were monitored in parallel with occupancy and survey data.
+The primary measurements were \ac{ti} and \ac{rh}, obtained from the \ac{bms} and compact sensors installed in the target rooms.
+In addition, measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}) were recorded periodically as diagnostic checks rather than as model inputs.
 
 \subsection{Target Building and Spaces}
 \label{sec:TargetBuil}
-The experiment was conducted at The GEAR, an R\&D and administrative office building operated by Kajima Corporation.
+The data collection was conducted at The GEAR, an R\&D and administrative office building operated by Kajima Corporation, from 29 September to 24 October 2025 (4 weeks).
 The 3rd to 6th floors, which accommodate a mix of ABW and static seating work styles depending on departmental roles, are the target areas for data collection.
 Data collection was limited to the following rooms to capture a variety of occupancy patterns:
 3F: Office 3A, Office 3B; 5F: Katris Office, KD Office, Shared Office 1, Shared Office 2; 6F: ILYA Office.
 
 The target zones are served by a central air conditioning system using variable air volume (VAV) capable of individual zone control.
 In this study, the controlled variable is the zone air temperature setpoint ($T_{\mathrm{set}}$). 
-The building management system (BMS) regulates the terminal unit such as airflow dampers or valve positions to maintain the measured \ac{ti} at the target $T_{\mathrm{set}}$.
+The \ac{bms} regulates the terminal unit such as airflow dampers or valve positions to maintain the measured \ac{ti} at the target $T_{\mathrm{set}}$.
 $T_{\mathrm{set}}$ is manipulated experimentally to collect data.
 
 \subsection{Participant Recruitment and Ethical Considerations}
@@ -46,67 +53,52 @@ $T_{\mathrm{set}}$ is manipulated experimentally to collect data.
 This study has been approved by the National University of Singapore Institutional Review Board (NUS-IRB Reference Code: NUS-IRB-2025-498).
 Informed consent were obtained from all participants prior to the study.
 All location and survey data were anonymized by the building administrator before being accessed by the research team to protect privacy. 
-
-\subsection{Data Collection}
-Two primary types of field data were collected: real-time occupancy logs and subjective thermal comfort surveys.
-In addition, indoor environmental data, including \ac{ti} and \ac{rh}, will be obtained from the Building Management System and from compact sensors installed in the target rooms.
 Considering the actual survey amount, survey answers and location tracking data of \textbf{39} participants are finally used. 
 
-\subsubsection{Occupancy Log Tracking}
-% To Do refer to appendix and remove from the current content
+\subsection{Analysis target Group Comfort Models}
+This study compares three \acp{gcm} that differ in the timescale at which individual \acp{pcm} are aggregated: a \ac{sgcm}, a \ac{dgcm}, and a \ac{rtgcm}.
+The \ac{sgcm} aggregates the \acp{pcm} of the room's registered regular members and yields one fixed room-level representation over the study period.
+The \ac{dgcm} aggregates the \acp{pcm} of the occupants who attended on a given day and is updated at the daily timescale.
+The \ac{rtgcm} aggregates the \acp{pcm} of the occupants actually present at each control update and is therefore the highest-resolution representation.
 
-Dynamic occupancy patterns were reconstructed from anonymized, timestamped location data provided by the building's management system.
-From a raw stream of access events, a structured “stay log” is generated to represent continuous periods of presence for each participant in each room.
+Each occupant $i$ has a time-invariant preferred temperature $\theta_i$ obtained from the \ac{pcm} (so $\theta_i \equiv T_i^p$).
+Let $S_t$ denote the set of occupants present at time $t$, and let $R$ and $A_d$ denote the sets of regular members and daily attendees, respectively.
 
-\begin{itemize}[noitemsep]
-    \item \textbf{Room Entry Events:} Triggered when a participant enters a specific room through a door-mounted access point.
-    \item \textbf{General Presence Events:} Triggered when a participant is detected in shared zones or corridors, confirming their presence in the building.
-    \item \textbf{Building Exit Events:} Triggered when a participant leaves the building through a main egress gate.
-    Note that room-level exit events are not always recorded.
-\end{itemize}
-
-From these discrete events, a structured ``stay log'' is generated to represent continuous periods of presence.  
-For each participant and each day:
-
-\begin{itemize}[noitemsep]
-    \item A stay begins at the timestamp of an “Entry” or equivalent presence-confirming event, and ends at the next recorded event (room entry, zone presence, or building exit).
-    \item To prevent overnight carryover, any stay still active at the day’s final event is terminated at that time, typically corresponding to a building exit.
-\end{itemize}
-
-The resulting stay log contains an anonymized ID, location, and start–end times, which are then used to compute occupancy metrics.
-
-\subsubsection{Thermal Comfort Survey}
-
-Subjective survey answers were collected via a brief web survey during work hours. 
-Items and scales follow ANSI/ASHRAE Standard 55:2023, Appendix~L \cite{ashrae_ansiashrae_2022}.
-The survey contents are summarized in \autoref{table:comfsurvey}.
-
-To ensure sufficient variability, indoor setpoints were cycled between 22–27℃ in 1℃ steps, with randomized order across days.  
-On selected days, morning and afternoon setpoints differed to expand diversity.  
-Participants were prompted with a target of 4–6 responses per workday.  
-Responses within 20 minutes of room entry were excluded to avoid thermal transient effects.
-
-\subsubsection{Indoor Environmental Measurements}
-
-Environmental parameters were monitored in parallel with occupancy and survey data:
-
-\begin{itemize}[noitemsep]
-    \item \textbf{Indoor air temperature (\acs{ti}) and relative humidity (\acs{rh}):} Compact thermometers were installed in each target room to supplement Building Management System (BMS) logs and ensure accurate condition monitoring.
-    \item \textbf{Measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}):} Portable anemometers and globe thermometers were deployed periodically. 
-    These measurements are used not as model inputs but as diagnostic checks to detect any anomalies.
-\end{itemize}
-
-\subsection{Analysis 1:Response-Level Analysis of Comfort Representations}
+\subsection{Analysis 1:Response-Level Causality Analysis of Comfort Representations}
 \label{subsec:causality_analysis}
 
-To complement the occupancy-pattern and simulation analyses, a response-level comparison of alternative comfort representations will be conducted using the field observations. The unit of analysis is an individual survey response. A session is defined as the combination of date, merged time slot, and room. The binary outcome, actual comfort, is defined as
+\subsubsection{Double machine learning framework for comfort representation analysis.}
+The objective of Analysis 1 is to evaluate whether different level of room-level comfort representations are informative of actual occupant comfort after accounting for the observed indoor and occupancy conditions.
+For this purpose, a \ac{dml}-based residualization framework is adopted.
+\ac{dml} is a causal inference approach that separates the effect of interest from high-dimensional confounding by first estimating nuisance functions for the outcome and treatment, and then performing the target regression on their residual components\cite{chernozhukov_doubledebiased_2018}.
+In the present study, this framework is used not to estimate the effect of a manipulated intervention, but to examine whether different \acp{gcm} remain associated with actual comfort beyond what can already be explained by the observed covariates.
+
+Let $Y$ denote the observed comfort outcome for each survey response, and let $W$ denote the observed confounders, including indoor environmental conditions, clothing level, metabolic rate, and occupancy count.
+Unlike a standard treatment-effect setting, the treatment variable $T$ here is a model-based comfort representation derived from \acp{pcm}.
+More specifically, for each response or session, participant-level comfort probabilities are first estimated from fold-safe \acp{pcm}, and these probabilities are then aggregated to form group-level comfort representations such as the static, daily, and real-time \acp{gcm}.
+Therefore, $T$ should be interpreted as a summarized comfort signal implied by a given group representation, rather than as an externally assigned intervention.
+
+Under this formulation, the role of \ac{dml} is to remove the variation in both $Y$ and $T$ that is predictable from $W$.
+This is done by estimating the nuisance functions $\widehat{E}[Y \mid W]$ and $\widehat{E}[T \mid W]$ using cross-fitting, and then constructing residuals
+\[
+Y^{\mathrm{res}} = Y - \widehat{E}[Y \mid W], \qquad
+T^{\mathrm{res}} = T - \widehat{E}[T \mid W].
+\]
+The remaining association between $T^{\mathrm{res}}$ and $Y^{\mathrm{res}}$ is then interpreted as the component of the comfort representation that is not explained by the observed confounders.
+In this study, the resulting coefficient is used as a measure of how consistently each \ac{gcm}-based representation aligns with actual comfort responses after adjustment for environmental and occupancy-related factors.
+
+\subsubsection{Causality modeling}
+To complement the occupancy-pattern and simulation analyses, a response-level comparison of alternative comfort representations are conducted using the field observations.
+The unit of analysis is an individual survey response.
+A session is defined as the combination of date, merged time slot, and room.
+The binary outcome, actual comfort, is defined as
 \[
 Y_{\mathrm{actual\_comfort}} = \mathbb{1}(\texttt{thermal\_preference\_num}=0).
 \]
-The main observed covariates are \ac{ti}, \ac{rh}, \ac{clo}, \ac{met}, and occupant count. All sample splitting is performed with GroupKFold ($n=5$) using session ID as the grouping variable so that responses from the same session are never split across training and evaluation folds.
+The main observed covariates are \ac{ti}, \ac{rh}, \ac{clo}, \ac{met}, and occupant count.
+All sample splitting is performed with GroupKFold ($n=5$) using session ID as the grouping variable so that responses from the same session are never split across training and evaluation folds.
 
 Several treatment representations are compared.
-A physics-based benchmark is derived from \ac{pmv}/\ac{ppd} calculated with the ISO 7730 implementation in \texttt{pythermalcomfort} and transformed as $T_{\mathrm{PMV}} = 1-\mathrm{PPD}/100$.
 In parallel, participant-specific comfort probabilities are estimated from the environmental variables using fold-safe out-of-fold predictions from individual \acp{pcm}.
 Depending on data availability, these \acp{pcm} are fit with participant-level classification models such as logistic regression, random forest, and multilayer perceptrons; when participant-specific training data are too sparse, predictions fall back to the training-fold mean and, if unavailable, to 0.5.
 These individual predictions are then aggregated into group-level representations, including
@@ -129,13 +121,15 @@ Supplementary subgroup analyses also examine information-rich conditions in whic
 
 \subsection{Analysis 2:Occupancy-log-based agentic comfort simulation}
 \subsubsection{Personal Comfort Model (PCM)}
-Individual \acp{pcm} will be developed for each participant to predict thermal preference based on indoor air temperature.
+
+Individual \acp{pcm} are developed for each participant to predict thermal preference based on indoor air temperature.
 Environmental variables will be sourced from:
-(i) the BMS (room-level indoor air temperature (\acs{ti}) logs) and
+(i) the \acs{bms} (room-level indoor air temperature (\acs{ti}) logs) and
 (ii) compact indoor environment sensors (indoor air temperature (\acs{ti}) and relative humidity (\acs{rh})).
 
-%% TO DO - The model is not based on Daum et al.
-The baseline \ac{pcm} will be a logistic regression-based model proposed by Daum et al.~\cite{daum_personalized_2011}, widely adopted in prior studies~\cite{jung_comparative_2019,lee_implementation_2019,zhang_impact_2023,meimand_personal_2024,topak_collective_2023,gupta_incentive-based_2018}.
+The baseline \ac{pcm} are a multi-class logistic classification model, similarly used in agentic simulation such as \mycite{jung_comparative_2019}~\cite{jung_comparative_2019} and \mycite{jung_energy_2020}~\cite{jung_energy_2020}
+
+%study by Daum et al.~\cite{daum_personalized_2011}, widely adopted in prior studies~\cite{jung_comparative_2019,lee_implementation_2019,zhang_impact_2023,meimand_personal_2024,topak_collective_2023,gupta_incentive-based_2018}.
 
 Specific model inputs and outputs are defined as follows:
 \begin{itemize}
@@ -155,7 +149,7 @@ P(S_{th} = s \mid t_i)\,.
     \label{fig:ComChara}
 \end{figure}
 
-From each participant’s \ac{pcm}, individual metrics will be derived:
+From each participant’s \ac{pcm}, individual metrics are derived:
 \begin{description}
   \item[Preferred Temperature $T^p_i$:]
   The temperature that maximizes the probability of “no change,” i.e.,
@@ -171,14 +165,20 @@ From each participant’s \ac{pcm}, individual metrics will be derived:
   This range will be used to evaluate how frequently a given setpoint schedule places present occupants within their personal comfort ranges.
 \end{description}
 
-\subsubsection{Group Comfort Model (GCM)}
-A dynamic \ac{gcm} will be constructed by aggregating the \acp{pcm} of all occupants present in a room at a given time.
-Let $t$ index 15-minute timesteps and $S_t$ be the set of occupants present at time $t$.
-Each occupant $i$ has a time-invariant preferred temperature $\theta_i$ obtained from the \ac{pcm} (so $\theta_i \equiv T_i^p$).
-The \emph{Dynamic} group-optimal setpoint at time $t$ is
+The corresponding group-level setpoints are defined as
 \[
-\mu_t \;=\; \frac{1}{|S_t|}\sum_{i\in S_t}\theta_i \;\equiv\; T_{\mathrm{opt,GCM}}(t)\,.
+T_{\mathrm{static}} \;=\; \frac{1}{|R|}\sum_{i\in R}\theta_i,
+\qquad
+T_{\mathrm{daily}}(d) \;=\; \frac{1}{|A_d|}\sum_{i\in A_d}\theta_i,
+\qquad
+\mu_t \;=\; \frac{1}{|S_t|}\sum_{i\in S_t}\theta_i \;\equiv\; T_{\mathrm{opt,GCM}}(t).
 \]
+Here, $T_{\mathrm{static}}$, $T_{\mathrm{daily}}(d)$, and $\mu_t$ correspond to the \ac{sgcm}, \ac{dgcm}, and \ac{rtgcm}, respectively.
+
+\subsubsection{Simulation Design}
+The occupancy-log-based simulation is designed as a Monte Carlo-style repeated resampling analysis built on the observed room-level occupancy dynamics. Each agent is treated as an occupant proxy carrying an observed presence record reconstructed from the stay logs. To generate multiple realizations while preserving the original room usage patterns, subgroups are repeatedly sampled from each room's member pool, and individual \acp{pcm} are randomly reassigned to the selected proxies in each trial.
+
+For each simulated realization, the three \acp{gcm} are compared by aggregating the assigned \acp{pcm} at the static, daily, and real-time timescales defined above. More specifically, each group's comfort representation is formed by merging the individual "no change" probability curves of the assigned \acp{pcm}, and the corresponding setpoint is selected as the temperature that maximizes the aggregated comfort probability. In addition to these three group-model-based policies, a fixed \qty{24}{\celsius} setpoint is used as an additional baseline. The simulation outputs are then summarized as comfort improvement relative to this fixed baseline and as contrasts among the static, daily, and real-time group models.
 
 \subsubsection{Occupancy Metrics}
 \label{sec:OccuMetrics}
@@ -208,8 +208,202 @@ The data are quantified in terms of short-horizon replacement of attendees via a
 \end{equation}
 Higher $\mathrm{UTR}^{(W)}_t$ indicates more sustained replacement of attendees and is expected to increase $|\Delta T|$.
 
+\subsection{Comfort Coverage Analysis}
+\label{subsec:coverage}
+% Objective: fraction of person-time within personal comfort ranges, without model-based smoothing.
 
-\subsection{Data Analysis}
+\paragraph{Definition.}
+Let $T_{\mathrm{set}}^{\mathrm{policy}}(t)$ denote the setpoint at time $t$ generated by policy $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{Dynamic}\}$.
+
+For each occupant $i \in S_t$, define
+\[
+C_{i,t}^{\mathrm{policy}} =
+\begin{cases}
+1, & \text{if } T^c_i \le T_{\mathrm{set}}^{\mathrm{policy}}(t) \le T^h_i,\\[4pt]
+0, & \text{otherwise.}
+\end{cases}
+\]
+
+Room-level coverage over a target period $\mathcal{T}_r$ is
+\[
+\mathrm{Coverage}_{r}^{\mathrm{policy}}
+=\frac{\sum_{t\in\mathcal{T}_r}\sum_{i\in S_t} w_{i,t}\, C_{i,t}^{\mathrm{policy}}}{\sum_{t\in\mathcal{T}_r}\sum_{i\in S_t} w_{i,t}},
+\quad w_{i,t}=1\ \text{unless stated otherwise.}
+\]
+
+\paragraph{Occupancy-stratified summaries.}
+To examine how occupancy conditions relate to coverage, stratified summaries will be reported by discretizing occupancy metrics into ordered bins
+(e.g., quartiles): group size $N_t$, short-horizon count variability $\sigma^{(W)}_{N,t}$,
+and user turnover rate $\mathrm{UTR}^{(W)}_t$ (Section~\ref{sec:OccuMetrics}).
+For a bin $g$, define
+\[
+\mathrm{Coverage}_{r,g}^{\mathrm{policy}}
+=\frac{\sum_{t\in\mathcal{T}_r \cap \mathcal{G}_g}\sum_{i\in S_t} C_{i,t}^{\mathrm{policy}}}{\sum_{t\in\mathcal{T}_r \cap \mathcal{G}_g}\sum_{i\in S_t} 1},
+\]
+and contrasts
+\[
+\begin{aligned} % align at "=" with two lines
+\Delta \mathrm{Cov}_{r,g}^{\mathrm{Dyn-Daily}}
+&= \mathrm{Coverage}_{r,g}^{\mathrm{Dynamic}} - \mathrm{Coverage}_{r,g}^{\mathrm{Daily}},\\
+\Delta \mathrm{Cov}_{r,g}^{\mathrm{Dyn-Static}}
+&= \mathrm{Coverage}_{r,g}^{\mathrm{Dynamic}} - \mathrm{Coverage}_{r,g}^{\mathrm{Static}}.
+\end{aligned}
+\]
+
+% \subsubsection{Energy Impact Estimation under Dynamic GCM}
+% \label{subsec:energy_impact}
+
+% The counterfactual energy use will be estimated under each policy by combining actual exogenous conditions, including outdoor air temperature (\acs{tout}), with policy-specific setpoint schedules.
+
+% Let $E_k(t)$ denote an energy or power variable from the \acs{bms} at time $t$ for component $k \in \mathcal{K}$ (e.g., supply fan power, cooling/heating coil energy etc).
+% \[
+% \mathbf{x}(t) \;=\; \bigl(t_{out}(t),\, T_{\mathrm{set}}(t),\, N_t,\, \ldots \bigr).
+% \]
+% % GP model
+% Each component is modeled via Gaussian Process regression:
+% \[
+% E_k(t)
+% \;=\;
+% f_k\!\bigl(\mathbf{x}(t)\bigr) \;+\; \varepsilon_{k,t},
+% \qquad k \in \mathcal{K},
+% \]
+
+% where $f_k(\cdot)$ is a flexible nonparametric function and $\varepsilon_{k,t}$ captures residual variability.
+
+% Holding actual exogenous series fixed (e.g., $t_{out}(t)$ and $N_t$), the counterfactual energy under each policy is generated by feeding the corresponding setpoint schedule:
+% \[
+% \widehat{E}_{k}^{\mathrm{policy}}(t)
+% \;=\;
+% \widehat{f}_k\!\bigl(t_{out}(t),\, T_{\mathrm{set}}^{\mathrm{policy}}(t),\, N_t,\, \ldots \bigr).
+% \]
+% The value is then aggregated over the study period:
+% \[
+% \mathrm{TotalEnergy}_{k}^{\mathrm{policy}}
+% \;=\;
+% \sum_{t \in \mathcal{T}} \widehat{E}_{k}^{\mathrm{policy}}(t),
+% \qquad
+% \mathrm{SavingRate}_{k}^{\mathrm{Dyn\;vs\;baseline}}
+% \;=\;
+% 1 - \frac{\mathrm{TotalEnergy}_{k}^{\mathrm{Dynamic}}}{\mathrm{TotalEnergy}_{k}^{\mathrm{baseline}}},
+% \]
+% where the baseline is either Static or Daily.
+
+% The total amount will be reported by component and overall, along with uncertainty intervals from the GP predictive distribution.
+
+\subsubsection{Baselines and deviations}
+Among the three \acp{gcm} defined above, the \ac{rtgcm} setpoint $\mu_t$ is treated as the highest-resolution target and is compared with the \ac{sgcm} and \ac{dgcm} baselines.
+The deviations are
+\begin{equation}
+\Delta T^{\mathrm{Static}}_t \;=\; \mu_t - T_{\mathrm{static}},
+\qquad
+\Delta T^{\mathrm{Daily}}_t \;=\; \mu_t - T_{\mathrm{daily}}(d).
+\label{eq:deltaT_defs}
+\end{equation}
+Unless stated otherwise, the magnitudes of $|\Delta T^{\mathrm{Static}}_t|$ and $|\Delta T^{\mathrm{Daily}}_t|$ will be analyzed.
+
+\begin{figure}[pos=!bt]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{ex1_analysis_flow}}
+    \caption{Analysis of Baseline vs Dynamic comfort model Image}
+    \label{fig:ex1analysis}
+\end{figure}
+
+\subsubsection{Statistical Comparison and Equivalence Testing}
+\label{subsec:equivalence}
+
+It will be assessed whether the Dynamic setpoint is equivalent to each baseline using
+two one-sided tests (TOST) with an equivalence margin of $\pm 0.5^\circ\mathrm{C}$
+(aligned with the general thermostat control step). 
+The null posits non-equivalence; rejection of both one-sided tests indicates equivalence under the specified occupancy conditions.
+
+\begin{enumerate}
+    \item \textbf{Outcomes}
+    Let $\Delta T^{\mathrm{Static}}_t$ and $\Delta T^{\mathrm{Daily}}_t$ be defined as in \eqref{eq:deltaT_defs}.
+    Unless stated otherwise, the magnitudes of $|\Delta T^{\mathrm{Static}}_t|$ and $|\Delta T^{\mathrm{Daily}}_t|$ will be analyzed.
+    \item \textbf{Hypotheses and margin}
+    For each baseline, we test equivalence to Dynamic with the margin $\pm 0.5^\circ\mathrm{C}$ using TOST.
+
+    \item \textbf{Procedure}
+    Apply two one-sided tests at the pre-specified significance level; equivalence is concluded if both
+    null hypotheses are rejected.
+
+\end{enumerate}
+
+\paragraph{Modeling strategy and Feature Attribution}
+
+Because the relationship between occupancy metrics and the absolute deviations cannot be assumed linear, the absolute deviation $|\Delta T|$ will be modeled as a function of occupancy metrics:
+\[
+|\Delta T| \;=\; f\!\bigl(N_{\text{avg}},\, V_{\text{occ}},\, \mathrm{UTR}^{(W)}_t\bigr) \;+\; \varepsilon,
+\]
+where $f(\cdot)$ is approximated using Gaussian Process regression.
+This allows us to capture potentially non-linear relationships between occupancy conditions and the deviation magnitude.
+
+For interpretability, feature attribution methods such as SHAP (SHapley Additive exPlanations) will be applied to the GP predictions, so that the relative contribution of each occupancy metric ($N_{\text{avg}}, V_{\text{occ}}, \mathrm{UTR}^{(W)}_t$) can be identified.
+This enables mapping of occupancy conditions where Dynamic control is equivalence-effective versus conditions where its advantage is limited.
+
+\paragraph{Mapping Occupancy Conditions}
+
+Based on the function above, two-dimensional mappings of occupancy metrics will be constructed to visualize the regions where Dynamic group control is equivalence-effective versus where its advantage is marginal.
+This mapping provides actionable thresholds: for example, ranges of $N_{\text{avg}}$, $V_{\text{occ}}$, or $\mathrm{UTR}^{(W)}_t$
+that delineate when Dynamic control should be prioritized in practice.
+
+
+% \begin{itemize}[noitemsep]
+
+%     \item \textbf{Comfort Coverage (person--time):}
+%     For Static, Daily, and Dynamic policies, report absolute coverage (\%) and differences
+%     $\Delta\mathrm{Cov}^{\mathrm{Dyn-Static}},\,\Delta\mathrm{Cov}^{\mathrm{Dyn-Daily}}$
+%     at room and building levels, and across occupancy bins, identifying the ranges of
+%     $N_{\text{avg}}, V_{\text{occ}}, \mathrm{UTR}^{(W)}_t$ where Dynamic yields higher coverage.
+
+%     \item \textbf{Energy Impact (counterfactual):}
+%     Holding weather and occupancy fixed, estimate policy-specific total energy and saving rates
+%     (Dynamic vs.\ Static/Daily) from \acs{bms}-derived component models.
+%     Report totals, peak-related indicators (if applicable), and uncertainty intervals.
+
+%     \item \textbf{Setpoint Equivalence (TOST, $\pm 0.5^\circ$C):}
+%     For each room and overall, determine under which occupancy conditions the Dynamic setpoint is statistically equivalent to, or exceeds, Static and Daily baselines. Results are summarized by ordered occupancy bins (e.g., by $N_t$, $\sigma^{(W)}_{N,t}$, $\mathrm{UTR}^{(W)}_t$).
+
+%     \item \textbf{Actionable Decision Rules:}
+%     Occupancy-informed rules of thumb---thresholds on $N_{\text{avg}}, V_{\text{occ}}, \mathrm{UTR}^{(W)}_t$---to choose update frequency (Static / Daily / Dynamic) for practical deployment.
+% \end{itemize}
+
+% From the stay logs, daily occupancy metrics are defined as:
+
+% \begin{itemize}
+%     \item \textbf{Average Occupancy Count ($N_{\text{avg}}$):} 
+%     The mean number of occupants per day, where $N_{\text{avg}}$ is calculated as the daily average of all logged stays.
+
+%     \item \textbf{Occupancy Variability ($V_{occ}$):} 
+%     The normalized standard deviation of daily occupancy counts, representing how much the number of occupants fluctuates,
+%     \[
+%       V_{occ} = \frac{\sigma_{\text{log}}}{N_{\text{avg}}}
+%     \]
+%     where $\sigma_{\text{log}}$ is the standard deviation of the stay log counts.
+
+%     \item \textbf{Occupant Turnover Rate (OTR):} 
+%     The ratio of the number of unique occupants appearing in a day to the average occupancy, representing how frequently different individuals rotate in and out of the space,
+%     \[
+%       \text{OTR} = \frac{N_{\text{unique}}}{N_{\text{avg}}}
+%     \]
+%     where $N_{\text{unique}}$ is the total number of distinct occupant IDs observed on that day.
+
+%     \item \textbf{Day-to-Day Turnover Rate (DTR):} 
+%     The Jaccard distance between occupant sets of consecutive days, indicating how much the attendance composition changes from one day to the next,
+%     \[
+%       \text{DTR}_d = 1 - \frac{|D_d \cap D_{d-1}|}{|D_d \cup D_{d-1}|}
+%     \]
+%     where $D_d$ and $D_{d-1}$ denote the sets of occupants present on day $d$ and the previous day. 
+%     A higher value indicates a greater turnover in the daily group composition.
+% \end{itemize}
+
+% \item For the Daily baseline, larger plan--actual mismatch increases the deviation from the daily setpoint:
+% \[
+% \mathbb{E}\!\left[\,|\Delta T^{\mathrm{Daily}}_t| \,\big|\, M^{\mathrm{plan}}_t \,\right] 
+% \;\;\text{is an increasing function of}\; M^{\mathrm{plan}}_t.
+% \]
+
+
 % \subsubsection{Evaluation Framework: Statistical Verification of Zone-Level Control Efficacy}
 % \label{subsec:stat_verification}
 
@@ -270,231 +464,3 @@ Higher $\mathrm{UTR}^{(W)}_t$ indicates more sustained replacement of attendees 
 % The validity of the proposed HVAC control strategy is evaluated based on the coefficient $\beta_1$. 
 % A statistically significant negative value ($\beta_1 < 0$) would confirm that minimizing the deviation from the dynamic optimal setpoint increases the probability of meeting individual comfort needs, even after controlling for the difficulty imposed by occupancy variability ($\mathrm{Var}_j$).
 % This confirms that the control logic has a statistically causal benefit beyond random chance.
-
-\subsection{Comfort Coverage Analysis}
-\label{subsec:coverage}
-% Objective: fraction of person-time within personal comfort ranges, without model-based smoothing.
-
-\paragraph{Definition.}
-Let $T_{\mathrm{set}}^{\mathrm{policy}}(t)$ denote the 15-minute setpoint at time $t$ generated by policy $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{Dynamic}\}$.
-
-For each occupant $i \in S_t$, define
-\[
-C_{i,t}^{\mathrm{policy}} =
-\begin{cases}
-1, & \text{if } T^c_i \le T_{\mathrm{set}}^{\mathrm{policy}}(t) \le T^h_i,\\[4pt]
-0, & \text{otherwise.}
-\end{cases}
-\]
-
-Room-level coverage over a target period $\mathcal{T}_r$ is
-\[
-\mathrm{Coverage}_{r}^{\mathrm{policy}}
-=\frac{\sum_{t\in\mathcal{T}_r}\sum_{i\in S_t} w_{i,t}\, C_{i,t}^{\mathrm{policy}}}{\sum_{t\in\mathcal{T}_r}\sum_{i\in S_t} w_{i,t}},
-\quad w_{i,t}=1\ \text{unless stated otherwise.}
-\]
-
-\paragraph{Occupancy-stratified summaries.}
-To examine how occupancy conditions relate to coverage, stratified summaries will be reported by discretizing occupancy metrics into ordered bins
-(e.g., quartiles): group size $N_t$, short-horizon count variability $\sigma^{(W)}_{N,t}$,
-and user turnover rate $\mathrm{UTR}^{(W)}_t$ (Section~\ref{sec:OccuMetrics}).
-For a bin $g$, define
-\[
-\mathrm{Coverage}_{r,g}^{\mathrm{policy}}
-=\frac{\sum_{t\in\mathcal{T}_r \cap \mathcal{G}_g}\sum_{i\in S_t} C_{i,t}^{\mathrm{policy}}}{\sum_{t\in\mathcal{T}_r \cap \mathcal{G}_g}\sum_{i\in S_t} 1},
-\]
-and contrasts
-\[
-\begin{aligned} % align at "=" with two lines
-\Delta \mathrm{Cov}_{r,g}^{\mathrm{Dyn-Daily}}
-&= \mathrm{Coverage}_{r,g}^{\mathrm{Dynamic}} - \mathrm{Coverage}_{r,g}^{\mathrm{Daily}},\\
-\Delta \mathrm{Cov}_{r,g}^{\mathrm{Dyn-Static}}
-&= \mathrm{Coverage}_{r,g}^{\mathrm{Dynamic}} - \mathrm{Coverage}_{r,g}^{\mathrm{Static}}.
-\end{aligned}
-\]
-
-% \paragraph{Aggregation and reporting}
-% provide (i) room-level and building-level coverages, (ii) bin-wise tables/plots,
-% and (iii) simple trend summaries (e.g., ordered-bin medians).
-% Non-participants are excluded in primary analyses; as a sensitivity check,
-% a room-average PCM may be imputed for non-participants.
-
-\subsubsection{Energy Impact Estimation under Dynamic GCM}
-\label{subsec:energy_impact}
-
-The counterfactual energy use will be estimated under each policy by combining actual exogenous conditions, including outdoor air temperature (\acs{tout}), with policy-specific setpoint schedules.
-
-Let $E_k(t)$ denote an energy or power variable from the BMS at time $t$ for component $k \in \mathcal{K}$ (e.g., supply fan power, cooling/heating coil energy etc).
-\[
-\mathbf{x}(t) \;=\; \bigl(t_{out}(t),\, T_{\mathrm{set}}(t),\, N_t,\, \ldots \bigr).
-\]
-% GP model
-Each component is modeled via Gaussian Process regression:
-\[
-E_k(t)
-\;=\;
-f_k\!\bigl(\mathbf{x}(t)\bigr) \;+\; \varepsilon_{k,t},
-\qquad k \in \mathcal{K},
-\]
-
-where $f_k(\cdot)$ is a flexible nonparametric function and $\varepsilon_{k,t}$ captures residual variability.
-
-% Counterfactual evaluation
-Holding actual exogenous series fixed (e.g., $t_{out}(t)$ and $N_t$), the counterfactual energy under each policy is generated by feeding the corresponding setpoint schedule:
-\[
-\widehat{E}_{k}^{\mathrm{policy}}(t)
-\;=\;
-\widehat{f}_k\!\bigl(t_{out}(t),\, T_{\mathrm{set}}^{\mathrm{policy}}(t),\, N_t,\, \ldots \bigr).
-\]
-% \[
-% \widehat{E}_{k}^{\mathrm{policy}}(t)
-% \;=\;
-% \widehat{f}_k\!\bigl(T_{\mathrm{out}}(t),\, T_{\mathrm{set}}^{\mathrm{policy}}(t),\, N_t,\, \mathrm{hour}(t),\, \ldots \bigr).
-% \]
-The value is then aggregated over the study period:
-\[
-\mathrm{TotalEnergy}_{k}^{\mathrm{policy}}
-\;=\;
-\sum_{t \in \mathcal{T}} \widehat{E}_{k}^{\mathrm{policy}}(t),
-\qquad
-\mathrm{SavingRate}_{k}^{\mathrm{Dyn\;vs\;baseline}}
-\;=\;
-1 - \frac{\mathrm{TotalEnergy}_{k}^{\mathrm{Dynamic}}}{\mathrm{TotalEnergy}_{k}^{\mathrm{baseline}}},
-\]
-where the baseline is either Static or Daily.
-
-The total amount will be reported by component and overall, along with uncertainty intervals from the GP predictive distribution.
-
-% \paragraph{Assumptions.}
-% The assumption: 
-% (i) occupancy and weather are exogenous to the control policy and (ii) control schedules other than temperature setpoints remain unchanged across counterfactuals.
-
-\subsubsection{Baselines and deviations}
-The dynamic \ac{gcm} setpoint $\mu_t$ will be compared with two baselines.
-
-(i) a \emph{Static} setpoint associated with the \ac{sgcm}:
-\[
-T_{\mathrm{static}} \;=\; \frac{1}{|R|}\sum_{i\in R}\theta_i,
-\quad
-R=\text{regular users assigned to the room over the study period};
-\]
-
-(ii) a \emph{Daily} setpoint associated with the \ac{dgcm}:
-\[
-T_{\mathrm{daily}}(d) \;=\; \frac{1}{|A_d|}\sum_{i\in A_d}\theta_i,
-\quad
-A_d=\text{occupants who actually attended the room on day } d,
-\]
-held fixed within day $d$.
-
-The deviations are
-\begin{equation}
-\Delta T^{\mathrm{Static}}_t \;=\; \mu_t - T_{\mathrm{static}},
-\qquad
-\Delta T^{\mathrm{Daily}}_t \;=\; \mu_t - T_{\mathrm{daily}}(d).
-\label{eq:deltaT_defs}
-\end{equation}
-Unless stated otherwise, the magnitudes of $|\Delta T^{\mathrm{Static}}_t|$ and $|\Delta T^{\mathrm{Daily}}_t|$ will be analyzed.
-
-\begin{figure}[pos=!bt]
-    \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{ex1_analysis_flow}}
-    \caption{Analysis of Baseline vs Dynamic comfort model Image}
-    \label{fig:ex1analysis}
-\end{figure}
-
-\subsubsection{Statistical Comparison and Equivalence Testing}
-\label{subsec:equivalence}
-
-It will be assessed whether the Dynamic setpoint is equivalent to each baseline using
-two one-sided tests (TOST) with an equivalence margin of $\pm 0.5^\circ\mathrm{C}$
-(aligned with the general thermostat control step). 
-The null posits non-equivalence; rejection of both one-sided tests indicates equivalence under the specified occupancy conditions.
-
-\begin{enumerate}
-    \item \textbf{Outcomes}
-    Let $\Delta T^{\mathrm{Static}}_t$ and $\Delta T^{\mathrm{Daily}}_t$ be defined as in \eqref{eq:deltaT_defs}.
-    Unless stated otherwise, the magnitudes of $|\Delta T^{\mathrm{Static}}_t|$ and $|\Delta T^{\mathrm{Daily}}_t|$ will be analyzed.
-
-    \item \textbf{Hypotheses and margin}
-    For each baseline, we test equivalence to Dynamic with the margin $\pm 0.5^\circ\mathrm{C}$ using TOST.
-
-    \item \textbf{Procedure}
-    Apply two one-sided tests at the pre-specified significance level; equivalence is concluded if both
-    null hypotheses are rejected.
-
-\end{enumerate}
-
-\paragraph{Modeling strategy and Feature Attribution}
-
-Because the relationship between occupancy metrics and the absolute deviations cannot be assumed linear, the absolute deviation $|\Delta T|$ will be modeled as a function of occupancy metrics:
-\[
-|\Delta T| \;=\; f\!\bigl(N_{\text{avg}},\, V_{\text{occ}},\, \mathrm{UTR}^{(W)}_t\bigr) \;+\; \varepsilon,
-\]
-where $f(\cdot)$ is approximated using Gaussian Process regression.
-This allows us to capture potentially non-linear relationships between occupancy conditions and the deviation magnitude.
-
-For interpretability, feature attribution methods such as SHAP (SHapley Additive exPlanations) will be applied to the GP predictions, so that the relative contribution of each occupancy metric ($N_{\text{avg}}, V_{\text{occ}}, \mathrm{UTR}^{(W)}_t$) can be identified.
-This enables mapping of occupancy conditions where Dynamic control is equivalence-effective versus conditions where its advantage is limited.
-
-\paragraph{Mapping Occupancy Conditions}
-
-Based on the function above, two-dimensional mappings of occupancy metrics will be constructed to visualize the regions where Dynamic group control is equivalence-effective versus where its advantage is marginal.
-This mapping provides actionable thresholds: for example, ranges of $N_{\text{avg}}$, $V_{\text{occ}}$, or $\mathrm{UTR}^{(W)}_t$
-that delineate when Dynamic control should be prioritized in practice.
-
-
-% \begin{itemize}[noitemsep]
-
-%     \item \textbf{Comfort Coverage (person--time):}
-%     For Static, Daily, and Dynamic policies, report absolute coverage (\%) and differences
-%     $\Delta\mathrm{Cov}^{\mathrm{Dyn-Static}},\,\Delta\mathrm{Cov}^{\mathrm{Dyn-Daily}}$
-%     at room and building levels, and across occupancy bins, identifying the ranges of
-%     $N_{\text{avg}}, V_{\text{occ}}, \mathrm{UTR}^{(W)}_t$ where Dynamic yields higher coverage.
-
-%     \item \textbf{Energy Impact (counterfactual):}
-%     Holding weather and occupancy fixed, estimate policy-specific total energy and saving rates
-%     (Dynamic vs.\ Static/Daily) from BMS-derived component models.
-%     Report totals, peak-related indicators (if applicable), and uncertainty intervals.
-
-%     \item \textbf{Setpoint Equivalence (TOST, $\pm 0.5^\circ$C):}
-%     For each room and overall, determine under which occupancy conditions the Dynamic setpoint is statistically equivalent to, or exceeds, Static and Daily baselines. Results are summarized by ordered occupancy bins (e.g., by $N_t$, $\sigma^{(W)}_{N,t}$, $\mathrm{UTR}^{(W)}_t$).
-
-%     \item \textbf{Actionable Decision Rules:}
-%     Occupancy-informed rules of thumb---thresholds on $N_{\text{avg}}, V_{\text{occ}}, \mathrm{UTR}^{(W)}_t$---to choose update frequency (Static / Daily / Dynamic) for practical deployment.
-% \end{itemize}
-
-% From the stay logs, daily occupancy metrics are defined as:
-
-% \begin{itemize}
-%     \item \textbf{Average Occupancy Count ($N_{\text{avg}}$):} 
-%     The mean number of occupants per day, where $N_{\text{avg}}$ is calculated as the daily average of all logged stays.
-
-%     \item \textbf{Occupancy Variability ($V_{occ}$):} 
-%     The normalized standard deviation of daily occupancy counts, representing how much the number of occupants fluctuates,
-%     \[
-%       V_{occ} = \frac{\sigma_{\text{log}}}{N_{\text{avg}}}
-%     \]
-%     where $\sigma_{\text{log}}$ is the standard deviation of the stay log counts.
-
-%     \item \textbf{Occupant Turnover Rate (OTR):} 
-%     The ratio of the number of unique occupants appearing in a day to the average occupancy, representing how frequently different individuals rotate in and out of the space,
-%     \[
-%       \text{OTR} = \frac{N_{\text{unique}}}{N_{\text{avg}}}
-%     \]
-%     where $N_{\text{unique}}$ is the total number of distinct occupant IDs observed on that day.
-
-%     \item \textbf{Day-to-Day Turnover Rate (DTR):} 
-%     The Jaccard distance between occupant sets of consecutive days, indicating how much the attendance composition changes from one day to the next,
-%     \[
-%       \text{DTR}_d = 1 - \frac{|D_d \cap D_{d-1}|}{|D_d \cup D_{d-1}|}
-%     \]
-%     where $D_d$ and $D_{d-1}$ denote the sets of occupants present on day $d$ and the previous day. 
-%     A higher value indicates a greater turnover in the daily group composition.
-% \end{itemize}
-
-% \item For the Daily baseline, larger plan--actual mismatch increases the deviation from the daily setpoint:
-% \[
-% \mathbb{E}\!\left[\,|\Delta T^{\mathrm{Daily}}_t| \,\big|\, M^{\mathrm{plan}}_t \,\right] 
-% \;\;\text{is an increasing function of}\; M^{\mathrm{plan}}_t.
-% \]

@@ -159,9 +159,20 @@
 
 \acresetall
 
+% \input{chapters/abstract.tex}
 \begin{abstract}
-XXX
-
+Occupant-centric HVAC control often assumes fixed room-level comfort, however post-COVID offices have become more sparsely and dynamically occupied, creating a mismatch between thermal comfort modeling and room-level control.
+This increases the need for higher-resolution group comfort models supported by real-time occupancy data.
+This study investigates how the benefit of higher-resolution group comfort models, including use of occupancy tracking, changes with group size in HVAC control.
+To examine this, an agent-based simulation was conducted using one month of anonymized location logs and thermal comfort surveys from office rooms of varying sizes and uses, where each agent represented an occupant proxy carrying an observed office movement record.
+Three group comfort models were compared: static, based on the room’s regular members; daily, based on that day’s attendees; and real-time, based on the occupants present at each time step.
+Personal comfort models (PCM) were developed for 39 participants.
+To generate multiple cases, occupancy patterns were created by repeatedly sampling sub-groups from each room’s member pool, and PCMs were randomly assigned to those occupant proxies.
+Their “no change” thermal preference probability curves were then merged to form each group model.
+Setpoints were selected to maximize the probability of “no change,” and improvement in predicted comfort probability was evaluated against a fixed 24°C baseline.
+The results show that, relative to the 24°C baseline, the static model’s improvement falls to nearly zero as room size approaches six occupants, whereas the daily and real-time models maintain improvement in larger rooms.
+Further analysis shows that the real-time model’s comfort improvement is greatest under sparse occupancy and becomes limited as mean occupancy approaches four to five occupants.
+These findings indicate that higher-resolution comfort aggregation is most beneficial when occupancy remains sparse, and identify when high-resolution occupancy tracking is justified for practical HVAC control.
 \end{abstract}
 
 % Use if graphical abstract is present
@@ -211,6 +222,9 @@ XXX \sep XXX \sep
     \acro{tsv}[TSV]{Thermal Sensation Vote}
     \acro{tpv}[TPV]{Thermal Preference Vote}
 
+    \acro{occ}[OCC]{Occupant-centric control}
+    \acro{abw}[ABW]{Activity-based working}
+    \acro{bms}[BMS]{building management system}
     \acro{pcm}[PCM]{personal comfort model}
     \acro{gcm}[GCM]{group comfort model}
     \acro{utr}[UTR]{user turnover rate}
@@ -219,6 +233,8 @@ XXX \sep XXX \sep
     \acro{sgcm}[SGCM]{static group comfort model}
     \acro{dgcm}[DGCM]{daily group comfort model}
     \acro{rtgcm}[RT-GCM]{real-time group comfort model}
+
+    \acro{dml}[DML]{double machine learning}
     \acro{pr2}[partial $R^2$]{partial coefficient of determination}
     \acro{ic}[IC]{Increment accuracy}
 

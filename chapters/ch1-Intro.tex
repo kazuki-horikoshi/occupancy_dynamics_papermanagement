@@ -8,20 +8,19 @@ Studies have increasingly demonstrated the link between indoor environmental qua
 For instance, \mycite{bueno_evaluating_2021} \cite{bueno_evaluating_2021} confirmed this link, reporting that a substantial body of research demonstrates a significant relationship between indoor environmental conditions and occupant productivity. 
 % Kaushik et al.~(2022) \cite{kaushik_effect_2022} found a strong correlation between CO2 concentration and perceived productivity, highlighting the importance of adequate ventilation for maintaining optimal indoor air quality. 
 
-Traditional HVAC systems often rely on static control strategies, typically aiming to maintain a uniform temperature based on pre-defined setpoints or the PMV (Predicted Mean Vote) model \cite{fanger_thermal_1970}.  
+Traditional \ac{hvac} systems often rely on static control strategies, typically aiming to maintain a uniform temperature based on pre-defined setpoints or the \ac{pmv} model \cite{fanger_thermal_1970}.  
 % The PMV model calculates a thermal sensation score using six input variables: two personal factors (clothing insulation and metabolic rate) and four environmental factors (air temperature, mean radiant temperature, air speed, and relative humidity).
-While PMV attempts to predict the average occupant's thermal sensation, it fundamentally neglects individual differences in thermal preferences \cite{wang_individual_2018}.  
-Studies consistently demonstrate that even when PMV predicts comfort, a significant percentage of occupants experience discomfort due to these variations \cite{cheung_analysis_2019}.  
+While \ac{pmv} attempts to predict the average occupant's thermal sensation, it fundamentally neglects individual differences in thermal preferences \cite{wang_individual_2018}.  
+Studies consistently demonstrate that even when \ac{pmv} predicts comfort, a significant percentage of occupants experience discomfort due to these variations \cite{cheung_analysis_2019}.  
 This one-size-fits-all approach is inherently limited in achieving widespread occupant satisfaction.
 
 \subsection{Occupant-centric control}
 
-In recent years, occupant-centric control (OCC) has emerged as a promising alternative HVAC strategy that decides control actions by considering individual thermal preferences \cite{soleimanijavid_challenges_2024}. 
-In definition, OCC leverages sensor data and personal comfort models (PCMs) to adjust HVAC operation, potentially improving both thermal comfort and energy efficiency as examined by various review papers \cite{xie_review_2020}.
-In this context, IEA EBC Annex 79 defines OCC as an "occupant-in-the-loop" approach that seeks to provide optimal and personalized conditions rather than imposing fixed settings\cite{wagner_international_2024}.
+In recent years, \ac{occ} has emerged as a promising alternative \ac{hvac} strategy that decides control actions by considering individual thermal preferences \cite{soleimanijavid_challenges_2024}. 
+In definition, \ac{occ} leverages sensor data and \acp{pcm} to adjust \ac{hvac} operation, potentially improving both thermal comfort and energy efficiency as examined by various review papers \cite{xie_review_2020}.
+In this context, IEA EBC Annex 79 defines \ac{occ} as an "occupant-in-the-loop" approach that seeks to provide optimal and personalized conditions rather than imposing fixed settings\cite{wagner_international_2024}.
 
-As some existing research has exhibited, the general OCC framework is composed of a combination of three components, namely “Sensing,” “Learning,” and “Control” layers \cite{soleimanijavid_challenges_2024,xie_review_2020}.
-
+As some existing research has exhibited, the general \ac{occ} framework is composed of a combination of three components, namely “Sensing,” “Learning,” and “Control” layers \cite{soleimanijavid_challenges_2024,xie_review_2020}.
 % Since they connect each other and require consecutive flow of information, these parts can be explained as a connection of components as illustrated in \autoref{fig:OCCstr}. 
 
 % \begin{figure}[pos=htbp!]
@@ -35,27 +34,23 @@ In the sensing layer, information is gathered from various sources, such as envi
 In the learning layer, prediction models on environmental preference or occupancy are developed depending on the framework focus. 
 In the control layer, considering these occupancy and preference information, control actions are decided based on tailored algorithms.
 Among these components, the thermal preference model and its integration into the control layer have a significant impact on occupant comfort, hence they should be carefully considered as a framework.
-
-Despite growing recognition in the industry and active framework development in simulations, the number of real-world OCC applications in buildings remains limited \cite{soleimanijavid_challenges_2024}. 
-
-Dealing with occupancy information, controllers must either predict occupancy ahead of time or ingest real-time signals at sufficient spatial and temporal resolution. Each route has distinct cost, reliability, and integration implications for HVAC control.
+Despite growing recognition in the industry and active framework development in simulations, the number of real-world \ac{occ} applications in buildings remains limited \cite{soleimanijavid_challenges_2024}. 
+Dealing with occupancy information, controllers must either predict occupancy ahead of time or ingest real-time signals at sufficient spatial and temporal resolution. Each route has distinct cost, reliability, and integration implications for \ac{hvac} control.
 
 \subsection{Thermal comfort consideration with rising trend of Activity-based working}
-The rise of remote work and activity-based working (ABW) following the COVID-19 pandemic has further complicated thermal comfort control \cite{marzban_review_2023}. 
+The rise of remote work and \ac{abw} following the COVID-19 pandemic has further complicated thermal comfort control \cite{marzban_review_2023}. 
 Dynamic working environments are characterized by dynamic occupancy patterns. 
 Individuals move between different workspaces throughout the day, leading to significant fluctuations in occupancy density and distribution within a single zone.  
-
 When considering such dynamic occupancy, it becomes extremely challenging to maintain consistent thermal conditions that satisfy all occupants using traditional, static control methods.
 A static approach, optimized for a specific occupancy scenario, will inevitably lead to discomfort for some individuals when the actual occupancy deviates from that scenario.
 This can result in reduced occupant satisfaction and potentially increased energy consumption as occupants attempt to individually adjust their local environment.
 
 \subsection{Treating dynamic occupancy information}
-To incorporate occupancy information in OCC frameworks, two main approaches can be identified: prediction-based methods and real-time sensing. 
+To incorporate occupancy information in \ac{occ} frameworks, two main approaches can be identified: prediction-based methods and real-time sensing. 
 Many studies have attempted to predict occupancy patterns using historical data and machine learning techniques. 
 However, as noted in prior research \cite{goyal_occupancy-based_2013}, such prediction methods often entail high computational costs, may be more expensive than real-time sensing, and may not offer sufficient accuracy or reliability.
 
 On the other hand, recent advances in IoT and sensor technologies have made it increasingly feasible to obtain real-time occupancy data with relatively low cost and high granularity (e.g., through technologies such as passive infrared sensors, CO$_2$ sensors, and Wi-Fi-based tracking systems) \cite{zafari_survey_2019}.
-
 Real-time sensing may enable adaptive control strategies that respond immediately to the presence and number of occupants, which is particularly valuable in shared and flexible workspaces. 
 The availability of real-time data fundamentally shifts the design paradigm of occupant-centric systems from predictive to responsive, thereby enhancing both energy efficiency and thermal comfort performance.
 
@@ -67,36 +62,24 @@ As such examples show, recent technology enables office management dealing with 
 Modern flexible work arrangements have led to highly dynamic and variable occupancy patterns in office environments. 
 Conventional \ac{hvac} systems, which often rely on fixed, static temperature setpoints (e.g., based on the \ac{pmv} model), frequently fail to respond effectively to these fluctuations. 
 This mismatch can result in both occupant discomfort and unnecessary energy consumption.
-
 For actual building operation scenarios, both occupancy resolution and comfort model resolution must be considered.
-% \autoref{fig:Back_ConReso} shows a general image of control resolutions.
-% In room-level control, people experience the same ambient environment setting.
-% In group-level control, people under the same group experience environments with additional devices dedicated for groups, such as ceiling fans or zone radiant panels.
-% In personal-level control settings, each personal cooling device such as fans or heaters can be controlled according to individual preferences.
 
-% \begin{figure}[pos=htbp!]
-%     \centering
-%     \includegraphics[width=0.85\linewidth]{\Pic{png}{controlreso}}
-%     \caption{Control Resolution in OCC}
-%     \label{fig:Back_ConReso}
-% \end{figure}
-
-Effective OCC systems require determining proper control resolution and comfort model resolution depending on the room/building usage.
-Existing OCC research has largely focused on developing and validating PCMs and control algorithms in single-occupancy settings \cite{park_critical_2019, jung_human---loop_2019}.
-While these studies demonstrate the potential of OCC, few have tried to address the complexities of shared spaces.
-Shared workspaces present a significant challenge for OCC, as multiple occupants with potentially conflicting thermal preferences must be accommodated simultaneously \cite{xie_review_2020}.
-Simply averaging preferences or applying a single PCM is unlikely to satisfy everyone, and may even exacerbate discomfort for some individuals.
-\mycite{jung_energy_2020} investigated how the number of occupants in a zone affects HVAC system performance, considering both comfort and energy consumption.
+Effective \ac{occ} systems require determining proper control resolution and comfort model resolution depending on the room/building usage.
+Existing \ac{occ} research has largely focused on developing and validating \acp{pcm} and control algorithms in single-occupancy settings \cite{park_critical_2019, jung_human---loop_2019}.
+While these studies demonstrate the potential of \ac{occ}, few have tried to address the complexities of shared spaces.
+Shared workspaces present a significant challenge for \ac{occ}, as multiple occupants with potentially conflicting thermal preferences must be accommodated simultaneously \cite{xie_review_2020}.
+Simply averaging preferences or applying a single \ac{pcm} is unlikely to satisfy everyone, and may even exacerbate discomfort for some individuals.
+\mycite{jung_energy_2020} investigated how the number of occupants in a zone affects \ac{hvac} system performance, considering both comfort and energy consumption.
 They found that both performances could decrease as the number of occupants increases, and results could differ depending on the methods used to integrate individual comfort models \cite{jung_energy_2020}.
-\mycite{ono_effects_2022}investigated how the resolution of thermal comfort models and HVAC control settings should match.
-They found that mismatches between comfort model resolution and control resolution, especially when using detailed comfort models with simpler HVAC systems, reduce effectiveness and decrease occupant satisfaction \cite{ono_effects_2022}.
+\mycite{ono_effects_2022}investigated how the resolution of thermal comfort models and \ac{hvac} control settings should match.
+They found that mismatches between comfort model resolution and control resolution, especially when using detailed comfort models with simpler \ac{hvac} systems, reduce effectiveness and decrease occupant satisfaction \cite{ono_effects_2022}.
 
 \subsection{Dynamic–occupancy–based control}
 As noted in reviews \cite{xie_review_2020}, integrating diverse preferences across multiple occupants remains underexplored.
 This section focuses on how comfort models are incorporated into control.
-In some studies on the effectiveness of OCC, such as \cite{jung_energy_2020}, occupancy is often assumed to be static.  
+In some studies on the effectiveness of \ac{occ}, such as \cite{jung_energy_2020}, occupancy is often assumed to be static.  
 However, in today’s dynamic working environments—where hybrid working, combining remote and office-based work, has become commonplace\cite{redmond_rise_nodate} —this static assumption may underestimate the impact of occupancy characteristics.
-\autoref{table:OccuIntegration} compares field studies that integrate multiple personal comfort models within the same control zone.
+\autoref{table:OccuIntegration} compares field studies that integrate multiple \acp{pcm} within the same control zone.
 The “Occupancy Adaptation” column indicates each framework’s ability to handle different occupancy patterns; “dynamic” adjusts to real–time combinations, while “static” assumes fixed configurations. 
 Only \cite{lei_practical_2022} considers transitions among combinations by pre–training multiple RL models for frequent patterns—data–and compute–intensive.
 
@@ -120,12 +103,14 @@ A notable exception is the work by Lei et al.~(2022), which addressed dynamic oc
 They employed multiple reinforcement learning models tailored to the most common combinations of occupants.
 However, this approach is computationally demanding as it requires maintaining and training numerous models.
 
-Historically, tracking personal–level occupancy was difficult in typical BMS; this has changed with IoT systems enabling occupancy/location tracking \cite{soleimanijavid_challenges_2024}.
-Thus, \autoref{table:OccuIntegration} underlines the potential of real–time occupancy for OCC frameworks as an underexplored domain.
+Historically, tracking personal–level occupancy was difficult in typical \ac{bms}; this has changed with IoT systems enabling occupancy/location tracking \cite{soleimanijavid_challenges_2024}.
+Thus, \autoref{table:OccuIntegration} underlines the potential of real–time occupancy for \ac{occ} frameworks as an underexplored domain.
 
 \subsection{Focus of the research}
-As highlighted in the background, the practical application of Occupant-Centric Control (OCC) is limited by a critical research gap; the reliance on unrealistic static occupancy assumptions in multi-user settings.
-This research addresses these gaps by developing a data-driven framework suited for dynamic, real-world office environments.
+As highlighted in the background, the practical application of \ac{occ} in shared office spaces is still limited by the common assumption of static occupancy.
+However, occupant composition in a room can change across longer-term, daily, and real-time timescales.
+This raises a practical question: at what occupancy conditions does higher-resolution aggregation of individual comfort information become worthwhile for room-level control?
 
-We challenge the static occupancy assumption by hypothesizing that the effectiveness of OCC is directly linked to a room's actual usage patterns.
-To test this, we will use real-time occupancy data to identify "high-impact" zones where dynamic control offers the most significant benefits.
+To address this question, this study focuses on three group comfort models that differ in the timescale at which individual \acp{pcm} are aggregated: a static model based on regular room members, a daily model based on a day's attendees, and a real-time model based on the occupants currently present.
+Building on prior work that investigated the impact of group size and control granularity \cite{ono_effects_2022,jung_energy_2020}, this study introduces temporal occupancy variability as a key dimension of analysis.
+Using field data from real office spaces, the study investigates how the relative benefit of these models changes with occupancy conditions such as group size, occupancy variability, and user turnover.
