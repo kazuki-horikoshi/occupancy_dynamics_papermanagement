@@ -10,23 +10,23 @@
   \label{table:OccuTrack}
 \end{table}
 
-% \subsection{Occupancy Log Reconstruction Procedure}
-% \label{app:occupancy_reconstruction}
+\subsection{Occupancy Log Reconstruction Procedure}
+\label{app:occupancy_reconstruction}
 
-% The raw data stream for occupancy tracking contains three event types from a face-recognition system:
-% \begin{itemize}[noitemsep]
-%     \item \textbf{Room Entry Events:} Triggered when a participant enters a specific room through a door-mounted access point.
-%     \item \textbf{General Presence Events:} Triggered when a participant is detected in shared zones or corridors, confirming their presence in the building.
-%     \item \textbf{Building Exit Events:} Triggered when a participant leaves the building through a main egress gate. Note that room-level exit events are not always recorded.
-% \end{itemize}
+The raw data stream for occupancy tracking contains three event types from a face-recognition system:
+\begin{itemize}[noitemsep]
+    \item \textbf{Room Entry Events:} Triggered when a participant enters a specific room through a door-mounted access point.
+    \item \textbf{General Presence Events:} Triggered when a participant is detected in shared zones or corridors, confirming their presence in the building.
+    \item \textbf{Building Exit Events:} Triggered when a participant leaves the building through a main egress gate. Note that room-level exit events are not always recorded.
+\end{itemize}
 
-% From these discrete events, a structured ``stay log'' is generated to represent continuous periods of presence. For each participant and each day, the following rules are applied:
-% \begin{itemize}[noitemsep]
-%     \item A stay begins at the timestamp of an “Entry” or equivalent presence-confirming event, and ends at the next recorded event (room entry, zone presence, or building exit).
-%     \item To prevent overnight carryover, any stay still active at the day’s final event is terminated at that time, typically corresponding to a building exit.
-% \end{itemize}
+From these discrete events, a structured ``stay log'' is generated to represent continuous periods of presence. For each participant and each day, the following rules are applied:
+\begin{itemize}[noitemsep]
+    \item A stay begins at the timestamp of an “Entry” or equivalent presence-confirming event, and ends at the next recorded event (room entry, zone presence, or building exit).
+    \item To prevent overnight carryover, any stay still active at the day’s final event is terminated at that time, typically corresponding to a building exit.
+\end{itemize}
 
-% This process yields a stay log with anonymized IDs, locations, and start–end times for subsequent analysis.
+This process yields a stay log with anonymized IDs, locations, and start–end times for subsequent analysis.
 
 \subsection{Occupancy tracking studies and examined parameters}
 Below \autoref{table:OccuMetrics} list up research studies that examined dynamic occupancy and the parameters used to measure dynamics.
