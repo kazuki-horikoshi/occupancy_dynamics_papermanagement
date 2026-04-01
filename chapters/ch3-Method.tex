@@ -176,9 +176,14 @@ T_{\mathrm{daily}}(d) \;=\; \frac{1}{|A_d|}\sum_{i\in A_d}\theta_i,
 Here, $T_{\mathrm{static}}$, $T_{\mathrm{daily}}(d)$, and $\mu_t$ correspond to the \ac{sgcm}, \ac{dgcm}, and \ac{rtgcm}, respectively.
 
 \subsubsection{Simulation Design}
-The occupancy-log-based simulation is designed as a Monte Carlo-style repeated resampling analysis built on the observed room-level occupancy dynamics. Each agent is treated as an occupant proxy carrying an observed presence record reconstructed from the stay logs. To generate multiple realizations while preserving the original room usage patterns, subgroups are repeatedly sampled from each room's member pool, and individual \acp{pcm} are randomly reassigned to the selected proxies in each trial.
+The occupancy-log-based simulation is designed as a Monte Carlo-style repeated resampling analysis built on the observed room-level occupancy dynamics.
+Each agent is treated as an occupant proxy carrying an observed presence record reconstructed from the stay logs.
+To generate multiple realizations while preserving the original room usage patterns, subgroups are repeatedly sampled from each room's member pool, and individual \acp{pcm} are randomly reassigned to the selected proxies in each trial.
 
-For each simulated realization, the three \acp{gcm} are compared by aggregating the assigned \acp{pcm} at the static, daily, and real-time timescales defined above. More specifically, each group's comfort representation is formed by merging the individual "no change" probability curves of the assigned \acp{pcm}, and the corresponding setpoint is selected as the temperature that maximizes the aggregated comfort probability. In addition to these three group-model-based policies, a fixed \qty{24}{\celsius} setpoint is used as an additional baseline. The simulation outputs are then summarized as comfort improvement relative to this fixed baseline and as contrasts among the static, daily, and real-time group models.
+For each simulated realization, the three \acp{gcm} are compared by aggregating the assigned \acp{pcm} at the static, daily, and real-time timescales defined above.
+More specifically, each group's comfort representation is formed by merging the individual "no change" probability curves of the assigned \acp{pcm}, and the corresponding setpoint is selected as the temperature that maximizes the aggregated comfort probability.
+In addition to these three group-model-based policies, a fixed \qty{24}{\celsius} setpoint is used as an additional baseline.
+The simulation outputs are then summarized as comfort improvement relative to this fixed baseline and as contrasts among the static, daily, and real-time group models.
 
 \subsubsection{Occupancy Metrics}
 \label{sec:OccuMetrics}
