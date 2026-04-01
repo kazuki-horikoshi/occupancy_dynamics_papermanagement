@@ -2,7 +2,9 @@
 \SetPicSubDir{ch4-Results/causality}
 \label{subsec:causality}
 
-\autoref{fig:partialR2} compares the \ac{pr2} of the \ac{sgcm} and \ac{rtgcm} across different subsample sizes ($k$) within each of the three model classes. In both cases, \ac{pr2} decreases as $k$ increases. At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronger convergence than the \ac{sgcm}. For $k = 4$--5, the \ac{pr2} of the \ac{sgcm} is close to zero, whereas that of the \ac{rtgcm} remains around 0.1. This suggests that the \ac{sgcm} adds little information beyond the environmental and personal covariates, while the \ac{rtgcm} retains meaningful additional explanatory power. When $k$ increases to 7--8, the \ac{pr2} of the \ac{rtgcm} also approaches zero and becomes similar to that of the \ac{sgcm}, indicating that its incremental value diminishes when the session sample size is sufficiently large.
+\autoref{fig:partialR2} compares the \ac{pr2} and \ac{ic} of the \ac{sgcm}, \ac{dgcm} and \ac{rtgcm} across different subsample sizes ($k$) within each of the three model classes.
+In both cases, \ac{pr2} decreases as $k$ increases.
+At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronger convergence than the \ac{sgcm}. For $k = 4$--5, the \ac{pr2} of the \ac{sgcm} is close to zero, whereas that of the \ac{rtgcm} remains around 0.1. This suggests that the \ac{sgcm} adds little information beyond the environmental and personal covariates, while the \ac{rtgcm} retains meaningful additional explanatory power. When $k$ increases to 7--8, the \ac{pr2} of the \ac{rtgcm} also approaches zero and becomes similar to that of the \ac{sgcm}, indicating that its incremental value diminishes when the session sample size is sufficiently large.
 
 % \begin{figure}[pos=htbp!]
 %     \centering
@@ -28,7 +30,7 @@
         \caption{Incrument accuracies along different size of sessions}
         \label{fig:IncrementAccu}
     \end{subfigure}
-    \caption{Agentic simulation results for different subgroup sizes.}
+    \caption{Causality analysis results along different number of session sizes}
     \label{fig:CausalPrfm}
 \end{figure}
 

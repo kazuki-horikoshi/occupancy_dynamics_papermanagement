@@ -1,20 +1,8 @@
 \SetPicSubDir{ch3-method}
-
 \subsection{Research Purpose and Hypothesis}
 \label{sec:Method}
 
 This experiment aims to identify the room-usage patterns under which dynamic occupancy information and \acp{pcm} are most effective.
-
-% \begin{figure}[pos=htbp!]
-% \centering
-% \includegraphics[width=0.97\linewidth]{\Pic{png}{RQs_Methodology}}
-% \caption{Overall methodology}
-% \label{fig:AllMethod}
-% \end{figure}
-
-Modern flexible work arrangements have led to highly dynamic and variable occupancy patterns in office environments. 
-Conventional \ac{hvac} systems, which often rely on fixed, static temperature setpoints (e.g., based on the \ac{pmv} model), frequently fail to respond effectively to these fluctuations. 
-This mismatch can result in both occupant discomfort and unnecessary energy consumption.
 
 This experiment is designed to address this challenge by systematically identifying the occupancy conditions under which dynamic, personalized thermal control strategies offer the most significant benefits over static approaches. 
 Building on prior work that investigated the impact of group size and control granularity \cite{ono_effects_2022,jung_energy_2020}, this study introduces temporal occupancy variability as a key dimension of analysis.
@@ -25,7 +13,8 @@ The specific aims of this experiment are to:
     \item Analyze the relationship between the identified occupancy patterns and the performance benefits of a dynamic \ac{gcm} using personal-level occupancy location data compared with a static setpoint.
 \end{enumerate}
 
-\subsection{Experimental Design and Procedure}
+\subsection{Data collection}
+\label{subsec:DataCollect}
 
 The overall procedural flow of this experiment is illustrated in \autoref{fig:ex1_flow}.
 The study will be conducted in a real-world office building over a four-week period.
@@ -42,34 +31,29 @@ The data collection period is planned for 29 September to 24 October 2025 (4 wee
 
 \subsection{Target Building and Spaces}
 \label{sec:TargetBuil}
-The experiment will be conducted at The GEAR, an R\&D and administrative office building operated by Kajima Corporation.
+The experiment was conducted at The GEAR, an R\&D and administrative office building operated by Kajima Corporation.
 The 3rd to 6th floors, which accommodate a mix of ABW and static seating work styles depending on departmental roles, are the target areas for data collection.
-Data collection will be limited to the following rooms to capture a variety of occupancy patterns:
+Data collection was limited to the following rooms to capture a variety of occupancy patterns:
 3F: Office 3A, Office 3B; 5F: Katris Office, KD Office, Shared Office 1, Shared Office 2; 6F: ILYA Office.
 
-The target zones are served by a central air conditioning system using Variable Air Volume (VAV) capable of individual zone control. 
-In this study, the Controlled Variable is the Zone Air Temperature Setpoint ($T_{\mathrm{set}}$). 
-The Building Management System (BMS) regulates the terminal unit such as airflow dampers or valve positions to maintain the measured \ac{ti} at the target $T_{\mathrm{set}}$.
-In Experiment 1, $T_{\mathrm{set}}$ is manipulated experimentally to collect data, whereas in Experiment 2, $T_{\mathrm{set}}$ is dynamically optimized based on the proposed framework.
+The target zones are served by a central air conditioning system using variable air volume (VAV) capable of individual zone control.
+In this study, the controlled variable is the zone air temperature setpoint ($T_{\mathrm{set}}$). 
+The building management system (BMS) regulates the terminal unit such as airflow dampers or valve positions to maintain the measured \ac{ti} at the target $T_{\mathrm{set}}$.
+$T_{\mathrm{set}}$ is manipulated experimentally to collect data.
 
 \subsection{Participant Recruitment and Ethical Considerations}
-Approximately 50 office workers who regularly work in the designated study rooms will be invited to participate.
-Actual participation is expected to involve a subset of these individuals, depending on their consent and availability.
-
+45 office workers who regularly work in the designated study rooms were invited to participate.
 This study has been approved by the National University of Singapore Institutional Review Board (NUS-IRB Reference Code: NUS-IRB-2025-498).
-Informed consent will be obtained from all participants prior to the study.
-% The process ensures that participants understand the study's purpose, procedures, and their right to withdraw at any time.
-% The risks are minimal, primarily related to potential survey fatigue.
-% To mitigate this, participation is voluntary and limited to days when participants are physically in the office.
-All location and survey data will be anonymized by the building administrator before being accessed by the research team to protect privacy. 
+Informed consent were obtained from all participants prior to the study.
+All location and survey data were anonymized by the building administrator before being accessed by the research team to protect privacy. 
 
 \subsection{Data Collection}
-
-Two primary types of field data will be collected: real-time occupancy logs and subjective thermal comfort surveys.
+Two primary types of field data were collected: real-time occupancy logs and subjective thermal comfort surveys.
 In addition, indoor environmental data, including \ac{ti} and \ac{rh}, will be obtained from the Building Management System and from compact sensors installed in the target rooms.
+Considering the actual survey amount, survey answers and location tracking data of \textbf{39} participants are finally used. 
 
 \subsubsection{Occupancy Log Tracking}
-Dynamic occupancy patterns will be reconstructed from anonymized, timestamped location data provided by the building's management system.
+Dynamic occupancy patterns were reconstructed from anonymized, timestamped location data provided by the building's management system.
 From a raw stream of access events, a structured “stay log” is generated to represent continuous periods of presence for each participant in each room.
 
 \begin{itemize}[noitemsep]
@@ -91,27 +75,27 @@ The resulting stay log contains an anonymized ID, location, and start–end time
 
 \subsubsection{Thermal Comfort Survey}
 
-Subjective survey answers will be collected via a brief web survey during work hours. 
+Subjective survey answers were collected via a brief web survey during work hours. 
 Items and scales follow ANSI/ASHRAE Standard 55:2023, Appendix~L \cite{ashrae_ansiashrae_2022}.
 The survey contents are summarized in \autoref{table:comfsurvey}.
 
-To ensure sufficient variability, indoor setpoints will be cycled between 22–27℃ in 1℃ steps, with randomized order across days.  
-On selected days, morning and afternoon setpoints will differ to expand diversity.  
-Participants will be prompted with a target of 4–6 responses per workday.  
-Responses within 20 minutes of room entry will be excluded to avoid thermal transient effects.
+To ensure sufficient variability, indoor setpoints were cycled between 22–27℃ in 1℃ steps, with randomized order across days.  
+On selected days, morning and afternoon setpoints differed to expand diversity.  
+Participants were prompted with a target of 4–6 responses per workday.  
+Responses within 20 minutes of room entry were excluded to avoid thermal transient effects.
 
 \subsubsection{Indoor Environmental Measurements}
 
-Environmental parameters will be monitored in parallel with occupancy and survey data:
+Environmental parameters were monitored in parallel with occupancy and survey data:
 
 \begin{itemize}[noitemsep]
-    \item \textbf{Indoor air temperature (\acs{ti}) and relative humidity (\acs{rh}):} Compact thermometers will be installed in each target room to supplement Building Management System (BMS) logs and ensure accurate condition monitoring.
-    \item \textbf{Measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}):} Portable anemometers and globe thermometers will be deployed periodically. 
+    \item \textbf{Indoor air temperature (\acs{ti}) and relative humidity (\acs{rh}):} Compact thermometers were installed in each target room to supplement Building Management System (BMS) logs and ensure accurate condition monitoring.
+    \item \textbf{Measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}):} Portable anemometers and globe thermometers were deployed periodically. 
     These measurements are used not as model inputs but as diagnostic checks to detect any anomalies.
 \end{itemize}
 
-\subsection{Response-Level Analysis of Comfort Representations}
-\label{subsec:response_level_analysis}
+\subsection{Analysis 1:Response-Level Analysis of Comfort Representations}
+\label{subsec:causality_analysis}
 
 To complement the occupancy-pattern and simulation analyses, a response-level comparison of alternative comfort representations will be conducted using the field observations. The unit of analysis is an individual survey response. A session is defined as the combination of date, merged time slot, and room. The binary outcome, actual comfort, is defined as
 \[
@@ -119,19 +103,29 @@ Y_{\mathrm{actual\_comfort}} = \mathbb{1}(\texttt{thermal\_preference\_num}=0).
 \]
 The main observed covariates are \ac{ti}, \ac{rh}, \ac{clo}, \ac{met}, and occupant count. All sample splitting is performed with GroupKFold ($n=5$) using session ID as the grouping variable so that responses from the same session are never split across training and evaluation folds.
 
-Several treatment representations are compared. A physics-based benchmark is derived from \ac{pmv}/\ac{ppd} calculated with the ISO 7730 implementation in \texttt{pythermalcomfort} and transformed as $T_{\mathrm{PMV}} = 1-\mathrm{PPD}/100$. In parallel, participant-specific comfort probabilities are estimated from the environmental variables using fold-safe out-of-fold predictions from individual \acp{pcm}. Depending on data availability, these \acp{pcm} are fit with participant-level classification models such as logistic regression, gradient-boosted trees, and multilayer perceptrons; when participant-specific training data are too sparse, predictions fall back to the training-fold mean and, if unavailable, to 0.5. These individual predictions are then aggregated into group-level representations, including (i) a real-time representation based on the mean prediction of the occupants actually observed in the same session, corresponding to an \ac{rtgcm}; (ii) a static representation based on the room's registered regular members evaluated under the session-average environment, corresponding to an \ac{sgcm}; and (iii) a subsession real-time representation based on exact-$k$ subsets of observed respondents within the same session. For the subsession real-time representation, the candidate subset always includes the focal respondent and is constructed only from respondents actually observed in that session.
+Several treatment representations are compared.
+A physics-based benchmark is derived from \ac{pmv}/\ac{ppd} calculated with the ISO 7730 implementation in \texttt{pythermalcomfort} and transformed as $T_{\mathrm{PMV}} = 1-\mathrm{PPD}/100$.
+In parallel, participant-specific comfort probabilities are estimated from the environmental variables using fold-safe out-of-fold predictions from individual \acp{pcm}.
+Depending on data availability, these \acp{pcm} are fit with participant-level classification models such as logistic regression, random forest, and multilayer perceptrons; when participant-specific training data are too sparse, predictions fall back to the training-fold mean and, if unavailable, to 0.5.
+These individual predictions are then aggregated into group-level representations, including
+(i) a real-time representation based on the mean prediction of the occupants actually observed in the same session, corresponding to an \ac{rtgcm};
+(ii) a static representation based on the room's registered regular members evaluated under the session-average environment, corresponding to an \ac{sgcm};
+and (iii) a subsession real-time representation based on exact-$k$ subsets of observed respondents within the same session.
+For the subsession real-time representation, the candidate subset always includes the focal respondent and is constructed only from respondents actually observed in that session.
 
-The estimation follows a cross-fitted residualization pipeline rather than a packaged DML estimator. For each fold and each treatment representation $T$, nuisance functions $\widehat{E}[Y \mid W]$ and $\widehat{E}[T \mid W]$ are estimated, and residuals are constructed as
+The estimation follows a cross-fitted residualization pipeline.
+For each fold and each treatment representation $T$, nuisance functions $\widehat{E}[Y \mid W]$ and $\widehat{E}[T \mid W]$ are estimated, and residuals are constructed as
 \[
 Y^{\mathrm{res}} = Y_{\mathrm{actual\_comfort}} - \widehat{E}[Y \mid W], \qquad
 T^{\mathrm{res}} = T - \widehat{E}[T \mid W].
 \]
-Treatment effects are then summarized by regressing $Y^{\mathrm{res}}$ on $T^{\mathrm{res}}$ with both intercept and no-intercept specifications. The primary estimand is the residual-regression coefficient $\theta$, reported together with its standard error, $p$-value, 95\% confidence interval, and \ac{pr2}. To reduce dependence on a single nuisance specification, additional reruns average outcome residuals across multiple cross-fitted models and random seeds. Supplementary subgroup analyses also examine information-rich conditions in which the baseline predicted comfort probability is close to 0.5.
+Treatment effects are then summarized by regressing $Y^{\mathrm{res}}$ on $T^{\mathrm{res}}$ with both intercept and no-intercept specifications.
+The primary estimand is the residual-regression coefficient $\theta$, reported together with its standard error, $p$-value, 95\% confidence interval, and \ac{pr2}.
+To reduce dependence on a single nuisance specification, additional reruns average outcome residuals across multiple cross-fitted models and random seeds.
+Supplementary subgroup analyses also examine information-rich conditions in which the baseline predicted comfort probability is close to 0.5.
 
-The final rerun reported in the Results chapter retains this observed-subsession exact-$k$ design while relaxing the sampling constraints used in earlier exploratory runs and re-estimating the outcome residuals under multiple model specifications. The main comparison focuses on the \ac{sgcm} and the subsession real-time representation in the full sample, while subgroup and specification checks are treated as supplementary analyses.
 
-\subsection{Personal Comfort Model Development and Metrics}
-
+\subsection{Analysis 2:Occupancy-log-based agentic comfort simulation}
 \subsubsection{Personal Comfort Model (PCM)}
 Individual \acp{pcm} will be developed for each participant to predict thermal preference based on indoor air temperature.
 Environmental variables will be sourced from:
@@ -160,7 +154,6 @@ P(S_{th} = s \mid t_i)\,.
 \end{figure}
 
 From each participant’s \ac{pcm}, individual metrics will be derived:
-
 \begin{description}
   \item[Preferred Temperature $T^p_i$:]
   The temperature that maximizes the probability of “no change,” i.e.,
@@ -214,12 +207,12 @@ The data are quantified in terms of short-horizon replacement of attendees via a
 Higher $\mathrm{UTR}^{(W)}_t$ indicates more sustained replacement of attendees and is expected to increase $|\Delta T|$.
 
 
-\paragraph{Working hypotheses}
-\begin{enumerate}[label=(H\arabic*)]
-    \item $\mathbb{E}\!\left[\,|\Delta T_t| \,\big|\, N_t \,\right]$ decreases with $N_t$.
-    \item $\mathbb{E}\!\left[\,|\Delta T_t| \,\big|\, \sigma^{(W)}_{N,t} \,\right]$ increases with $\sigma^{(W)}_{N,t}$.
-    \item $\mathbb{E}\!\left[\,|\Delta T_t| \,\big|\, \mathrm{UTR}^{(W)}_t \,\right]$ increases with $\mathrm{UTR}^{(W)}_t$.
-\end{enumerate}
+% \paragraph{Working hypotheses}
+% \begin{enumerate}[label=(H\arabic*)]
+%     \item $\mathbb{E}\!\left[\,|\Delta T_t| \,\big|\, N_t \,\right]$ decreases with $N_t$.
+%     \item $\mathbb{E}\!\left[\,|\Delta T_t| \,\big|\, \sigma^{(W)}_{N,t} \,\right]$ increases with $\sigma^{(W)}_{N,t}$.
+%     \item $\mathbb{E}\!\left[\,|\Delta T_t| \,\big|\, \mathrm{UTR}^{(W)}_t \,\right]$ increases with $\mathrm{UTR}^{(W)}_t$.
+% \end{enumerate}
 
 \subsection{Data Analysis}
 % \subsubsection{Evaluation Framework: Statistical Verification of Zone-Level Control Efficacy}
@@ -340,8 +333,6 @@ Let $E_k(t)$ denote an energy or power variable from the BMS at time $t$ for com
 \[
 \mathbf{x}(t) \;=\; \bigl(t_{out}(t),\, T_{\mathrm{set}}(t),\, N_t,\, \ldots \bigr).
 \]
-
-
 % GP model
 Each component is modeled via Gaussian Process regression:
 \[

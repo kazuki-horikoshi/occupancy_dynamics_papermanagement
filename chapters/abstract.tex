@@ -1,20 +1,16 @@
 \begin{abstract}
 
-Traditional HVAC systems, designed with a "one-size-fits-all" approach, often fail to provide thermal comfort in modern office environments, which are characterized by increasingly flexible and dynamic usage.
-Occupant-centric control (OCC) has emerged as a promising solution to enhance both occupant satisfaction and energy efficiency by personalizing thermal conditions.
-However, its widespread real-world adoption is hindered by two critical challenges: (1) the inability of existing frameworks to effectively manage the highly dynamic and unpredictable occupancy patterns typical of post-pandemic workplaces, and (2) the prohibitive survey effort required to build and maintain accurate personal comfort models (PCMs) for every individual.
-
-This research aims to address these two gaps by developing and validating a practical OCC framework designed for real-world, multi-occupant office environments.
-The methodology consists of a two-part field experiment conducted in an operational office building.
-The first experiment will systematically investigate the relationship between various occupancy patterns—such as occupancy variability and user turnover—and the performance of dynamic OCC.
-Its objective is to identify the specific conditions under which real-time, personalized control offers significant advantages over conventional static control strategies.
-
-Building on these findings, the second experiment will propose and evaluate a novel, low-effort framework for the operational development of comfort models.
-This framework employs an active transfer learning approach to intelligently minimize the total survey burden by strategically deciding when, where, and from whom to collect comfort feedback.
-The system prioritizes queries that are most informative for improving group comfort and unlocking energy-saving potential, thereby balancing data efficiency with operational effectiveness.
-
-The anticipated outcome of this research is a set of data-driven, actionable guidelines for building managers on selecting and deploying appropriate OCC strategies based on workspace usage patterns.
-Furthermore, the proposed low-effort framework will provide a scalable and economically viable solution for implementing advanced, personalized control in commercial buildings.
-By bridging the gap between academic theory and practical application, this work will contribute significantly to creating comfort and energy-efficient indoor environments tailored to the demands of modern work styles.
+Occupant-centric HVAC control often assumes fixed room-level comfort, however post-COVID offices have become more sparsely and dynamically occupied, creating a mismatch between thermal comfort modeling and room-level control.
+This increases the need for higher-resolution group comfort models supported by real-time occupancy data.
+This study investigates how the benefit of higher-resolution group comfort models, including use of occupancy tracking, changes with group size in HVAC control.
+To examine this, an agent-based simulation was conducted using one month of anonymized location logs and thermal comfort surveys from office rooms of varying sizes and uses, where each agent represented an occupant proxy carrying an observed office movement record.
+Three group comfort models were compared: static, based on the room’s regular members; daily, based on that day’s attendees; and real-time, based on the occupants present at each time step.
+Personal comfort models (PCM) were developed for 39 participants.
+To generate multiple cases, occupancy patterns were created by repeatedly sampling sub-groups from each room’s member pool, and PCMs were randomly assigned to those occupant proxies.
+Their “no change” thermal preference probability curves were then merged to form each group model.
+Setpoints were selected to maximize the probability of “no change,” and improvement in predicted comfort probability was evaluated against a fixed 24°C baseline.
+The results show that, relative to the 24°C baseline, the static model’s improvement falls to nearly zero as room size approaches six occupants, whereas the daily and real-time models maintain improvement in larger rooms.
+Further analysis shows that the real-time model’s comfort improvement is greatest under sparse occupancy and becomes limited as mean occupancy approaches four to five occupants.
+These findings indicate that higher-resolution comfort aggregation is most beneficial when occupancy remains sparse, and identify when high-resolution occupancy tracking is justified for practical HVAC control.
 
 \end{abstract}
