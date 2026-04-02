@@ -15,17 +15,9 @@ At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronge
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{operation Example}}
-    \caption{Improvement ratio relative to the baseline control across daily mean occupancy levels}
-    \label{fig:MeanOccuConf}
-\end{figure}
-
-
-\begin{figure}[pos=htbp!]
-    \centering
     \begin{subfigure}{0.97\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
+        \includegraphics[width=\linewidth]{\Pic{png}{section23_realized_k_partial_r2}}
         \caption{\acs{pr2} along different size of sessions}
         \label{fig:partialR2}
     \end{subfigure}
@@ -34,7 +26,7 @@ At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronge
 
     \begin{subfigure}{0.97\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
+        \includegraphics[width=\linewidth]{\Pic{png}{section23_realized_k_partial_r2}}
         \caption{Incrument accuracies along different size of sessions}
         \label{fig:IncrementAccu}
     \end{subfigure}
@@ -42,41 +34,44 @@ At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronge
     \label{fig:CausalPrfm}
 \end{figure}
 
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{ComfortAcrossRooms}}
-    \caption{Improvement ratio relative to the baseline control across daily mean occupancy levels}
-    \label{fig:MeanOccuConf}
-\end{figure}
-
-
 
 These results suggest that the \ac{rtgcm} aligns with observed comfort votes when the occupancy count is relatively small, particularly below about six occupants, but that this advantage largely disappears when occupancy approaches eight occupants.
 
 \subsection{Agentic Simulation}
 \SetPicSubDir{ch4-Results/agentic/Result_GEARSimulation}
+As a first part of agentic simulation, realistic one-month simulation was conducted.
+This case is based on actual combination of occupancy logs and comfort models with survey participants.
+An example of daily temperature control and predicted comfort performance both on \ac{sgcm} and \ac{rtgcm} is shown in \autoref{fig:OpeExampls}.
+
+\autoref{fig:GEARComfPrf}\subref{fig:realComfPro} shows the simulated comfort probability on \ac{sgcm} and \ac{rtgcm} during one-month simulation period. \autoref{fig:GEARComfPrf}\subref{fig:realComfImp} shows the predicted comfort probability improvement from \ac{sgcm} to \ac{rtgcm} during one-month simulation period.
 
 \begin{figure}[pos=htbp!]
     \centering
     \begin{subfigure}{0.97\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{a6p_static_realtime_daily_by_subgroup}}
-        \caption{Comfort achievement ratio with different comfort-representation controls}
-        \label{fig:ComfAchi}
+        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
+        \caption{Simulated comfort probability on \ac{sgcm} and \ac{rtgcm} during one-month simulation period}
+        \label{fig:realComfPro}
     \end{subfigure}
 
     \medskip
 
     \begin{subfigure}{0.97\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{a6p_improvement_vs24_by_subgroup}}
-        \caption{Comfort improvement relative to the baseline control}
-        \label{fig:ComfImp}
+        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
+        \caption{Predicted comfort probability improvement from \ac{sgcm} to \ac{rtgcm} during one-month simulation period}
+        \label{fig:realComfImp}
     \end{subfigure}
-    \caption{Agentic simulation results for different subgroup sizes.}
-    \label{fig:ComfAgentic}
+    \caption{Causality analysis results along different number of session sizes}
+    \label{fig:GEARComfPrf}
 \end{figure}
 
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{ComfortAcrossRooms}}
+    \caption{Comfort probabiity ratio across office rooms and whole building on \ac{sgcm} and \ac{rtgcm}}
+    \label{fig:GEARComfPrfRoom}
+\end{figure}
 
 
 \SetPicSubDir{ch4-Results/agentic/Result_Agentic}
