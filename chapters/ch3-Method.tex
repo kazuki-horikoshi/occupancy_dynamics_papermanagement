@@ -19,7 +19,7 @@ For both analysis, three primary types of field data were collected: real-time o
 Dynamic occupancy patterns will be reconstructed from anonymized, timestamped location data provided by the building's management system.
 From a raw stream of access events, a structured “stay log” is generated to represent continuous periods of presence for each participant in each room.
 The resulting log, which contains an anonymized ID, location, and start–end times, is then used to compute occupancy metrics.
-The detailed procedure for this reconstruction is described in Appendices~\ref{app:occupancy_reconstruction}.
+The detailed procedure for this reconstruction is described in~\autoref{app:occupancy_reconstruction}.
 
 \subsubsection{Thermal Comfort Survey}
 Subjective survey answers were collected via a brief web survey during work hours. 
@@ -87,6 +87,28 @@ T^{\mathrm{res}} = T - \widehat{E}[T \mid W].
 The remaining association between $T^{\mathrm{res}}$ and $Y^{\mathrm{res}}$ is then interpreted as the component of the comfort representation that is not explained by the observed confounders.
 In this study, the resulting coefficient is used as a measure of how consistently each \ac{gcm}-based representation aligns with actual comfort responses after adjustment for environmental and occupancy-related factors.
 
+\begin{figure}[pos=htbp!]
+    \centering
+    \begin{subfigure}{0.97\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{DML}}
+        \caption{Image of DML comparing residuals both in treatment and outcome}
+        \label{fig:generalDML}
+    \end{subfigure}
+
+    \medskip
+
+    \begin{subfigure}{0.97\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{DMLflow}}
+        \caption{Data and Analysis flow of DML}
+        \label{fig:DMLflow}
+    \end{subfigure}
+    \caption{Image of DML}
+    \label{fig:CausalPrfm}
+\end{figure}
+
+
 \subsubsection{Causality modeling}
 To complement the occupancy-pattern and simulation analyses, a response-level comparison of alternative comfort representations are conducted using the field observations.
 The unit of analysis is an individual survey response.
@@ -120,21 +142,29 @@ Supplementary subgroup analyses also examine information-rich conditions in whic
 
 
 \subsection{Analysis 2:Occupancy-log-based agentic comfort simulation}
+\subsubsection{Simulation Design}
+A occupancy-log-based simulation is conducted along two phase.
+At first phase, real office usage is simulated, using actual experiment participants' occupancy logs and comfort models to quantify the benefits of controls based-on each comfort representations.
+As a second phase, a Monte Carlo-style repeated resampling analysis is conducted built on the observed room-level occupancy dynamics.
+Each agent is treated as an occupant proxy carrying an observed presence record reconstructed from the stay logs.
+To generate multiple realizations while preserving the original room usage patterns, subgroups are repeatedly sampled from each room's member pool, and individual \acp{pcm} are randomly reassigned to the selected proxies in each trial.
+
+For each simulated realization, the three \acp{gcm} are compared by aggregating the assigned \acp{pcm} at the static, daily, and real-time timescales defined above.
+More specifically, each group's comfort representation is formed by merging the individual "no change" probability curves of the assigned \acp{pcm}, and the corresponding setpoint is selected as the temperature that maximizes the aggregated comfort probability.
+In addition to these three group-model-based policies, a fixed \qty{24}{\celsius} setpoint is used as an additional baseline.
+The simulation outputs are then summarized as comfort improvement relative to this fixed baseline and as contrasts among the static, daily, and real-time group models
+
 \subsubsection{Personal Comfort Model (PCM)}
 
 Individual \acp{pcm} are developed for each participant to predict thermal preference based on indoor air temperature.
-Environmental variables will be sourced from:
-(i) the \acs{bms} (room-level indoor air temperature (\acs{ti}) logs) and
-(ii) compact indoor environment sensors (indoor air temperature (\acs{ti}) and relative humidity (\acs{rh})).
-
-The baseline \ac{pcm} are a multi-class logistic classification model, similarly used in agentic simulation such as \mycite{jung_comparative_2019}~\cite{jung_comparative_2019} and \mycite{jung_energy_2020}~\cite{jung_energy_2020}
+Environmental variables are sourced from compact indoor environment sensors (indoor air temperature (\acs{ti}).
+The baseline \ac{pcm} are a multi-class logistic classification model, used in similar agentic-based thermal comfort simulations~\cite{jung_comparative_2019, jung_energy_2020}.
 
 %study by Daum et al.~\cite{daum_personalized_2011}, widely adopted in prior studies~\cite{jung_comparative_2019,lee_implementation_2019,zhang_impact_2023,meimand_personal_2024,topak_collective_2023,gupta_incentive-based_2018}.
 
 Specific model inputs and outputs are defined as follows:
 \begin{itemize}
     \item \textbf{Input vector $\mathbf{x}$:} The primary feature is indoor air temperature (\acs{ti}) obtained from the compact sensors nearest to the occupant's zone.
-    Relative humidity (\acs{rh}) is recorded as a contextual feature but not included in the baseline regression to avoid overfitting given the limited sample size per person.
     \item \textbf{Output vector $\mathbf{y}$:} The model predicts the probability distribution over three thermal preference classes: $S_{th} \in \{+1 (\text{Warmer}), 0 (\text{No change}), -1 (\text{Cooler})\}$.
 \end{itemize}
 
@@ -144,7 +174,7 @@ P(S_{th} = s \mid t_i)\,.
 
 \begin{figure}[pos=!bt]
     \centering
-    \includegraphics[width=0.5\linewidth]{\Pic{png}{ex1_comfortmodel_example}}
+    \includegraphics[width=0.5\linewidth]{\Pic{png}{ex_comfortmodel_example}}
     \caption{Individual comfort models from comfort surveys}
     \label{fig:ComChara}
 \end{figure}
@@ -156,7 +186,6 @@ From each participant’s \ac{pcm}, individual metrics are derived:
   \[
     T^p_i = \operatorname*{arg\,max}_{t} P(S_{th}=0 \mid t)\,.
   \]
-
   \item[Individual Comfort Range {\([T^c_i,\,T^h_i]\)}:]
   The set of temperatures at which the probability of ``no change'' dominates the two preference alternatives (``warmer'' and ``cooler''):
   \[
@@ -165,55 +194,17 @@ From each participant’s \ac{pcm}, individual metrics are derived:
   This range will be used to evaluate how frequently a given setpoint schedule places present occupants within their personal comfort ranges.
 \end{description}
 
-The corresponding group-level setpoints are defined as
-\[
-T_{\mathrm{static}} \;=\; \frac{1}{|R|}\sum_{i\in R}\theta_i,
-\qquad
-T_{\mathrm{daily}}(d) \;=\; \frac{1}{|A_d|}\sum_{i\in A_d}\theta_i,
-\qquad
-\mu_t \;=\; \frac{1}{|S_t|}\sum_{i\in S_t}\theta_i \;\equiv\; T_{\mathrm{opt,GCM}}(t).
-\]
-Here, $T_{\mathrm{static}}$, $T_{\mathrm{daily}}(d)$, and $\mu_t$ correspond to the \ac{sgcm}, \ac{dgcm}, and \ac{rtgcm}, respectively.
+% The corresponding group-level setpoints are defined as
+% \[
+% T_{\mathrm{static}} \;=\; \frac{1}{|R|}\sum_{i\in R}\theta_i,
+% \qquad
+% T_{\mathrm{daily}}(d) \;=\; \frac{1}{|A_d|}\sum_{i\in A_d}\theta_i,
+% \qquad
+% \mu_t \;=\; \frac{1}{|S_t|}\sum_{i\in S_t}\theta_i \;\equiv\; T_{\mathrm{opt,GCM}}(t).
+% \]
+% Here, $T_{\mathrm{static}}$, $T_{\mathrm{daily}}(d)$, and $\mu_t$ correspond to the \ac{sgcm}, \ac{dgcm}, and \ac{rtgcm}, respectively.
 
-\subsubsection{Simulation Design}
-The occupancy-log-based simulation is designed as a Monte Carlo-style repeated resampling analysis built on the observed room-level occupancy dynamics.
-Each agent is treated as an occupant proxy carrying an observed presence record reconstructed from the stay logs.
-To generate multiple realizations while preserving the original room usage patterns, subgroups are repeatedly sampled from each room's member pool, and individual \acp{pcm} are randomly reassigned to the selected proxies in each trial.
-
-For each simulated realization, the three \acp{gcm} are compared by aggregating the assigned \acp{pcm} at the static, daily, and real-time timescales defined above.
-More specifically, each group's comfort representation is formed by merging the individual "no change" probability curves of the assigned \acp{pcm}, and the corresponding setpoint is selected as the temperature that maximizes the aggregated comfort probability.
-In addition to these three group-model-based policies, a fixed \qty{24}{\celsius} setpoint is used as an additional baseline.
-The simulation outputs are then summarized as comfort improvement relative to this fixed baseline and as contrasts among the static, daily, and real-time group models.
-
-\subsubsection{Occupancy Metrics}
-\label{sec:OccuMetrics}
-\autoref{table:OccuMetrics} in Appendices summarizes occupancy-related literature and metrics after COVID-19.
-While many studies emphasize occupancy count and related parameters, this study also considers variability parameters that reflect individual differences in preferred setpoints.
-
-\paragraph{Occupancy count (target group size effect).}
-\begin{equation}
-N_t \;=\; |S_t|.
-\label{eq:Nt}
-\end{equation}
-Larger groups average out individual preferences more strongly and are expected to reduce $|\Delta T|$.
-
-\paragraph{Occupancy variability (variability of occupancy count).}
-To capture short-horizon fluctuations in room load, a windowed dispersion of counts is used, e.g., for window size $W$,
-\begin{equation}
-\sigma^{(W)}_{N,t} \;=\; \operatorname{SD}\big(\,N_{t-W+1},\,\dots,\,N_t\,\big).
-\label{eq:occ_var}
-\end{equation}
-Greater variability indicates volatile attendance and is expected to increase $|\Delta T|$.
-
-\paragraph{\ac{utr}.}
-The data are quantified in terms of short-horizon replacement of attendees via a rolling Jaccard turnover, denoted as \ac{utr}:
-\begin{equation}
-\mathrm{UTR}^{(W)}_t \;=\; 1 \;-\; \frac{|S_t \cap S_{t-W}|}{|S_t \cup S_{t-W}|}.
-\label{eq:rolling_turnover}
-\end{equation}
-Higher $\mathrm{UTR}^{(W)}_t$ indicates more sustained replacement of attendees and is expected to increase $|\Delta T|$.
-
-\subsection{Comfort Coverage Analysis}
+\subsubsection{Evaluation Metrics: Comfort Related}
 \label{subsec:coverage}
 % Objective: fraction of person-time within personal comfort ranges, without model-based smoothing.
 
@@ -255,6 +246,88 @@ and contrasts
 \end{aligned}
 \]
 
+\subsubsection{Evaluation Metrics: Occupancy Related}
+\label{sec:OccuMetrics}
+\autoref{table:OccuMetrics} in~\autoref{app:OccupancyStudy} summarizes occupancy-related literature and metrics after COVID-19.
+While many studies emphasize occupancy count and related parameters, this study also considers variability parameters that reflect individual differences in preferred setpoints.
+
+\paragraph{Occupancy count (target group size effect).}
+\begin{equation}
+N_t \;=\; |S_t|.
+\label{eq:Nt}
+\end{equation}
+Larger groups average out individual preferences more strongly and are expected to reduce $|\Delta T|$.
+
+\paragraph{Occupancy variability (variability of occupancy count).}
+To capture short-horizon fluctuations in room load, a windowed dispersion of counts is used, e.g., for window size $W$,
+\begin{equation}
+\sigma^{(W)}_{N,t} \;=\; \operatorname{SD}\big(\,N_{t-W+1},\,\dots,\,N_t\,\big).
+\label{eq:occ_var}
+\end{equation}
+Greater variability indicates volatile attendance and is expected to increase $|\Delta T|$.
+
+\paragraph{\ac{utr}.}
+The data are quantified in terms of short-horizon replacement of attendees via a rolling Jaccard turnover, denoted as \ac{utr}:
+\begin{equation}
+\mathrm{UTR}^{(W)}_t \;=\; 1 \;-\; \frac{|S_t \cap S_{t-W}|}{|S_t \cup S_{t-W}|}.
+\label{eq:rolling_turnover}
+\end{equation}
+Higher $\mathrm{UTR}^{(W)}_t$ indicates more sustained replacement of attendees and is expected to increase $|\Delta T|$.
+
+% From the stay logs, daily occupancy metrics are defined as:
+
+% \begin{itemize}
+%     \item \textbf{Average Occupancy Count ($N_{\text{avg}}$):} 
+%     The mean number of occupants per day, where $N_{\text{avg}}$ is calculated as the daily average of all logged stays.
+
+%     \item \textbf{Occupancy Variability ($V_{occ}$):} 
+%     The normalized standard deviation of daily occupancy counts, representing how much the number of occupants fluctuates,
+%     \[
+%       V_{occ} = \frac{\sigma_{\text{log}}}{N_{\text{avg}}}
+%     \]
+%     where $\sigma_{\text{log}}$ is the standard deviation of the stay log counts.
+
+%     \item \textbf{Occupant Turnover Rate (OTR):} 
+%     The ratio of the number of unique occupants appearing in a day to the average occupancy, representing how frequently different individuals rotate in and out of the space,
+%     \[
+%       \text{OTR} = \frac{N_{\text{unique}}}{N_{\text{avg}}}
+%     \]
+%     where $N_{\text{unique}}$ is the total number of distinct occupant IDs observed on that day.
+
+%     \item \textbf{Day-to-Day Turnover Rate (DTR):} 
+%     The Jaccard distance between occupant sets of consecutive days, indicating how much the attendance composition changes from one day to the next,
+%     \[
+%       \text{DTR}_d = 1 - \frac{|D_d \cap D_{d-1}|}{|D_d \cup D_{d-1}|}
+%     \]
+%     where $D_d$ and $D_{d-1}$ denote the sets of occupants present on day $d$ and the previous day. 
+%     A higher value indicates a greater turnover in the daily group composition.
+% \end{itemize}
+
+% \item For the Daily baseline, larger plan--actual mismatch increases the deviation from the daily setpoint:
+% \[
+% \mathbb{E}\!\left[\,|\Delta T^{\mathrm{Daily}}_t| \,\big|\, M^{\mathrm{plan}}_t \,\right] 
+% \;\;\text{is an increasing function of}\; M^{\mathrm{plan}}_t.
+% \]
+
+\subsubsection{Evaluation Metrics: Control Related}
+Among the three \acp{gcm} defined above, the \ac{rtgcm} setpoint $\mu_t$ is treated as the highest-resolution target and is compared with the \ac{sgcm} and \ac{dgcm} baselines.
+The deviations are
+\begin{equation}
+\Delta T^{\mathrm{Static}}_t \;=\; \mu_t - T_{\mathrm{static}},
+\qquad
+\Delta T^{\mathrm{Daily}}_t \;=\; \mu_t - T_{\mathrm{daily}}(d).
+\label{eq:deltaT_defs}
+\end{equation}
+Unless stated otherwise, the magnitudes of $|\Delta T^{\mathrm{Static}}_t|$ and $|\Delta T^{\mathrm{Daily}}_t|$ will be analyzed.
+
+\begin{figure}[pos=!bt]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{ex1_analysis_flow}}
+    \caption{Analysis of Baseline vs Dynamic comfort model Image}
+    \label{fig:ex1analysis}
+\end{figure}
+
+
 % \subsubsection{Energy Impact Estimation under Dynamic GCM}
 % \label{subsec:energy_impact}
 
@@ -294,24 +367,6 @@ and contrasts
 % where the baseline is either Static or Daily.
 
 % The total amount will be reported by component and overall, along with uncertainty intervals from the GP predictive distribution.
-
-\subsubsection{Baselines and deviations}
-Among the three \acp{gcm} defined above, the \ac{rtgcm} setpoint $\mu_t$ is treated as the highest-resolution target and is compared with the \ac{sgcm} and \ac{dgcm} baselines.
-The deviations are
-\begin{equation}
-\Delta T^{\mathrm{Static}}_t \;=\; \mu_t - T_{\mathrm{static}},
-\qquad
-\Delta T^{\mathrm{Daily}}_t \;=\; \mu_t - T_{\mathrm{daily}}(d).
-\label{eq:deltaT_defs}
-\end{equation}
-Unless stated otherwise, the magnitudes of $|\Delta T^{\mathrm{Static}}_t|$ and $|\Delta T^{\mathrm{Daily}}_t|$ will be analyzed.
-
-\begin{figure}[pos=!bt]
-    \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{ex1_analysis_flow}}
-    \caption{Analysis of Baseline vs Dynamic comfort model Image}
-    \label{fig:ex1analysis}
-\end{figure}
 
 \subsubsection{Statistical Comparison and Equivalence Testing}
 \label{subsec:equivalence}
@@ -373,40 +428,6 @@ that delineate when Dynamic control should be prioritized in practice.
 %     Occupancy-informed rules of thumb---thresholds on $N_{\text{avg}}, V_{\text{occ}}, \mathrm{UTR}^{(W)}_t$---to choose update frequency (Static / Daily / Dynamic) for practical deployment.
 % \end{itemize}
 
-% From the stay logs, daily occupancy metrics are defined as:
-
-% \begin{itemize}
-%     \item \textbf{Average Occupancy Count ($N_{\text{avg}}$):} 
-%     The mean number of occupants per day, where $N_{\text{avg}}$ is calculated as the daily average of all logged stays.
-
-%     \item \textbf{Occupancy Variability ($V_{occ}$):} 
-%     The normalized standard deviation of daily occupancy counts, representing how much the number of occupants fluctuates,
-%     \[
-%       V_{occ} = \frac{\sigma_{\text{log}}}{N_{\text{avg}}}
-%     \]
-%     where $\sigma_{\text{log}}$ is the standard deviation of the stay log counts.
-
-%     \item \textbf{Occupant Turnover Rate (OTR):} 
-%     The ratio of the number of unique occupants appearing in a day to the average occupancy, representing how frequently different individuals rotate in and out of the space,
-%     \[
-%       \text{OTR} = \frac{N_{\text{unique}}}{N_{\text{avg}}}
-%     \]
-%     where $N_{\text{unique}}$ is the total number of distinct occupant IDs observed on that day.
-
-%     \item \textbf{Day-to-Day Turnover Rate (DTR):} 
-%     The Jaccard distance between occupant sets of consecutive days, indicating how much the attendance composition changes from one day to the next,
-%     \[
-%       \text{DTR}_d = 1 - \frac{|D_d \cap D_{d-1}|}{|D_d \cup D_{d-1}|}
-%     \]
-%     where $D_d$ and $D_{d-1}$ denote the sets of occupants present on day $d$ and the previous day. 
-%     A higher value indicates a greater turnover in the daily group composition.
-% \end{itemize}
-
-% \item For the Daily baseline, larger plan--actual mismatch increases the deviation from the daily setpoint:
-% \[
-% \mathbb{E}\!\left[\,|\Delta T^{\mathrm{Daily}}_t| \,\big|\, M^{\mathrm{plan}}_t \,\right] 
-% \;\;\text{is an increasing function of}\; M^{\mathrm{plan}}_t.
-% \]
 
 
 % \subsubsection{Evaluation Framework: Statistical Verification of Zone-Level Control Efficacy}

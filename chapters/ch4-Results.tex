@@ -15,9 +15,17 @@ At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronge
 
 \begin{figure}[pos=htbp!]
     \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{operation Example}}
+    \caption{Improvement ratio relative to the baseline control across daily mean occupancy levels}
+    \label{fig:MeanOccuConf}
+\end{figure}
+
+
+\begin{figure}[pos=htbp!]
+    \centering
     \begin{subfigure}{0.97\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{section23_realized_k_partial_r2}}
+        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
         \caption{\acs{pr2} along different size of sessions}
         \label{fig:partialR2}
     \end{subfigure}
@@ -26,7 +34,7 @@ At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronge
 
     \begin{subfigure}{0.97\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{section23_realized_k_increment_accuracy}}
+        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
         \caption{Incrument accuracies along different size of sessions}
         \label{fig:IncrementAccu}
     \end{subfigure}
@@ -34,10 +42,44 @@ At small subsample sizes ($k = 1$--6), the \ac{rtgcm} consistently shows stronge
     \label{fig:CausalPrfm}
 \end{figure}
 
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{ComfortAcrossRooms}}
+    \caption{Improvement ratio relative to the baseline control across daily mean occupancy levels}
+    \label{fig:MeanOccuConf}
+\end{figure}
+
+
+
 These results suggest that the \ac{rtgcm} aligns with observed comfort votes when the occupancy count is relatively small, particularly below about six occupants, but that this advantage largely disappears when occupancy approaches eight occupants.
 
 \subsection{Agentic Simulation}
-\SetPicSubDir{ch4-Results/agentic}
+\SetPicSubDir{ch4-Results/agentic/Result_GEARSimulation}
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \begin{subfigure}{0.97\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{a6p_static_realtime_daily_by_subgroup}}
+        \caption{Comfort achievement ratio with different comfort-representation controls}
+        \label{fig:ComfAchi}
+    \end{subfigure}
+
+    \medskip
+
+    \begin{subfigure}{0.97\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{a6p_improvement_vs24_by_subgroup}}
+        \caption{Comfort improvement relative to the baseline control}
+        \label{fig:ComfImp}
+    \end{subfigure}
+    \caption{Agentic simulation results for different subgroup sizes.}
+    \label{fig:ComfAgentic}
+\end{figure}
+
+
+
+\SetPicSubDir{ch4-Results/agentic/Result_Agentic}
 \label{subsec:AgenticSim}
 
 Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows the comfort achievement ratio for different subgroup sizes across four office rooms. Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows the improvement ratio relative to the baseline control ($24^\circ\mathrm{C}$) across subgroup sizes.
