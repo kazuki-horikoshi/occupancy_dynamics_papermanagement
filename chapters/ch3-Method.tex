@@ -81,21 +81,31 @@ Therefore, $T$ should be interpreted as a summarized comfort signal implied by a
 
 Under this formulation, the role of \ac{dml} is to remove the variation in both $Y$ and $T$ that is predictable from $W$.
 Using the partially linear formulation, each response $i$ is written as
-\[
-Y_i = \theta T_i + g_0(W_i) + \varepsilon_i, \qquad
-T_i = m_0(W_i) + \nu_i,
-\]
+\begin{align}
+Y_i &= \theta T_i + g_0(W_i) + \varepsilon_i,
+\label{eq:dml_plm_outcome} \\
+T_i &= m_0(W_i) + \nu_i.
+\label{eq:dml_plm_treatment}
+\end{align}
 where $g_0(W_i)=E[Y_i \mid W_i]$ and $m_0(W_i)=E[T_i \mid W_i]$ are nuisance functions.
 Cross-fitting is used so that the nuisance estimates for each observation are learned on folds that exclude its session.
 The residualized variables are therefore
-\[
-\widetilde{Y}_i = Y_i - \widehat{g}^{(-k(i))}(W_i), \qquad
-\widetilde{T}_i = T_i - \widehat{m}^{(-k(i))}(W_i).
-\]
+\begin{align}
+\widetilde{Y}_i &= Y_i - \widehat{g}^{(-k(i))}(W_i),
+\label{eq:dml_residualized_outcome} \\
+\widetilde{T}_i &= T_i - \widehat{m}^{(-k(i))}(W_i).
+\label{eq:dml_residualized_treatment}
+\end{align}
 The post-residualization target regression is then
-\[
+\begin{equation}
 \widetilde{Y}_i = \alpha + \theta \widetilde{T}_i + u_i,
-\]
+\label{eq:dml_post_residual_regression}
+\end{equation}
+with an additional no-intercept sensitivity specification
+\begin{equation}
+\widetilde{Y}_i = \theta \widetilde{T}_i + u_i.
+\label{eq:dml_post_residual_regression_noint}
+\end{equation}
 
 The remaining association between $\widetilde{T}_i$ and $\widetilde{Y}_i$ is then interpreted as the component of the comfort representation that is not explained by the observed confounders.
 In this study, the resulting coefficient is used as a measure of how consistently each \ac{gcm}-based representation aligns with actual comfort responses after adjustment for environmental and occupancy-related factors.
@@ -128,9 +138,10 @@ To complement the occupancy-pattern and simulation analyses, a response-level co
 The unit of analysis is an individual survey response.
 A session is defined as the combination of date, merged time slot, and room.
 The binary outcome, actual comfort, is defined as
-\[
+\begin{equation}
 Y_{\mathrm{actual\_comfort}} = \mathbb{1}(\texttt{thermal\_preference\_num}=0).
-\]
+\label{eq:dml_actual_comfort}
+\end{equation}
 The main observed covariates are \ac{ti}, \ac{rh}, \ac{clo}, \ac{met}, and occupant count.
 All sample splitting is performed with GroupKFold ($n=5$) using session ID as the grouping variable so that responses from the same session are never split across training and evaluation folds.
 
@@ -145,10 +156,12 @@ For the subsession real-time representation, the candidate subset always include
 
 The estimation follows a cross-fitted residualization pipeline.
 For each fold and each treatment representation $T$, nuisance functions $\widehat{E}[Y \mid W]$ and $\widehat{E}[T \mid W]$ are estimated, and residuals are constructed as
-\[
-\widetilde{Y} = Y_{\mathrm{actual\_comfort}} - \widehat{E}[Y \mid W], \qquad
-\widetilde{T} = T - \widehat{E}[T \mid W].
-\]
+\begin{align}
+\widetilde{Y} &= Y_{\mathrm{actual\_comfort}} - \widehat{E}[Y \mid W],
+\label{eq:dml_analysis_residualized_outcome} \\
+\widetilde{T} &= T - \widehat{E}[T \mid W].
+\label{eq:dml_analysis_residualized_treatment}
+\end{align}
 Treatment effects are then summarized by regressing $\widetilde{Y}$ on $\widetilde{T}$ with both intercept and no-intercept specifications.
 The primary estimand is the residual-regression coefficient $\theta$, reported together with its standard error, $p$-value, 95\% confidence interval, and \ac{pr2}.
 To reduce dependence on a single nuisance specification, additional reruns average outcome residuals across multiple cross-fitted models and random seeds.
@@ -164,11 +177,12 @@ Three complementary metrics are used to evaluate each comfort representation aft
 
 \paragraph{Partial $R^2$.}
 In addition to the coefficient $\theta$, the added explanatory value of each comfort representation after residualization is quantified by \ac{pr2}:
-\[
+\begin{equation}
 R^2_{\mathrm{partial}}
 = 1 - \frac{\sum_{i=1}^{n}\left(\widetilde{Y}_i - \widehat{\alpha} - \widehat{\theta}\widetilde{T}_i\right)^2}
 {\sum_{i=1}^{n}\left(\widetilde{Y}_i - \overline{\widetilde{Y}}\right)^2}.
-\]
+\label{eq:partial_r2}
+\end{equation}
 This metric indicates how much of the remaining variation in actual comfort is explained by the residual treatment signal after the baseline covariates $W$ have already been removed.
 Values close to zero indicate that the candidate comfort representation contributes little additional information beyond the covariates, whereas larger values indicate stronger added explanatory power.
 
@@ -176,7 +190,7 @@ Values close to zero indicate that the candidate comfort representation contribu
 Because the treatment variable is itself a comfort probability, a complementary predictive metric is also reported.
 Let $\widehat{p}^{\mathrm{base}}_i = \widehat{m}^{(-k(i))}(W_i)$ denote the covariate-only baseline probability and let $\widehat{p}^{\mathrm{repr}}_i = T_i$ denote the probability implied by the candidate comfort representation.
 The \ac{ic}, reported in percentage points, is defined as
-\[
+\begin{equation}
 \mathrm{IC}
 = 100 \times \frac{1}{n}\sum_{i=1}^{n}
 \left(
@@ -184,7 +198,8 @@ The \ac{ic}, reported in percentage points, is defined as
 -
 \left|Y_i - \widehat{p}^{\mathrm{repr}}_i\right|
 \right).
-\]
+\label{eq:increment_accuracy}
+\end{equation}
 Positive values indicate that the candidate comfort representation reduces the absolute prediction error relative to the covariate-only baseline and is therefore closer to the observed comfort responses.
 Values near zero indicate little practical gain, whereas negative values indicate that the representation worsens predictive agreement.
 Taken together, $\theta$ captures directional residual alignment, \ac{pr2} captures additional explanatory power, and \ac{ic} captures practical improvement in prediction accuracy.
@@ -217,9 +232,10 @@ Specific model inputs and outputs are defined as follows:
     \item \textbf{Output vector $\mathbf{y}$:} The model predicts the probability distribution over three thermal preference classes: $S_{th} \in \{+1 (\text{Warmer}), 0 (\text{No change}), -1 (\text{Cooler})\}$.
 \end{itemize}
 
-\[
+\begin{equation}
 P(S_{th} = s \mid t_i)\,.
-\]
+\label{eq:pcm_probability}
+\end{equation}
 
 \begin{figure}[pos=!bt]
     \centering
@@ -232,14 +248,16 @@ From each participant’s \ac{pcm}, individual metrics are derived:
 \begin{description}
   \item[Preferred Temperature $T^p_i$:]
   The temperature that maximizes the probability of “no change,” i.e.,
-  \[
+  \begin{equation}
     T^p_i = \operatorname*{arg\,max}_{t} P(S_{th}=0 \mid t)\,.
-  \]
+  \label{eq:preferred_temperature}
+  \end{equation}
   \item[Individual Comfort Range {\([T^c_i,\,T^h_i]\)}:]
   The set of temperatures at which the probability of ``no change'' dominates the two preference alternatives (``warmer'' and ``cooler''):
-  \[
+  \begin{equation}
   [T^c_i,\,T^h_i] \;\equiv\; \left\{\, t \;\middle|\; P(S_{th}=0 \mid t)\;\ge\;\max\!\bigl(P(S_{th}=+1\mid t),\,P(S_{th}=-1\mid t)\bigr) \,\right\}.
-  \]
+  \label{eq:individual_comfort_range}
+  \end{equation}
   This range will be used to evaluate how frequently a given setpoint schedule places present occupants within their personal comfort ranges.
 \end{description}
 
@@ -261,39 +279,42 @@ From each participant’s \ac{pcm}, individual metrics are derived:
 Let $T_{\mathrm{set}}^{\mathrm{policy}}(t)$ denote the setpoint at time $t$ generated by policy $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{Dynamic}\}$.
 
 For each occupant $i \in S_t$, define
-\[
+\begin{equation}
 C_{i,t}^{\mathrm{policy}} =
 \begin{cases}
 1, & \text{if } T^c_i \le T_{\mathrm{set}}^{\mathrm{policy}}(t) \le T^h_i,\\[4pt]
 0, & \text{otherwise.}
 \end{cases}
-\]
+\label{eq:coverage_indicator}
+\end{equation}
 
 Room-level coverage over a target period $\mathcal{T}_r$ is
-\[
+\begin{equation}
 \mathrm{Coverage}_{r}^{\mathrm{policy}}
 =\frac{\sum_{t\in\mathcal{T}_r}\sum_{i\in S_t} w_{i,t}\, C_{i,t}^{\mathrm{policy}}}{\sum_{t\in\mathcal{T}_r}\sum_{i\in S_t} w_{i,t}},
 \quad w_{i,t}=1\ \text{unless stated otherwise.}
-\]
+\label{eq:coverage_room_level}
+\end{equation}
 
 \paragraph{Occupancy-stratified summaries.}
 To examine how occupancy conditions relate to coverage, stratified summaries will be reported by discretizing occupancy metrics into ordered bins
 (e.g., quartiles): group size $N_t$, short-horizon count variability $\sigma^{(W)}_{N,t}$,
 and user turnover rate $\mathrm{UTR}^{(W)}_t$ (Section~\ref{sec:OccuMetrics}).
 For a bin $g$, define
-\[
+\begin{equation}
 \mathrm{Coverage}_{r,g}^{\mathrm{policy}}
 =\frac{\sum_{t\in\mathcal{T}_r \cap \mathcal{G}_g}\sum_{i\in S_t} C_{i,t}^{\mathrm{policy}}}{\sum_{t\in\mathcal{T}_r \cap \mathcal{G}_g}\sum_{i\in S_t} 1},
-\]
+\label{eq:coverage_stratified}
+\end{equation}
 and contrasts
-\[
-\begin{aligned} % align at "=" with two lines
+\begin{align}
 \Delta \mathrm{Cov}_{r,g}^{\mathrm{Dyn-Daily}}
-&= \mathrm{Coverage}_{r,g}^{\mathrm{Dynamic}} - \mathrm{Coverage}_{r,g}^{\mathrm{Daily}},\\
+&= \mathrm{Coverage}_{r,g}^{\mathrm{Dynamic}} - \mathrm{Coverage}_{r,g}^{\mathrm{Daily}},
+\label{eq:coverage_contrast_dyn_daily} \\
 \Delta \mathrm{Cov}_{r,g}^{\mathrm{Dyn-Static}}
 &= \mathrm{Coverage}_{r,g}^{\mathrm{Dynamic}} - \mathrm{Coverage}_{r,g}^{\mathrm{Static}}.
-\end{aligned}
-\]
+\label{eq:coverage_contrast_dyn_static}
+\end{align}
 
 \subsubsection{Evaluation Metrics: Occupancy Related}
 \label{sec:OccuMetrics}
@@ -441,9 +462,10 @@ The null posits non-equivalence; rejection of both one-sided tests indicates equ
 \paragraph{Modeling strategy and Feature Attribution}
 
 Because the relationship between occupancy metrics and the absolute deviations cannot be assumed linear, the absolute deviation $|\Delta T|$ will be modeled as a function of occupancy metrics:
-\[
+\begin{equation}
 |\Delta T| \;=\; f\!\bigl(N_{\text{avg}},\, V_{\text{occ}},\, \mathrm{UTR}^{(W)}_t\bigr) \;+\; \varepsilon,
-\]
+\label{eq:deltaT_gp_model}
+\end{equation}
 where $f(\cdot)$ is approximated using Gaussian Process regression.
 This allows us to capture potentially non-linear relationships between occupancy conditions and the deviation magnitude.
 
