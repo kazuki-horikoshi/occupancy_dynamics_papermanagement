@@ -1,0 +1,62 @@
+\begin{table*}[pos=htbp!]
+    \centering
+    \caption{Machine-learning settings used in the Analysis 1 \ac{dml} pipeline.}
+    \label{tab:ml_model_settings}
+    \scriptsize
+    \setlength{\tabcolsep}{2.8pt}
+    \renewcommand{\arraystretch}{1.08}
+    \begin{tabularx}{\textwidth}{@{}p{2.0cm}p{1.8cm}p{1.2cm}p{2.8cm}p{2.8cm}X@{}}
+        \toprule
+        DML model type & Model structure & Input & Output & Learned data & Hyper-parameters \\
+        \midrule
+        \makecell[l]{m-model\\(treatment\\ nuisance)} &
+        \acs{logit} &
+        \makecell[l]{\acs{ti}, \acs{rh},\\ \acs{clo}, \acs{met}} &
+        \makecell[l]{Individual-specific \\ probability of answering \\ ``No change'' in \ac{tpv}} &
+        \makecell[l]{Participant-specific\\ survey responses\\ with fold-safe training} &
+        \makecell[l]{\texttt{max\_iter=500}\\
+        \texttt{C=1.0} (L2 regularization)\\
+        GroupKFold (\(n=5\))\\
+        Ensemble summary: 10 seeds} \\
+        \addlinespace[2pt]
+        \makecell[l]{m-model\\(treatment\\ nuisance)} &
+        \acs{nn} &
+        \makecell[l]{\acs{ti}, \acs{rh},\\ \acs{clo}, \acs{met}} &
+        \makecell[l]{Individual-specific \\ probability of answering \\ ``No change'' in \ac{tpv}} &
+        \makecell[l]{Participant-specific\\ survey responses\\ with fold-safe training} &
+        \makecell[l]{\texttt{hidden\_layer\_sizes=(8,)}\\
+        \(\alpha=0.5\) (L2 regularization)\\
+        \texttt{max\_iter=1000}\\
+        GroupKFold (\(n=5\))\\
+        Ensemble summary: 10 seeds} \\
+        \addlinespace[2pt]
+        \makecell[l]{m-model\\(treatment\\ nuisance)} &
+        \acs{rf} &
+        \makecell[l]{\acs{ti}, \acs{rh},\\ \acs{clo}, \acs{met}} &
+        \makecell[l]{Individual-specific \\ probability of answering \\ ``No change'' in \ac{tpv}} &
+        \makecell[l]{Participant-specific\\ survey responses\\ with fold-safe training} &
+        \makecell[l]{\texttt{n\_estimators=50}\\
+        \texttt{max\_depth=3}\\
+        GroupKFold (\(n=5\))\\
+        Ensemble summary: 10 seeds} \\
+        \addlinespace[2pt]
+        \makecell[l]{g-model\\(outcome\\ nuisance)} &
+        \acs{nn} &
+        \makecell[l]{\acs{ti}, \acs{rh},\\ \acs{clo}, \acs{met}} &
+        \makecell[l]{Pooled-survey \\ probability of answering \\ ``No change'' in \ac{tpv}} &
+        \makecell[l]{All survey responses\\ with participant identity\\ distinguished in the\\ pooled outcome model} &
+        \makecell[l]{\texttt{hidden\_layer\_sizes=(16,8)}\\
+        \(\alpha=0.1\)\\
+        \texttt{max\_iter=1000}\\
+        GroupKFold (\(n=5\))\\
+        Outcome residuals averaged over 10 seeds} \\
+        \bottomrule
+    \end{tabularx}
+
+    \medskip
+
+    \raggedright
+    \scriptsize
+    Treatment nuisance learning is family-specific because the treatment variable is a PCM-derived comfort probability.
+    Fold-safe participant-level predictions are first generated and are then aggregated into the static, daily, and real-time group comfort representations.
+\end{table*}
