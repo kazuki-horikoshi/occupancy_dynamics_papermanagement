@@ -53,7 +53,7 @@ $T_{\mathrm{set}}$ is manipulated experimentally to collect data.
 This study has been approved by the National University of Singapore Institutional Review Board (NUS-IRB Reference Code: NUS-IRB-2025-498).
 Informed consent were obtained from all participants prior to the study.
 All location and survey data were anonymized by the building administrator before being accessed by the research team to protect privacy. 
-Considering the actual survey amount, survey answers and location tracking data of \textbf{39} participants are finally used. 
+Considering the actual survey amount, survey answers and location tracking data of 39 participants are finally used. 
 
 \subsection{Analysis target Group Comfort Models}
 This study compares three \acp{gcm} that differ in the timescale at which individual \acp{pcm} are aggregated: a \ac{sgcm}, a \ac{dgcm}, and a \ac{rtgcm}.
@@ -61,8 +61,8 @@ The \ac{sgcm} aggregates the \acp{pcm} of the room's registered regular members 
 The \ac{dgcm} aggregates the \acp{pcm} of the occupants who attended on a given day and is updated at the daily timescale.
 The \ac{rtgcm} aggregates the \acp{pcm} of the occupants actually present at each control update and is therefore the highest-resolution representation.
 
-Each occupant $i$ has a time-invariant preferred temperature $\theta_i$ obtained from the \ac{pcm} (so $\theta_i \equiv T_i^p$).
-Let $S_t$ denote the set of occupants present at time $t$, and let $R$ and $A_d$ denote the sets of regular members and daily attendees, respectively.
+% Each occupant $i$ has a time-invariant preferred temperature $\theta_i$ obtained from the \ac{pcm} (so $\theta_i \equiv T_i^p$).
+% Let $S_t$ denote the set of occupants present at time $t$, and let $R$ and $A_d$ denote the sets of regular members and daily attendees, respectively.
 
 \subsection{Analysis 1:Response-Level Causality Analysis of Comfort Representations}
 \label{subsec:causality_analysis}
@@ -70,6 +70,7 @@ Let $S_t$ denote the set of occupants present at time $t$, and let $R$ and $A_d$
 \subsubsection{Double machine learning framework for comfort representation analysis.}
 The objective of Analysis 1 is to evaluate whether different level of room-level comfort representations are informative of actual occupant comfort after accounting for the observed indoor and occupancy conditions.
 For this purpose, a \ac{dml}-based residualization framework is adopted.
+\autoref{fig:CausalPrfm}\autoref{fig:generalDML} illustrates the general idea of \ac{dml} in the context of this study.
 \ac{dml} is a causal inference approach that separates the effect of interest from high-dimensional confounding by first estimating nuisance functions for the outcome and treatment, and then performing the target regression on their residual components\cite{chernozhukov_doubledebiased_2018}.
 In the present study, this framework is used not to estimate the effect of a manipulated intervention, but to examine whether different \acp{gcm} remain associated with actual comfort beyond what can already be explained by the observed covariates.
 
@@ -108,9 +109,10 @@ In this study, the resulting coefficient is used as a measure of how consistentl
     \label{fig:CausalPrfm}
 \end{figure}
 
-
 \subsubsection{Causality modeling}
 To complement the occupancy-pattern and simulation analyses, a response-level comparison of alternative comfort representations are conducted using the field observations.
+\autoref{fig:CausalPrfm}\autoref{fig:DMLflow} depicts the specific data and analysis flow for this comfort representation analysis.
+
 The unit of analysis is an individual survey response.
 A session is defined as the combination of date, merged time slot, and room.
 The binary outcome, actual comfort, is defined as
@@ -204,7 +206,7 @@ From each participant’s \ac{pcm}, individual metrics are derived:
 % \]
 % Here, $T_{\mathrm{static}}$, $T_{\mathrm{daily}}(d)$, and $\mu_t$ correspond to the \ac{sgcm}, \ac{dgcm}, and \ac{rtgcm}, respectively.
 
-\subsubsection{Evaluation Metrics: Comfort Related}
+\subsubsection{Evaluation Metrics: Comfort-Related}
 \label{subsec:coverage}
 % Objective: fraction of person-time within personal comfort ranges, without model-based smoothing.
 
