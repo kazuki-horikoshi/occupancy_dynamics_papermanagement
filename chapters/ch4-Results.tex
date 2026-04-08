@@ -1,49 +1,3 @@
-\subsection{Causality}
-\SetPicSubDir{ch4-Results/causality}
-\label{subsec:causality}
-
-\autoref{fig:partialR2} compares the \ac{pr2} and \ac{ic} of the \ac{sgcm}, \ac{dgcm} and \ac{rtgcm} across different subsample sizes ($k$) within each of the three model classes.
-In both cases, \ac{pr2} decreases as $k$ increases.
-At small subsample sizes ($k = 1$--4), the \ac{rtgcm} consistently shows stronger convergence than the \ac{dgcm} and \ac{sgcm}.
- and \ac{sgcm}.
-This suggests that the \ac{rtgcm} adds greater information beyond the environmental and personal covariates, flollowed by \ac{dgcm} and \ac{dgcm}in \ac{logit} and \ac{nn}, the \ac{pr2} of the \ac{rtgcm} of \ac{dgcm} and \ac{sgcm} around 0.1, indicating that their incremental value shrinked, while the case of \ac{rf} remains more meaningful around these values.
-flollowed by \ac{dgcm} and.
-For $k = 4$--5 in \ac{logit} and \ac{nn}, the \ac{pr2} of the three modebecomes similar to values of \ac{dgcm} and \ac{sgcm} around 0.1, indicating that their incremental value shrinked, while the case of \ac{rf} remains more meaningful around these values.
-When $k$ increases to 7--8, the \ac{pr2} of the three models approaches zero and, indicating that their incremental value diminishes when the session sample size is sufficiently large.
-
-\autoref{fig:IncrementAccu} also shows the \ac{ic} of the three models across different subsample sizes ($k$).
-The trend is similar to that of \ac{pr2}, with the \ac{rtgcm} showing higher \ac{ic} at smaller $k$ values, but the differences between models diminish as $k$ increases.
-
-% \begin{figure}[pos=htbp!]
-%     \centering
-%     \includegraphics[width=0.97\linewidth]{\Pic{png}{section14_partial_r2_noocc_model_compare_cap10}}
-%     \caption{\acs{pr2}}
-%     \label{fig:partialR2}
-% \end{figure}
-
-\begin{figure}[pos=htbp!]
-    \centering
-    \begin{subfigure}{0.97\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{section23_realized_k_partial_r2}}
-        \caption{\acs{pr2} along different size of sessions}
-        \label{fig:partialR2}
-    \end{subfigure}
-
-    \medskip
-
-    \begin{subfigure}{0.97\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{section23_realized_k_partial_r2}}
-        \caption{Incrument accuracies along different size of sessions}
-        \label{fig:IncrementAccu}
-    \end{subfigure}
-    \caption{Causality analysis results along different number of session sizes}
-    \label{fig:CausalPrfm}
-\end{figure}
-
-These results suggest that the \ac{rtgcm} aligns with observed comfort votes when the occupancy count is relatively small, particularly below about six occupants, but that this advantage largely disappears when occupancy approaches eight occupants.
-
 \subsection{Agentic Simulation}
 \SetPicSubDir{ch4-Results/agentic/Result_GEARsimulation}
 As a first part of agentic simulation, realistic one-month simulation was conducted.
@@ -65,11 +19,11 @@ An example of daily temperature control and predicted comfort performance both o
 
     \begin{subfigure}{0.97\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
+        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbabilityImprovement}}
         \caption{Predicted comfort probability improvement from \ac{sgcm} to \ac{rtgcm} during one-month simulation period}
         \label{fig:realComfImp}
     \end{subfigure}
-    \caption{Causality analysis results along different number of session sizes}
+    \caption{Simulated mean comfort probability of each experiment participant through one-month simulation}
     \label{fig:GEARComfPrf}
 \end{figure}
 
