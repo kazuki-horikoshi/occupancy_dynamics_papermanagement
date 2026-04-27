@@ -1,8 +1,6 @@
 \SetPicSubDir{ch3-method}
 \label{sec:Method}
-This study consists of two phase analysis, useing data collected in a real-world office building.
-The first part is causality analysis which employees \ac{dml} to verify the consistency of different types of \ac{gcm} to actual comfort vote.
-The second part employes agentic-simulation analysis to explore the relationship between occupancy-related parameters to the effect of control performance based on different types of \ac{gcm}.
+This study consists of agentic-simulation analysis to explore the relationship between occupancy-related parameters to the effect of control performance based on different types of \ac{gcm} using data collected in a real-world office building.
 The overall procedural flow of this experiment is illustrated in \autoref{fig:ex_flow}.
 \begin{figure}[pos=htbp!]
     \centering
@@ -13,39 +11,41 @@ The overall procedural flow of this experiment is illustrated in \autoref{fig:ex
 
 \subsection{Collected Data}
 \label{subsec:DataCollect}
-For both analysis, three primary types of field data were collected: real-time occupancy logs, subjective thermal comfort surveys and environmental measurement logs.
+For the analysis, three primary types of field data were collected: real-time occupancy logs, subjective thermal comfort surveys and environmental measurement logs.
 
-\subsubsection{Occupancy Log Tracking}
-Dynamic occupancy patterns will be reconstructed from anonymized, timestamped location data provided by the building's management system.
+\subsection{Individual-level location tracking log}
+Individual-level location tracking log are reconstructed from anonymized, timestamped location data provided by the \ac{bms}.
 From a raw stream of access events, a structured “stay log” is generated to represent continuous periods of presence for each participant in each room.
 The resulting log, which contains an anonymized ID, location, and start–end times, is then used to compute occupancy metrics.
 The detailed procedure for this reconstruction is described in~\autoref{app:occupancy_reconstruction}.
 
-\subsubsection{Thermal Comfort Survey}
-Subjective survey answers were collected via a brief web survey during work hours. 
+\paragraph{Thermal Comfort Survey}
+Subjective \ac{tcv} survey answers were collected via a brief web survey during work hours. 
 Items and scales follow ANSI/ASHRAE Standard 55:2023, Appendix~L \cite{ashrae_ansiashrae_2022}.
 The survey contents are summarized in \autoref{table:comfsurvey}.
 
-To ensure sufficient variability, indoor setpoints were cycled between \qtyrange{22}{27}{\celsius} in \qty{1}{\celsius} steps, with randomized order across days.  
+To ensure sufficient variability of answers, indoor \ac{ti} setpoints were cycled between \qtyrange{22}{27}{\celsius} in \qty{1}{\celsius} steps, with randomized order across days.  
 On selected days, morning and afternoon setpoints differed to expand diversity.  
-Participants were prompted with a target of 4–6 responses per workday.  
 Responses within 20 minutes of room entry were excluded to avoid thermal transient effects.
 
-\subsubsection{Indoor Environmental Measurements}
-Indoor environmental data were monitored in parallel with occupancy and survey data.
+Participants were prompted up to six times per workday, three times in morning and three times in afternoon.
+Over the one-month observation period, more than 2000 survey responses were collected in total.
+The survey responses were later classified into sessions defined by room, date, and merged survey timeslot.
+
+\paragraph{Indoor Environmental Measurements}
+Indoor environmental data were monitored in parallel with \ac{tcv} survey data.
 The primary measurements were \ac{ti} and \ac{rh}, obtained from the \ac{bms} and compact sensors installed in the target rooms.
-In addition, measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}) were recorded periodically as diagnostic checks rather than as model inputs.
+In addition, measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}) were recorded periodically as diagnostic checks rather than as main focus of the analysis.
 
 \subsection{Target Building and Spaces}
 \label{sec:TargetBuil}
 The data collection was conducted at The GEAR, an R\&D and administrative office building operated by Kajima Corporation, from 29 September to 24 October 2025 (4 weeks).
-The 3rd to 6th floors, which accommodate a mix of ABW and static seating work styles depending on departmental roles, are the target areas for data collection.
+The 3rd to 6th floors, which accommodate a mix of shared-office and static seating work styles depending on departmental roles, are the target areas for data collection.
 Data collection was limited to the following rooms to capture a variety of occupancy patterns:
 3F: Office 3A, Office 3B; 5F: Katris Office, KD Office, Shared Office 1, Shared Office 2; 6F: ILYA Office.
 
-The target zones are served by a central air conditioning system using variable air volume (VAV) capable of individual zone control.
+The target zones are served by a central air conditioning system consistting of air-handling unit and dedicated outdoor air handling unit, using variable air volume (VAV) capable of individual zone control.
 In this study, the controlled variable is the zone air temperature setpoint ($T_{\mathrm{set}}$). 
-The \ac{bms} regulates the terminal unit such as airflow dampers or valve positions to maintain the measured \ac{ti} at the target $T_{\mathrm{set}}$.
 $T_{\mathrm{set}}$ is manipulated experimentally to collect data.
 
 \subsection{Participant Recruitment and Ethical Considerations}
@@ -60,9 +60,6 @@ This study compares three \acp{gcm} that differ in the timescale at which indivi
 The \ac{sgcm} aggregates the \acp{pcm} of the room's registered regular members and yields one fixed room-level representation over the study period.
 The \ac{dgcm} aggregates the \acp{pcm} of the occupants who attended on a given day and is updated at the daily timescale.
 The \ac{rtgcm} aggregates the \acp{pcm} of the occupants actually present at each control update and is therefore the highest-resolution representation.
-
-% Each occupant $i$ has a time-invariant preferred temperature $\theta_i$ obtained from the \ac{pcm} (so $\theta_i \equiv T_i^p$).
-% Let $S_t$ denote the set of occupants present at time $t$, and let $R$ and $A_d$ denote the sets of regular members and daily attendees, respectively.
 
 \subsection{Occupancy-log-based agentic comfort simulation}
 \subsubsection{Simulation Design}

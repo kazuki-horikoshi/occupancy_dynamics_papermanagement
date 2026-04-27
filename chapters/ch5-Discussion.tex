@@ -10,4 +10,24 @@ In their study, improvemnent of thermal comfort converge to nearly two percent a
 
 
 The results indicates that the benefit of introduces real-time conrol models remain over 10\% in comparison with baseline(same temperature to be 24 degree) control in rooms with relatively larger number of users.
-However, the benefit of using such control models areaffected by various components such as sparcety of occupancy as shown in Figure \ref{fig:}, and occupancy dynamics such show in \autoref{}.
+
+However, the benefit of using such control models are affected by various components such as sparcety of occupancy as shown in Figure \ref{fig:}, and occupancy dynamics such show in \autoref{}.
+
+\subsection{Effect of occupancy parameters to comfort achievement}
+
+As examined in \autoref{subsec:controleffect}, in the wide range of sub-group size and occupancy condition, adjustment range is over \qty{1.0}{\celsius}.
+Even at the large size of k and higher size of mean occupancy, the adjustment range is over \qty{0.5}{\celsius}.
+The results indicate that the required temperature adjustment range used in \ac{rt-gcm} control would large compared to the thermostat control, which is commonly \qty{0.5}{\celsius}.
+As shown in \autoref{subsec:ComfPerf} the benefit of comfort performance of \ac{rt-gcm} control from the baseline control remains at the large size of sub-group approximately \qty{10}{\percent}.
+In this simulation, it is assumed that control temperature can be adjusted with the resolution of \qty{0.1}{\celsius}.
+
+In control nature, it means that as the resolution of adjustable temperature is sufficiently high, the achievable comfort performance would be also higher.
+This indicate introducing \ac{rt-gcm}-based control would be able to achieve better comfort performance than \ac{sgcm} or \ac{dgcm} in more higher-resolution control system, even at common control adjustment step \qty{0.5}{\celsius}.
+
+As examined in \autoref{fig:CtrlWindowRatio}, \ac{utr} has strong effect to the probability of required temperature adjustment.
+Also in \autoref{fig:UTRexamples}, the different trend is observed between shared office and seat-assigned office such as KD.
+As observed, the shared-offices marks dynamic range of \ac{utr}, while offices generally marks lower values such as 0.2 to 0.4.
+From these analysises, it is indicated that shared-type offices may have more opportunities compared to standard offices.
+Also some offices have specific weekly pattern of \ac{utr} as observed, in the KD and shared office 2.
+In actual operation, these offices have group meetings outside the target office rooms on Monday afternoon.
+\ac{utr} is able to follow such office dunamic usage pattern, indicating the effectiveness of using \ac{rt-gcm} at such offices.

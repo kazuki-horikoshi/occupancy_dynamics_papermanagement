@@ -1,50 +1,23 @@
-\subsection{Agentic Simulation}
-\SetPicSubDir{ch4-Results/agentic/Result_GEARsimulation}
-As a first part of agentic simulation, realistic one-month simulation was conducted.
-This case is based on actual combination of occupancy logs and comfort models with survey participants.
-An example of daily temperature control and predicted comfort performance both on \ac{sgcm} and \ac{rtgcm} is shown in \autoref{fig:OpeExampls}.
-
-\autoref{fig:GEARComfPrf}\subref{fig:realComfPro} shows the simulated comfort probability on \ac{sgcm} and \ac{rtgcm} during one-month simulation period. \autoref{fig:GEARComfPrf}\subref{fig:realComfImp} shows the predicted comfort probability improvement from \ac{sgcm} to \ac{rtgcm} during one-month simulation period.
-
-\begin{figure}[pos=htbp!]
-    \centering
-    \begin{subfigure}{0.97\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
-        \caption{Simulated comfort probability on \ac{sgcm} and \ac{rtgcm} during one-month simulation period}
-        \label{fig:realComfPro}
-    \end{subfigure}
-
-    \medskip
-
-    \begin{subfigure}{0.97\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbabilityImprovement}}
-        \caption{Predicted comfort probability improvement from \ac{sgcm} to \ac{rtgcm} during one-month simulation period}
-        \label{fig:realComfImp}
-    \end{subfigure}
-    \caption{Simulated mean comfort probability of each experiment participant through one-month simulation}
-    \label{fig:GEARComfPrf}
-\end{figure}
-
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{ComfortAcrossRooms}}
-    \caption{Comfort probabiity ratio across office rooms and whole building on \ac{sgcm} and \ac{rtgcm}}
-    \label{fig:GEARComfPrfRoom}
-\end{figure}
-
+\subsection{Comfort performance across different resolution of \ac{gcm}}
 
 \SetPicSubDir{ch4-Results/agentic/Result_Agentic}
-\label{subsec:AgenticSim}
+\label{subsec:ComfPerf}
 
-Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows the comfort achievement ratio for different subgroup sizes across four office rooms. Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows the improvement ratio relative to the baseline control ($24^\circ\mathrm{C}$) across subgroup sizes.
+Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows the comfort achievement ratio using \ac{sgcm}, \ac{dgcm} and {rt-gcm} for different subgroup sizes across four office rooms.
+Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows its improvement from the baseline control, that is assumed to be operated at \qty{24}{\celsius} through office hours.
 
-Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} and Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} show that the benefit of the \ac{sgcm} rapidly converges to zero in smaller rooms, especially those with 3--4 users. In contrast, the \ac{rtgcm} and \ac{dgcm} maintain a certain level of improvement even at the maximum room sizes considered, which range from 6 to 10 users. The performance gap between the \ac{dgcm} and \ac{rtgcm} widens as room size increases. This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
+The performance of \ac{rt-gcm} and \ac{dgcm} shows decreasing trend with similar ratio as subgroup size increases.
+while the performance of \ac{sgcm} shows more rapid decrease as subgroup size increases.
+In small size of subgroup such as 2--3, the comfort achievement ratio using \ac{rt-gcm} marks over \qtyrange{90}{95}{\percent}, while the control performance using \ac{dgcm} marks \qtyrange{80}{85}{\percent} with size of subgroup such as 2--5.
+
+The improvement of comfort achievement ratio based on the \ac{sgcm} rapidly  shrinks and converges to zero in larger rooms, especially those with 5--6 users.
+In contrast, the \ac{rtgcm} and \ac{dgcm} maintain a certain level of improvement from baseline even at the maximum room sizes considered, which range from 6 to 10 users.
+Although both \ac{dgcm} and \ac{rtgcm} keeps certain improvement of performance from baselines, the gap between the \ac{dgcm} and \ac{rtgcm} increases as room size expands.
+This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
 
 \begin{figure}[pos=htbp!]
     \centering
-    \begin{subfigure}{0.97\linewidth}
+    \begin{subfigure}{0.9\linewidth}
         \centering
         \includegraphics[width=\linewidth]{\Pic{png}{a6p_static_realtime_daily_by_subgroup}}
         \caption{Comfort achievement ratio with different comfort-representation controls}
@@ -53,7 +26,7 @@ Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} and Figure~\ref{fig:ComfAgenti
 
     \medskip
 
-    \begin{subfigure}{0.97\linewidth}
+    \begin{subfigure}{0.9\linewidth}
         \centering
         \includegraphics[width=\linewidth]{\Pic{png}{a6p_improvement_vs24_by_subgroup}}
         \caption{Comfort improvement relative to the baseline control}
@@ -63,33 +36,103 @@ Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} and Figure~\ref{fig:ComfAgenti
     \label{fig:ComfAgentic}
 \end{figure}
 
-\autoref{fig:MeanOccuConf} shows the improvement ratio relative to the baseline control ($24^\circ\mathrm{C}$) as a function of daily mean occupancy. The figure presents the relationship between daily mean occupancy and improvement for the real-time and static group comfort models using density contours and fitted linear regression lines. Most observations are concentrated in regions where the improvement ratio is below 20\%. The fitted lines further indicate that the real-time group comfort model is more effective under sparse occupancy conditions. As mean occupancy increases to around 4--5 occupants, the improvement ratio approaches zero. This suggests that, even when room size (subgroup size) is fixed, the actual mean occupancy level still affects the achievable improvement.
+% \autoref{fig:MeanOccuConf} shows the improvement ratio relative to the baseline control ($24^\circ\mathrm{C}$) as a function of daily mean occupancy. The figure presents the relationship between daily mean occupancy and improvement for the real-time and static group comfort models using density contours and fitted linear regression lines. Most observations are concentrated in regions where the improvement ratio is below 20\%. The fitted lines further indicate that the real-time group comfort model is more effective under sparse occupancy conditions. As mean occupancy increases to around 4--5 occupants, the improvement ratio approaches zero. This suggests that, even when room size (subgroup size) is fixed, the actual mean occupancy level still affects the achievable improvement.
+
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis72_mean_occupancy_contour_all_k4_k6_k8}}
+%     \caption{Improvement ratio relative to the baseline control across daily mean occupancy levels}
+%     \label{fig:MeanOccuConf}
+% \end{figure}
+
+\subsection{Effect to Control Adjustment}
+\label{subsec:controleffect}
+In previous subsection, the comfort performance of \ac{rt-gcm} is shown to keep higher by \qtyrange{15}{30}{percent} compared to \ac{sgcm} across room member sizes.
+This subsection investigates the effect of \ac{rt-gcm} to control adjustment.
+Since {sgcm} and {dgcm} assumes static occupant composition, the comtrol adjustment is only required in \ac{rt-gcm}-based control.
+
+\autoref{fig:DynSpStepHist} shows the distribution of temperature adjustment magnitudes under the \ac{rt-gcm} across daily mean occupancy.
+As daily occupancy increases, the range of temperature adjustment maginitude slowly shrinks.
+However, the mean value keeps approximately around \qty{1.0}{\celsius}even at the highest occupancy levels.
+
+Similarly \autoref{fig:DynSpStepHeatmap} shows the distribution of temperature adjustment magnitudes showed in distribution of subgroup-size and mean occupancy ratio at the control timestep.
+The magnitude of this temperature range shrinks on both increase of sub-group size and mean occupancy ratio.
+At small subgroup size such as $k=4$, the mean adjustment magnitude is over \qty{1.0}{\celsius} in most cases.
+
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis72_mean_occupancy_contour_all_k4_k6_k8}}
-    \caption{Improvement ratio relative to the baseline control across daily mean occupancy levels}
-    \label{fig:MeanOccuConf}
-\end{figure}
-
-\subsection{Implications for Control Adjustment}
-
-\autoref{fig:DynSpStepHist} shows the distribution of temperature adjustment magnitudes under the dynamic group comfort model across different subgroup sizes.
-
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis8_dyn_sp_mean_abs_step_when_changed_hist_all_k4_k6_k8}}
+    \includegraphics[width=0.8\linewidth]{\Pic{png}{analysis23_mean_occupancy_moving_quantile_dynamic_sp_mean_abs_step_when_changed_expanded_pool_overlap_dense_only}}
     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
     \label{fig:DynSpStepHist}
 \end{figure}
 
-\autoref{fig:CtrlWindowRatio} shows the relationship between the daily standard deviation of occupancy count and the ratio of timesteps requiring a temperature adjustment greater than $0.5^\circ\mathrm{C}$.
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.8\linewidth]{\Pic{png}{analysis23_k_normalized_mean_occupancy_mean_abs_step_when_changed_heatmap_regime_style_expanded_pool_overlap_dense_ybins05pct_kle16_minn20}}
+    \caption{Mapping of temperature adjustment magnitude over sub-group size and mean occupancy ratio}
+    \label{fig:DynSpStepHeatmap}
+\end{figure}
+
+
+\autoref{fig:CtrlWindowRatio} shows the probability of temperature adjustment event with over \qty{0.5}{\celsius}, with different size of \ac{utr}.
+It is observed that as \ac{utr} increases, the probabillity of required temperature adjustment also increases, th the highest range such as 0.7--0.8, the probability of temperature adjustment reaches to \qty{90}{\percent}.
+
+\autoref{fig:UTRexamples} shows the mean \ac{utr} transition along time of the day, showed as mean value of each weekday in four offices.
+Generally \ac{utr} marks the highest values around \DTMtime{08:00:00} to \DTMtime{08:30:00} and around \DTMtime{17:30:00} to \DTMtime{18:00:00}, which are the typical time for occupants to arrive and leave the office respectively.
+Also, \ac{utr} marks higher value at lunchtime around \DTMtime{12:00:00} to \DTMtime{13:00:00}, in shared offices and Katris office.
+In shared office and 1 and 2, the values transit more dynamicaly than KD office during office hours.
+\ac{utr} marks higher value around 1.0 on Mondays in Katris office, and in Shared office 2 \ac{utr} marks approximately 0.8 on Mondays.
+Except these cases, the \ac{utr} values are generally between 0.2 to 0.5.
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis8_action_window_contour_sd_occupancy_all_k4_k6_k8}}
+    \includegraphics[width=0.9\linewidth]{\Pic{png}{analysis25_utr30_endpoint_k_scaling_step_rate_full_confirm_rng_k16_trial1_1000_combined_20260416_073500}}
     \caption{Relationship between daily occupancy-count standard deviation and the ratio of required control actions}
     \label{fig:CtrlWindowRatio}
 \end{figure}
 
-The figure includes separate cases for each room size ($k = 4, 6, 8$) as well as the pooled sample. A clear positive trend is observed: as the standard deviation of occupancy count increases, the share of timesteps requiring control action also increases. This indicates that larger occupancy fluctuations lead to more frequent setpoint adjustments. The trend is more pronounced for larger room sizes, especially at $k = 8$, where many observations cluster around an occupancy-count standard deviation of about 1.5 and a control-required window ratio of about 20\%.
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.9\linewidth]{\Pic{png}{analysis25_utr30_rolling_representative_k_separate_room_panels_30min_full_confirm_rng_k16_trial1_1000_combined_20260416_073500}}
+    \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
+    \label{fig:UTRexamples}
+\end{figure}
+
+
+
+% removed
+% \SetPicSubDir{ch4-Results/agentic/Result_GEARsimulation}
+% As a first part of agentic simulation, realistic one-month simulation was conducted.
+% This case is based on actual combination of occupancy logs and comfort models with survey participants.
+% An example of daily temperature control and predicted comfort performance both on \ac{sgcm} and \ac{rtgcm} is shown in \autoref{fig:OpeExampls}.
+
+% \autoref{fig:GEARComfPrf}\subref{fig:realComfPro} shows the simulated comfort probability on \ac{sgcm} and \ac{rtgcm} during one-month simulation period. \autoref{fig:GEARComfPrf}\subref{fig:realComfImp} shows the predicted comfort probability improvement from \ac{sgcm} to \ac{rtgcm} during one-month simulation period.
+
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \begin{subfigure}{0.97\linewidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
+%         \caption{Simulated comfort probability on \ac{sgcm} and \ac{rtgcm} during one-month simulation period}
+%         \label{fig:realComfPro}
+%     \end{subfigure}
+
+%     \medskip
+
+%     \begin{subfigure}{0.97\linewidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbabilityImprovement}}
+%         \caption{Predicted comfort probability improvement from \ac{sgcm} to \ac{rtgcm} during one-month simulation period}
+%         \label{fig:realComfImp}
+%     \end{subfigure}
+%     \caption{Simulated mean comfort probability of each experiment participant through one-month simulation}
+%     \label{fig:GEARComfPrf}
+% \end{figure}
+
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \includegraphics[width=0.97\linewidth]{\Pic{png}{ComfortAcrossRooms}}
+%     \caption{Comfort probabiity ratio across office rooms and whole building on \ac{sgcm} and \ac{rtgcm}}
+%     \label{fig:GEARComfPrfRoom}
+% \end{figure}
