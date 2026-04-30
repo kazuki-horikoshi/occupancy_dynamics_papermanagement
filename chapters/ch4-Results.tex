@@ -3,21 +3,24 @@
 \SetPicSubDir{ch4-Results/agentic/Result_Agentic}
 \label{subsec:ComfPerf}
 
-Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows the comfort achievement ratio using \ac{sgcm}, \ac{dgcm} and {rt-gcm} for different subgroup sizes across four office rooms.
+Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows the comfort achievement ratio using \ac{sgcm}, \ac{dgcm} and {rtgcm} for different subgroup sizes across four office rooms.
 Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows its improvement from the baseline control, that is assumed to be operated at \qty{24}{\celsius} through office hours.
+Across all rooms, the baseline control remained nearly constant at approximately \qtyrange{65}{70}{\percent} across subgroup sizes.
+The \ac{rtgcm} shows the highest comfort achievement ratio for every room and subgroup size,followed by \ac{dgcm} and then \ac{dgcm}.
+The performance of \ac{rtgcm} and \ac{dgcm} shows decreasing trend with similar ratio as subgroup size increases, while the performance of \ac{sgcm} shows more modest decrease as subgroup size increases.
+The mean comfort achievement ratio across rooms ranged approximately  \qtyrange{80}{98}{\percent} for the \ac{rtgcm}, \qtyrange{75}{95}{\percent} for the \ac{dgcm}, and \qtyrange{65}{73}{\percent} for the \ac{sgcm}.
 
-The performance of \ac{rt-gcm} and \ac{dgcm} shows decreasing trend with similar ratio as subgroup size increases.
-while the performance of \ac{sgcm} shows more rapid decrease as subgroup size increases.
-In small size of subgroup such as 2--3, the comfort achievement ratio using \ac{rt-gcm} marks over \qtyrange{90}{95}{\percent}, while the control performance using \ac{dgcm} marks \qtyrange{80}{85}{\percent} with size of subgroup such as 2--5.
+The improvement relative to the 24 \si{\celsius} baseline decreased as subgroup size increased.
+\ac{sgcm} improvement approaches zero in larger rooms, especially around subgroup size of 5--7 users.
 
-The improvement of comfort achievement ratio based on the \ac{sgcm} rapidly  shrinks and converges to zero in larger rooms, especially those with 5--6 users.
-In contrast, the \ac{rtgcm} and \ac{dgcm} maintain a certain level of improvement from baseline even at the maximum room sizes considered, which range from 6 to 10 users.
-Although both \ac{dgcm} and \ac{rtgcm} keeps certain improvement of performance from baselines, the gap between the \ac{dgcm} and \ac{rtgcm} increases as room size expands.
+In contrast, the \ac{rtgcm} and \ac{dgcm} maintain positive improvements at the largest tested subgroup size, with \ac{rtgcm} improvement remaining approximately \qtyrange{15}{20}{\percent} and \ac{dgcm} improvement approximately \qtyrange{5}{20}{\percent}.
+
+Although both \ac{dgcm} and \ac{rtgcm} keeps improvement of performance from baselines, the gap between the \ac{dgcm} and \ac{rtgcm} increases as room size expands.
 This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
 
 \begin{figure}[pos=htbp!]
     \centering
-    \begin{subfigure}{0.9\linewidth}
+    \begin{subfigure}{0.98\linewidth}
         \centering
         \includegraphics[width=\linewidth]{\Pic{png}{a6p_static_realtime_daily_by_subgroup}}
         \caption{Comfort achievement ratio with different comfort-representation controls}
@@ -45,13 +48,13 @@ This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic o
 %     \label{fig:MeanOccuConf}
 % \end{figure}
 
-\subsection{Effect to Control Adjustment}
+\subsection{Effect of \ac{rtgcm} to Control Adjustment}
 \label{subsec:controleffect}
-In previous subsection, the comfort performance of \ac{rt-gcm} is shown to keep higher by \qtyrange{15}{30}{percent} compared to \ac{sgcm} across room member sizes.
-This subsection investigates the effect of \ac{rt-gcm} to control adjustment.
-Since {sgcm} and {dgcm} assumes static occupant composition, the comtrol adjustment is only required in \ac{rt-gcm}-based control.
+In previous subsection, the comfort performance of \ac{rtgcm} is shown to keep higher by \qtyrange{15}{30}{percent} compared to \ac{sgcm} across room member sizes.
+This subsection investigates the effect of \ac{rtgcm} to control adjustment.
+Since {sgcm} and {dgcm} assumes static occupant composition, the comtrol adjustment is only required in \ac{rtgcm}-based control.
 
-\autoref{fig:DynSpStepHist} shows the distribution of temperature adjustment magnitudes under the \ac{rt-gcm} across daily mean occupancy.
+\autoref{fig:DynSpStepHist} shows the distribution of temperature adjustment magnitudes under the \ac{rtgcm} across daily mean occupancy.
 As daily occupancy increases, the range of temperature adjustment maginitude slowly shrinks.
 However, the mean value keeps approximately around \qty{1.0}{\celsius}even at the highest occupancy levels.
 
@@ -74,9 +77,10 @@ At small subgroup size such as $k=4$, the mean adjustment magnitude is over \qty
     \label{fig:DynSpStepHeatmap}
 \end{figure}
 
+\subsection{Effect of Occupancy dynamics to Control action frequency}
 
 \autoref{fig:CtrlWindowRatio} shows the probability of temperature adjustment event with over \qty{0.5}{\celsius}, with different size of \ac{utr}.
-It is observed that as \ac{utr} increases, the probabillity of required temperature adjustment also increases, th the highest range such as 0.7--0.8, the probability of temperature adjustment reaches to \qty{90}{\percent}.
+It is observed that as \ac{utr} increases, the probability of required temperature adjustment also increases, the highest range such as 0.7--0.8, the probability of temperature adjustment reaches to \qty{90}{\percent}.
 
 \autoref{fig:UTRexamples} shows the mean \ac{utr} transition along time of the day, showed as mean value of each weekday in four offices.
 Generally \ac{utr} marks the highest values around \DTMtime{08:00:00} to \DTMtime{08:30:00} and around \DTMtime{17:30:00} to \DTMtime{18:00:00}, which are the typical time for occupants to arrive and leave the office respectively.
