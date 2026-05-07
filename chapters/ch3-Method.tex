@@ -1,7 +1,7 @@
 \SetPicSubDir{ch3-method}
 \label{sec:Method}
-This study explores the occupant comfort performance of \ac{occ} employing three types of \ac{gcm} based on different occupancy resolution and the relationship between occupancy parameters and the control.
-To examine these, agentic-simulation framework is used based on data collected in a real-world office building.
+This study explores the occupant comfort performance of \ac{occ} employing three types of \ac{gcm} based on different occupancy resolution and the effect of occupancy dynamics on the control.
+To examine these purposes, agentic-simulation framework is used based on field data collected in a real-world office building.
 The overall procedural flow of the study is illustrated in \autoref{fig:ex_flow}.
 \begin{figure}[pos=htbp!]
     \centering
@@ -12,38 +12,40 @@ The overall procedural flow of the study is illustrated in \autoref{fig:ex_flow}
 
 \subsection{Data Collection}
 \label{subsec:DataCollect}
-For the analysis, three primary types of field data are collected in the target building: real-time occupancy logs, subjective thermal comfort surveys and environmental measurement logs.
+For the simulation, three primary types of field data were collected in the target building: real-time occupancy logs, subjective \ac{tcv} surveys and environmental measurement logs.
 
 \subsubsection{Target Building and Spaces}
 \label{sec:TargetBuil}
 The data collection was conducted at The GEAR, an R\&D and administrative office building located in Singapore, from 29 September to 24 October 2025 (4 weeks).
-The 3rd to 6th floors, which accommodate a mix of shared-office and static seating work styles depending on departmental roles, are the target areas for data collection.
+The 3rd to 6th floors, which accommodate a mix of shared-office and static seating work styles, are the target areas for data collection.
 Data collection was limited to the following rooms to capture a variety of occupancy patterns:
 3F: Office 3A, Office 3B; 5F: Katris Office, KD Office, Shared Office 1, Shared Office 2; 6F: ILYA Office.
 
-The target zones are served by a central air conditioning system consistting of air-handling unit and dedicated outdoor air handling unit, using variable air volume (VAV) capable of individual zone control.
-The controlled variable is the zone air temperature setpoint ($T_{\mathrm{set}}$). 
+The target zones are served by a central air conditioning system consisting of air handling units and dedicated outdoor air handling units, using variable air volume (VAV) units capable of individual zone temperature and ventilation control.
+The controlled variable is the zone air temperature setpoint. 
 
 \subsubsection{Thermal Comfort Survey}
-Subjective \ac{tcv} survey answers were collected via a brief web survey during work hours. 
+Subjective \ac{tcv} survey answers were collected via a web survey during work hours. 
 Items and scales follow ANSI/ASHRAE Standard 55:2023, Appendix~L \cite{ashrae_ansiashrae_2022}.
 The survey contents are summarized in \autoref{table:comfsurvey}.
 Responses within 20 minutes of room entry were excluded to avoid thermal transient effects.
-Participants were prompted up to six times per workday, three times in morning and three times in afternoon.
-Over the one-month observation period, more than 2000 survey responses were collected in total.
+Participants were prompted up to six times per workday: three times in the morning and three times in the afternoon.
+Over the one-month observation period, \qty{2608} survey responses were collected in total.
 
 \subsubsection{Indoor Environmental Measurements}
-Indoor environmental data are monitored in parallel with \ac{tcv} survey data.
+Indoor environmental data was monitored in parallel with \ac{tcv} survey.
 The primary measurements were \ac{ti} and \ac{rh}, obtained from the \ac{bms} and compact sensors installed in the target rooms.
-To ensure sufficient variability of survey answers, indoor \ac{ti} setpoints were cycled between \qtyrange{22}{27}{\celsius} in \qty{1}{\celsius} steps, with randomized order across days.  
-On selected days, morning and afternoon setpoints differed to expand diversity.  
+For rooms with two to three compact sensors, their mean value was used as a representative room-level value to reduce sensor-specific measurement bias.
+To ensure sufficient variability of survey answers, \ac{ti} setpoints were cycled between \qtyrange{22}{27}{\celsius} in \qty{1}{\celsius} steps, with a randomized order across days.  
+On selected days, morning and afternoon setpoints differed to expand diversity.
 In addition, measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}) were recorded periodically as diagnostic checks rather than as main focus of the analysis.
 % TO DO measurement equipment ONDOTORI
 
 \subsubsection{Individual-level location tracking log}
-Individual-level location tracking log are reconstructed from anonymized, timestamped location data obtained from the \ac{bms}.
-From a raw stream of zone-level access events, a structured “stay log” is generated to represent continuous periods of presence for each participant in each room.
-The resulting log, which contains an anonymized ID, location, and start–end times, is then used to compute occupancy metrics.
+Individual-level location data were obtained from anonymized, timestamped records provided through the \ac{bms}.
+The raw zone-level records were reconstructed into stay logs, where each entry represents a continuous period of presence by one participant in one room.
+Each stay-log entry contains an anonymized participant ID, room ID, start time, and end time.
+These stay logs provide the basis for constructing location-log agents in the simulation.
 The detailed procedure for this reconstruction is described in~\autoref{app:occupancy_reconstruction}.
 % TO DO: refine output to show as appendix, might be connected to how to show chapters in appendidices
 
@@ -56,20 +58,18 @@ Considering the actual survey amount, survey answers and location tracking data 
 
 \subsection{Occupancy-log-based agentic comfort simulation}
 \subsubsection{Simulation Design}
-Using collected \ac{tcv} data associated with environmental logs and location logs, \ac{pcm}s and location-log agent are constructed respectivelyfor each participant.
-Using these \ac{pcm}s and location-agents, a Monte Carlo-style repeated resampling simulation is conducted.
-Each location-agent is treated as an occupant proxy carrying an observed room-level presence record reconstructed from the stay logs over working days of one month.
-\textbf{The sample is shown in appendix.}
-
-Using location-agents, dynamic room occupant compositions and optmal temperature control based on different resolutions of \ac{gcm} generated by corresponding \ac{pcm}s are simulated.
-Using these dyanmic occupant compositions and \ac{gcm}s, three types of \ac{occ} policies are evaluated from comfort and control perspectives.
-
+Using the collected \ac{tcv} responses, environmental measurements, and reconstructed stay logs, two components were prepared for each participant: a \ac{pcm} and a location-log agent.
+The \ac{pcm} represents the participant's thermal preference response to indoor temperature, whereas the location-log agent preserves the participant's observed room-level presence pattern over the study period.
+In the simulation, these two components were intentionally separated so that comfort-response characteristics could be randomly reassigned to observed occupancy patterns.
+A Monte Carlo-style resampling simulation was then conducted by combining sampled location-log agents with randomly assigned \acp{pcm}.
+At each control timestep, the active location-log agents determined the simulated room occupant composition.
+Based on this composition, three \ac{gcm}-based \ac{occ} policies were evaluated from comfort and control perspectives.
 % TO DO: mention general room regular user agents are used
 
 \subsubsection{Personal Comfort Model (PCM)}
-Individual \acp{pcm} are developed for each participant to predict thermal preference based on \ac{ti}, which is sourced from compact indoor environment sensors located in the target room and the mean value of sensora is used to reduce senso-specific measuremet bias.
+Individual \acp{pcm} are developed for each participant to predict thermal preference based on room-level \ac{ti}.
 The \ac{pcm}s are developed using multinominal logistic classification, used in similar agentic-based thermal comfort simulations~\cite{jung_comparative_2019, jung_energy_2020}.
-The model predicts the probability distribution over three thermal preference classes: $S_{th} \in \{+1 (\text{Warmer}), 0 (\text{No change}), -1 (\text{Cooler})\}$.
+The model predicts the probability distribution over three thermal preference classes: $S_{th} \in \{+1 (\text{Warmer}), 0 (\text{No change}), -1 (\text{Cooler})\}$, using \ac{ti} as the primary feature.
 \begin{equation}
 P(S_{th} = s \mid t_i)\,.
 \label{eq:pcm_probability}
@@ -87,22 +87,24 @@ The \ac{rtgcm} aggregates the \acp{pcm} of the occupants actually present at eac
 \begin{figure}[pos=!bt]
     \centering
     \includegraphics[width=0.97\linewidth]{\Pic{png}{OverallFlow}}
-    \caption{Overall flow of simulation. Step1 (a)From room user pool, a subgroup of agents is sampled and PCMs are randomly assigned to the sampled agents. Step2(c) Based on the assigned PCMs and location logs,(d) Possibility curve of "No change" in thermal preference id merged based on three types of GCM at each control timestep (d) Setpoints are selected at the point where the aggregated comfort probability is maximized (e) The setpoints are evaluated by returning to the assigned PCMs and extracting the predicted ``No change'' probability from each PCMs}
+    \caption{Overall flow of simulation. Step1 (a)From room user pool, a subgroup of location-log agents is sampled and PCMs are randomly assigned to the sampled location-log agents. Step2(c) Based on the assigned PCMs and location logs,(d) Possibility curve of "No change" in thermal preference id merged based on three types of GCM at each control timestep (d) Setpoints are selected at the point where the aggregated comfort probability is maximized (e) The setpoints are evaluated by returning to the assigned PCMs and extracting the predicted ``No change'' probability from each PCMs}
     \label{fig:ComChara}
 \end{figure}
 
-Using \ac{pcm} and location-log agents, various combination of two proxies are tested over target rooms.
-To generate multiple realizations while preserving the original room usage patterns, subgroups of agents with moving logs are repeatedly sampled from each room's member pool, and individual \acp{pcm} are randomly reassigned to the selected proxies in each trial.
-Using the location-agents, room occupant compositions are simulated. 
-Each simulation trial first samples a subgroup of agents from the room member pool.
-The sampled agents retain their observed movement records, while \acp{pcm} are randomly assigned to the sampled agents in each trial.
-At each timestamp $t$, the subset of sampled agents who are present in room $r$ is denoted by $S_{r,t}$.
+Using the prepared location-log agents and \acp{pcm}, multiple realizations were generated for each target room.
+To generate multiple realizations while preserving the original room usage patterns, subgroups of location-log agents are repeatedly sampled from each room's member pool, and individual \acp{pcm} are randomly reassigned to the selected location-log agents in each trial.
+Each simulation trial first sampled a subgroup of location-log agents from the room's regular member pool.
+The subgroup size $K$ denotes the number of location-log agents sampled from the regular member pool of room $r$ in a simulation condition.
+For a given trial, $K$ remains fixed over the simulation period, whereas the realized occupancy count $N_{r,t}=|S_{r,t}|$ varies over time according to the observed stay logs.
+The sampled agents retained their observed stay logs, while \acp{pcm} were randomly assigned to them in that trial.
+This procedure preserved observed room usage patterns while varying the association between occupancy patterns and comfort-response characteristics.
+At each 30-minute control timestep $t$, the subset of sampled location-log agents who are present in room $r$ defined the active set $S_{r,t}$, and each policy selected the corresponding temperature setpoint from its \ac{gcm}.
 
-For each simulated realization, the three \acp{gcm} explained in the previous section are compared by aggregating the assigned \acp{pcm} at each timescale resolutions.
-Each group's comfort representation is formed by merging the individual ``No change'' probability curves of the assigned \acp{pcm}, and the corresponding setpoint is selected as the temperature that maximizes the aggregated comfort probability as formed below.
-
-Let $p_i(T)=P_i(S_{th}=0\mid T)$ denote the ``No change'' probability predicted by the \ac{pcm} assigned to agent $i$ at temperature $T$.
-For a group of agents $G$, the merged group comfort probability is defined as
+For each simulated realization, the three \acp{gcm} described above were compared by aggregating the assigned \acp{pcm} at different temporal resolutions.
+Each group comfort representation was formed by averaging the individual ``No change'' probability curves of the assigned \acp{pcm}.
+The corresponding setpoint was selected as the temperature that maximized the aggregated comfort probability.
+Let $p_i(T)=P_i(S_{th}=0\mid T)$ denote the ``No change'' probability predicted by the \ac{pcm} assigned to the location-log agents, indexed by $i$, at \acl{ti} $T$.
+For a group of \ac{gcm} $G$, the merged group comfort probability is defined as
 \begin{equation}
 \bar{p}_{G}(T)
 =
@@ -128,7 +130,7 @@ G_{r,d}^{\mathrm{Daily}} = A_{r,d},
 G_{r,t}^{\mathrm{RT}} = S_{r,t},
 \label{eq:policy_groups}
 \end{equation}
-where $R_r$ is the sampled room member group for room $r$, $A_{r,d}$ is the set of sampled agents who appear in room $r$ on day $d$, and $S_{r,t}$ is the set of sampled agents present at timestamp $t$.
+where $R_r$ is the sampled room member group for room $r$, $A_{r,d}$ is the set of sampled location-log agents who appear in room $r$ on day $d$, and $S_{r,t}$ is the set of sampled location-log agents present at timestamp $t$.
 The resulting policy setpoints are
 \begin{equation}
 T_{\mathrm{set}}^{\mathrm{Static}}(t)=T_{G_{r}^{\mathrm{Static}}}^{*},
@@ -141,48 +143,22 @@ T_{\mathrm{set}}^{\mathrm{RT}}(t)=T_{G_{r,t}^{\mathrm{RT}}}^{*},
 where $d(t)$ is the calendar day containing timestamp $t$.
 
 In addition to these three group-model-based policies, a fixed \qty{24}{\celsius} setpoint is used as an additional baseline.
-For each room and subgroup-size, \qty{1000} combinations of \ac{pcm} and location log agents are formed and one-month OCC simulations based on three types of \ac{gcm} are conducted.
+For each room and subgroup-size, \qty{1000} combinations of \ac{pcm} and location-log agents are formed and one-month OCC simulations based on three types of \ac{gcm} are conducted.
 
 
 \subsection{Evaluation Metrics}
-\subsubsection{Comfort-Related}
-\label{subsec:comfMetrics}
+\label{sec:EvalMet}
 
-Let $T_{\mathrm{set}}^{\mathrm{policy}}(t)$ denote the setpoint at time $t$ generated by policy $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{Dynamic}\}$.
-
-For each present agent $i\in S_{r,t}$, the setpoint generated by a policy is evaluated by returning to the assigned personal model and extracting the predicted ``No change'' probability:
-\begin{equation}
-q_{i,t}^{\mathrm{policy}}
-=
-p_i\!\left(T_{\mathrm{set}}^{\mathrm{policy}}(t)\right).
-\label{eq:comfort_probability_score}
-\end{equation}
-The room-day comfort probability is then computed as the person-time average:
-\begin{equation}
-\mathrm{CP}_{r,d}^{\mathrm{policy}}
-=
-\frac{
-\sum_{t\in\mathcal{T}_{r,d}}
-\sum_{i\in S_{r,t}}
-q_{i,t}^{\mathrm{policy}}
-}{
-\sum_{t\in\mathcal{T}_{r,d}}
-|S_{r,t}|
-}.
-\label{eq:comfort_probability_daily}
-\end{equation}
-Here, $\mathcal{T}_{r,d}$ is the ordered set of analysis timestamps for room $r$ on day $d$.
-Timestamps with no present agents do not contribute person-time comfort scores.
-
-\subsubsection{Evaluation Metrics: Occupancy Related}
+\subsubsection{Occupancy-related evaluation parameters}
 \label{sec:OccuMetrics}
 \autoref{table:OccuMetrics} in~\autoref{app:OccupancyStudy} summarizes occupancy-related literature and metrics after COVID-19.
-While many studies emphasize occupancy count and related parameters, this study also considers variability parameters that reflect individual differences in preferred setpoints.
-Let $\mathcal{T}_{r,d}$ denote the ordered set of analysis timestamps for room $r$ on day $d$, and let $S_{r,t}$ denote the set of sampled agents present in room $r$ at timestamp $t$.
+While many studies emphasize occupancy count and related parameters, this study also considers occupancy variability parameters that reflect transition of occupancy composition.
+Let $\mathcal{T}_{r,d}$ denote the ordered set of analysis timestamps for room $r$ on day $d$, and let $S_{r,t}$ denote the set of sampled location-log agents present in room $r$ at timestamp $t$.
 The realized occupancy count is $N_{r,t}=|S_{r,t}|$.
-The subgroup size $K$ is the number of sampled agents in a simulation condition, whereas $N_{r,t}$ is the number of those agents actually present at timestamp $t$.
 
-\paragraph{Occupancy count (target group size effect).}
+The subgroup size $K$ is the number of sampled location-log agents in a simulation condition, whereas $N_{r,t}$ is the number of those location-log agents actually present at timestamp $t$.
+
+\paragraph{Occupancy count}
 \begin{equation}
 N_{r,t} \;=\; |S_{r,t}|.
 \label{eq:Nt}
@@ -195,9 +171,8 @@ The daily mean occupancy is
 \sum_{t\in\mathcal{T}_{r,d}} N_{r,t}.
 \label{eq:mean_occ_daily}
 \end{equation}
-Larger realized groups average out individual preferences more strongly and are expected to reduce the difference between low- and high-resolution group models.
 
-\paragraph{Occupancy variability (variability of occupancy count).}
+\paragraph{Occupancy variability}
 To capture within-day fluctuations in room load, the daily standard deviation of realized occupancy count is used:
 \begin{equation}
 \sigma_{N,r,d}
@@ -209,9 +184,8 @@ To capture within-day fluctuations in room load, the daily standard deviation of
 }.
 \label{eq:occ_var}
 \end{equation}
-Greater variability indicates volatile attendance and is expected to increase the mismatch between fixed and real-time group aggregation.
 
-\paragraph{\ac{utr}.}
+\paragraph{User turnover rate}
 The short-horizon replacement of attendees is quantified using a rolling Jaccard turnover, denoted as \ac{utr}.
 For timestamp-level analysis, \ac{utr} is computed by comparing the current occupant set with the set observed 30 minutes earlier:
 \begin{equation}
@@ -242,44 +216,117 @@ For daily summaries, timestamp-level \ac{utr} values are averaged within each ro
 where $\mathcal{V}_{r,d}$ is the set of timestamps on day $d$ for which the 30-minute turnover is defined.
 The daily \ac{utr} captures how much the present group composition changes over short horizons, even when the occupancy count is similar.
 
-\subsubsection{Control Related}
-Among the three \acp{gcm} defined above, the \ac{rtgcm} setpoint $T_{\mathrm{set}}^{\mathrm{RT}}(t)$ is treated as the highest-resolution target and is compared with the \ac{sgcm} and \ac{dgcm} baselines.
-The deviations are
+
+\subsubsection{Comfort-related outcomes}
+\label{subsec:comfMetrics}
+
+Let $T_{\mathrm{set}}^{\mathrm{policy}}(t)$ denote the setpoint at time $t$ generated by $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{Dynamic}\}$.
+
+For each present member $i\in S_{r,t}$ of the location-log agents, the setpoint generated by a policy is evaluated by returning to the assigned \ac{pcm} and extracting the predicted ``No change'' probability:
 \begin{equation}
-\Delta T^{\mathrm{Static}}_t
-\;=\;
-T_{\mathrm{set}}^{\mathrm{RT}}(t)
--
-T_{\mathrm{set}}^{\mathrm{Static}}(t),
-\qquad
-\Delta T^{\mathrm{Daily}}_t
-\;=\;
-T_{\mathrm{set}}^{\mathrm{RT}}(t)
--
-T_{\mathrm{set}}^{\mathrm{Daily}}(t).
-\label{eq:deltaT_defs}
+q_{i,t}^{\mathrm{policy}}
+=
+p_i\!\left(T_{\mathrm{set}}^{\mathrm{policy}}(t)\right).
+\label{eq:comfort_probability_score}
 \end{equation}
-Unless stated otherwise, the magnitudes of $|\Delta T^{\mathrm{Static}}_t|$ and $|\Delta T^{\mathrm{Daily}}_t|$ will be analyzed.
+The room-day comfort probability is then computed as the person-time average:
+\begin{equation}
+\mathrm{CP}_{r,d}^{\mathrm{policy}}
+=
+\frac{
+\sum_{t\in\mathcal{T}_{r,d}}
+\sum_{i\in S_{r,t}}
+q_{i,t}^{\mathrm{policy}}
+}{
+\sum_{t\in\mathcal{T}_{r,d}}
+|S_{r,t}|
+}.
+\label{eq:comfort_probability_daily}
+\end{equation}
+Here, $\mathcal{T}_{r,d}$ is the ordered set of analysis timestamps for room $r$ on day $d$.
+Timestamps with no present location-log agents do not contribute person-time comfort scores.
 
+For comparison across the simulation period, daily room-level comfort probabilities were averaged over the analysis days and Monte Carlo trials for each room, subgroup size, and policy:
+\begin{equation}
+\overline{\mathrm{CP}}_{r,K}^{\mathrm{policy}}
+=
+\frac{1}{|\mathcal{M}_{r,K}|}
+\sum_{m\in\mathcal{M}_{r,K}}
+\frac{1}{|\mathcal{D}_{r,m}|}
+\sum_{d\in\mathcal{D}_{r,m}}
+\mathrm{CP}_{r,d,m}^{\mathrm{policy}} .
+\end{equation}
+where $m$ is the Monte Carlo trial index, $\mathcal{M}_{r,K}$ is the set of Monte Carlo trials for room $r$ and subgroup size $K$, $\mathcal{D}_{r,m}$ is the set of valid analysis days for room $r$ in trial $m$, and $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{RT},24\,^\circ\mathrm{C}\}$ denotes the evaluated control policy.
 
-% \begin{figure}[pos=!bt]
-%     \centering
-%     \includegraphics[width=0.97\linewidth]{\Pic{png}{ex1_analysis_flow}}
-%     \caption{Analysis of Baseline vs Dynamic comfort model Image}
-%     \label{fig:ex1analysis}
-% \end{figure}
+\subsubsection{Control-related outcomes}
+
+\paragraph{Setpoint adjustment magnitude}
+To quantify the control burden of the real-time policy, the setpoint adjustment from the previous control timestep is defined as
+\begin{equation}
+\delta T_{r,t}^{\mathrm{RT}}
+=
+T_{\mathrm{set}}^{\mathrm{RT}}(t)
+-
+T_{\mathrm{set}}^{\mathrm{RT}}(t-\Delta t),
+\qquad
+\left|\delta T_{r,t}^{\mathrm{RT}}\right|,
+\label{eq:rt_setpoint_step}
+\end{equation}
+where $\Delta t=\qty{30}{\minute}$ is the control timestep, $\delta T_{r,t}^{\mathrm{RT}}$ is the setpoint change required by the real-time policy from the previous control timestep, and $|\delta T_{r,t}^{\mathrm{RT}}|$ is its absolute adjustment magnitude.
+Because this analysis focuses on actual setpoint adjustments, the daily mean adjustment magnitude is computed only over timesteps with a non-negligible setpoint change.
+\begin{equation}
+\mathcal{C}_{r,d}^{+}
+=
+\left\{
+t\in\mathcal{C}_{r,d}
+\;:\;
+\left|\delta T_{r,t}^{\mathrm{RT}}\right| \geq \varepsilon
+\right\},
+\qquad
+\varepsilon=\qty{0.05}{\celsius}.
+\label{eq:changed_step_set}
+\end{equation}
+\begin{equation}
+\overline{|\delta T|}_{r,d,+}^{\mathrm{RT}}
+=
+\frac{1}{|\mathcal{C}_{r,d}^{+}|}
+\sum_{t\in\mathcal{C}_{r,d}^{+}}
+\left|\delta T_{r,t}^{\mathrm{RT}}\right|,
+\label{eq:rt_mean_abs_step_when_changed_daily}
+\end{equation}
+where $\mathcal{C}_{r,d}$ is the set of timestamps on day $d$ in room $r$ for which both $T_{\mathrm{set}}^{\mathrm{RT}}(t)$ and $T_{\mathrm{set}}^{\mathrm{RT}}(t-\Delta t)$ are defined, $\mathcal{C}_{r,d}^{+}$ is the subset of valid control timesteps with a non-negligible setpoint change, and $\overline{|\delta T|}_{r,d,+}^{\mathrm{RT}}$ is the mean absolute adjustment magnitude when the setpoint changes.
+
+\paragraph{Action-needed window ratio}
+For the Results analysis of control action frequency, the main actionable metric is the 30-minute action-needed window ratio.
+For the 30-minute decision-window analysis, the real-time setpoint is first rounded to the nearest \qty{0.5}{\celsius}, denoted by $T_{\mathrm{set},0.5}^{\mathrm{RT}}(t)$.
+A 30-minute window is counted as requiring action when at least one rounded real-time setpoint update within the window is \qty{0.5}{\celsius} or larger:
+\begin{equation}
+\mathrm{AWR}_{r,d}^{30}
+=
+\frac{1}{|\mathcal{W}_{r,d}^{30}|}
+\sum_{w\in\mathcal{W}_{r,d}^{30}}
+\mathbb{1}
+\left(
+\max_{t\in\mathcal{C}_{r,d,w}}
+\left|
+T_{\mathrm{set},0.5}^{\mathrm{RT}}(t)
+-
+T_{\mathrm{set},0.5}^{\mathrm{RT}}(t-\Delta t)
+\right|
+\geq \qty{0.5}{\celsius}
+\right),
+\label{eq:action_needed_window_ratio}
+\end{equation}
+where $\mathbb{1}(\cdot)$ is the indicator function, $\mathcal{W}_{r,d}^{30}$ is the set of 30-minute decision windows for room $r$ on day $d$, $\mathcal{C}_{r,d,w}$ is the set of valid within-window consecutive setpoint-update timestamps in window $w$, and $\mathrm{AWR}_{r,d}^{30}$ is the share of 30-minute windows requiring at least one actionable real-time setpoint update.
 
 
 \subsection{Analysis outcomes}
-\paragraph{Mapping Occupancy Conditions}
-
-Based on the function above, two-dimensional mappings of occupancy metrics will be constructed to visualize the regions where Dynamic group control is equivalence-effective versus where its advantage is marginal.
-This mapping provides actionable thresholds: for example, ranges of $\bar{N}_{r,d}$, $\sigma_{N,r,d}$, or $\mathrm{UTR}_{r,d}$
-that delineate when Dynamic control should be prioritized in practice.
-
-
-
-
+\label{subsec:AnalOut}
+The analysis links the occupancy-related evaluation parameters to the comfort- and control-related outcomes defined above.
+First, mean comfort probability and its improvement relative to the fixed \qty{24}{\celsius} baseline are compared across subgroup sizes and \ac{gcm} resolutions.
+Second, the real-time control burden is evaluated by relating the mean absolute setpoint adjustment magnitude to daily mean occupancy and subgroup-size-normalized occupancy.
+Third, the operational frequency of actionable control is evaluated by relating \ac{utr} to the 30-minute action-needed window ratio.
+Representative \ac{utr} transitions by room and weekday are then used to interpret the occupancy-dynamics patterns associated with higher action-needed ratios.
 
 % Removed
 
@@ -607,3 +654,32 @@ that delineate when Dynamic control should be prioritized in practice.
 % The validity of the proposed HVAC control strategy is evaluated based on the coefficient $\beta_1$. 
 % A statistically significant negative value ($\beta_1 < 0$) would confirm that minimizing the deviation from the dynamic optimal setpoint increases the probability of meeting individual comfort needs, even after controlling for the difficulty imposed by occupancy variability ($\mathrm{Var}_j$).
 % This confirms that the control logic has a statistically causal benefit beyond random chance.
+
+
+
+% Metrics outcome
+
+% Among the three \acp{gcm} defined above, the \ac{rtgcm} setpoint $T_{\mathrm{set}}^{\mathrm{RT}}(t)$ is treated as the highest-resolution target and is compared with the \ac{sgcm} and \ac{dgcm} baselines.
+% The deviations are
+% \begin{equation}
+% \Delta T^{\mathrm{Static}}_t
+% \;=\;
+% T_{\mathrm{set}}^{\mathrm{RT}}(t)
+% -
+% T_{\mathrm{set}}^{\mathrm{Static}}(t),
+% \qquad
+% \Delta T^{\mathrm{Daily}}_t
+% \;=\;
+% T_{\mathrm{set}}^{\mathrm{RT}}(t)
+% -
+% T_{\mathrm{set}}^{\mathrm{Daily}}(t).
+% \label{eq:deltaT_defs}
+% \end{equation}
+% Unless stated otherwise, the magnitudes of $|\Delta T^{\mathrm{Static}}_t|$ and $|\Delta T^{\mathrm{Daily}}_t|$ will be analyzed.
+
+% \begin{figure}[pos=!bt]
+%     \centering
+%     \includegraphics[width=0.97\linewidth]{\Pic{png}{ex1_analysis_flow}}
+%     \caption{Analysis of Baseline vs Dynamic comfort model Image}
+%     \label{fig:ex1analysis}
+% \end{figure}
