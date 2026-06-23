@@ -16,12 +16,12 @@ For the simulation, three primary types of field data were collected in the targ
 
 \subsubsection{Target Building and Spaces}
 \label{sec:TargetBuil}
-The data collection was conducted at The GEAR, an R\&D and administrative office building located in Singapore, from 29 September to 24 October 2025 (4 weeks).
-The 3rd to 6th floors, which accommodate a mix of shared-office and static seating work styles, are the target areas for data collection.
-Data collection was limited to the following rooms to capture a variety of occupancy patterns:
-3F: Office 3A, Office 3B; 5F: Katris Office, KD Office, Shared Office 1, Shared Office 2; 6F: ILYA Office.
+The data collection was conducted at The GEAR, an R\&D and administrative office building located in Singapore and operated by Kajima Corporation, from 29 September to 24 October 2025 (4 weeks).
+The 3rd to 6th floors, which accommodate a mix of shared-office and static seating work styles depending on departmental roles, were the target areas for data collection.
+Data collection was limited to the following rooms: 3F: Admin Office A, Admin Office B; 5F: R\&D Office, Admin Office C, Shared Office 1, Shared Office 2; 6F: Design Office.
+% Data collection was limited to the following rooms: 3F: Office 3A, Office 3B; 5F: Katris Office, KD Office, Shared Office 1, Shared Office 2; 6F: ILYA Office.
 
-The target zones are served by a central air conditioning system consisting of air handling units and dedicated outdoor air handling units, using variable air volume (VAV) units capable of individual zone temperature and ventilation control.
+The target zones are served by a central air-conditioning system consisting of air-handling units and dedicated outdoor air-handling units, using variable air volume units capable of individual zone temperature and ventilation control.
 The controlled variable is the zone air temperature setpoint. 
 
 \subsubsection{Thermal Comfort Survey}
@@ -34,7 +34,7 @@ Over the one-month observation period, \qty{2608} survey responses were collecte
 
 \subsubsection{Indoor Environmental Measurements}
 Indoor environmental data was monitored in parallel with \ac{tcv} survey.
-The primary measurements were \ac{ti} and \ac{rh}, obtained from the \ac{bms} and compact sensors installed in the target rooms.
+The primary measurements were \ac{ti} and \ac{rh}, obtained from the \ac{bms} and compact sensors (HIOKI E.E. Corporation, Nagano, Japan) installed in the target rooms.
 For rooms with two to three compact sensors, their mean value was used as a representative room-level value to reduce sensor-specific measurement bias.
 To ensure sufficient variability of survey answers, \ac{ti} setpoints were cycled between \qtyrange{22}{27}{\celsius} in \qty{1}{\celsius} steps, with a randomized order across days.  
 On selected days, morning and afternoon setpoints differed to expand diversity.
@@ -52,9 +52,9 @@ The detailed procedure for this reconstruction is described in~\autoref{app:occu
 \subsubsection{Participant Recruitment and Ethical Considerations}
 45 office workers who regularly work in the designated study rooms were invited to participate.
 This study has been approved by the National University of Singapore Institutional Review Board (NUS-IRB Reference Code: NUS-IRB-2025-498).
-Informed consent were obtained from all participants prior to the study.
+Informed consent was obtained from all participants prior to the study.
 All location and survey data were anonymized by the building administrator before being accessed by the research team to protect privacy. 
-Considering the actual survey amount, survey answers and location tracking data of 39 participants are finally used. 
+Survey answers and location tracking data from 39 participants were used in the final analysis. 
 
 \subsection{Occupancy-log-based agentic comfort simulation}
 \subsubsection{Simulation Design}
@@ -103,6 +103,8 @@ At each 30-minute control timestep $t$, the subset of sampled location-log agent
 For each simulated realization, the three \acp{gcm} described above were compared by aggregating the assigned \acp{pcm} at different temporal resolutions.
 Each group comfort representation was formed by averaging the individual ``No change'' probability curves of the assigned \acp{pcm}.
 The corresponding setpoint was selected as the temperature that maximized the aggregated comfort probability.
+For all three \ac{gcm}-based policies, the policy setpoint is selected by maximizing the merged ``No change'' probability curve of the corresponding group.
+The difference between policies is therefore not the setpoint-selection rule itself, but the temporal resolution at which the group is defined.
 Let $p_i(T)=P_i(S_{th}=0\mid T)$ denote the ``No change'' probability predicted by the \ac{pcm} assigned to the location-log agents, indexed by $i$, at \acl{ti} $T$.
 For a group of \ac{gcm} $G$, the merged group comfort probability is defined as
 \begin{equation}
@@ -220,7 +222,7 @@ The daily \ac{utr} captures how much the present group composition changes over 
 \subsubsection{Comfort-related outcomes}
 \label{subsec:comfMetrics}
 
-Let $T_{\mathrm{set}}^{\mathrm{policy}}(t)$ denote the setpoint at time $t$ generated by $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{Dynamic}\}$.
+Let $T_{\mathrm{set}}^{\mathrm{policy}}(t)$ denote the setpoint at time $t$ generated by $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{RT}\}$.
 
 For each present member $i\in S_{r,t}$ of the location-log agents, the setpoint generated by a policy is evaluated by returning to the assigned \ac{pcm} and extracting the predicted ``No change'' probability:
 \begin{equation}
@@ -591,69 +593,6 @@ Representative \ac{utr} transitions by room and weekday are then used to interpr
 %     \item \textbf{Actionable Decision Rules:}
 %     Occupancy-informed rules of thumb---thresholds on $N_{\text{avg}}, V_{\text{occ}}, \mathrm{UTR}^{(W)}_t$---to choose update frequency (Static / Daily / Dynamic) for practical deployment.
 % \end{itemize}
-
-
-
-% \subsubsection{Evaluation Framework: Statistical Verification of Zone-Level Control Efficacy}
-% \label{subsec:stat_verification}
-
-% To address the challenge of matching zone-level HVAC capabilities with diverse individual comfort needs, a statistical evaluation framework is proposed. 
-% Before proceeding to coverage analysis and energy simulations, it is crucial to empirically verify whether adjusting the zone-level setpoint based on our aggregated model causally improves individual comfort outcomes, rather than essentially observing spurious correlations driven by easy-to-satisfy groups.
-
-% This verification utilizes a Multilevel (Hierarchical) Modeling approach to account for the nested structure of the data, where individual comfort responses are clustered within specific zone sessions.
-% This approach mitigates the risk of ecological fallacy by separating session-level confounders from individual-level control effects.
-
-% \paragraph{Data Structure and Variables}
-% The collected field survey data will be utilized to construct a hierarchical dataset:
-% \begin{itemize}
-%     \item \textbf{Level 1 (Individual Level):} Binary comfort votes ($Y_{ij} \in \{0, 1\}$) for individual $i$ in session $j$, where 1 indicates ``No change'' (Comfort).
-%     \item \textbf{Level 2 (Session Level):} Zone-level environmental conditions and occupancy characteristics for each survey session $j$.
-% \end{itemize}
-
-% Key variables for the evaluation include:
-% \begin{itemize}
-%     \item \textbf{Setpoint Deviation ($|\mathrm{Gap}_{ij}|$):} The absolute difference between the actual zone thermal environment (e.g., SET*) and the optimal level calculated by our proposed dynamic model.
-%     This represents the alignment between HVAC operation and aggregated occupant needs.
-%     \item \textbf{Group Preference Variance ($\mathrm{Var}_j$):} The variance of thermal preferences among occupants in session $j$.
-%     This metric quantifies the \textit{occupancy-dependent variability}, representing the inherent difficulty of satisfying the group regardless of the setpoint.
-% \end{itemize}
-
-% \paragraph{Hierarchical Model Specification}
-% A Generalized Linear Mixed Model (GLMM) will be developed with a logistic link function.
-% To explicitly model how occupancy characteristics affect the baseline comfort probability, the model is specified in two levels:
-
-% \emph{Level 1: Individual Response Model.}
-% The probability of individual $i$ in session $j$ reporting comfort ($P_{ij}$) is modeled as a function of the setpoint deviation and a session-specific intercept:
-% \begin{equation}
-%     \ln \left( \frac{P_{ij}}{1 - P_{ij}} \right) = \beta_{0j} + \beta_1 \cdot |\mathrm{Gap}_{ij}|
-%     \label{eq:level1}
-% \end{equation}
-% Here, $\beta_1$ captures the causal effect of reducing the temperature gap (i.e., the efficacy of the HVAC control) on the log-odds of comfort.
-
-% \emph{Level 2: Session Context Model.}
-% The session-specific intercept ($\beta_{0j}$) varies depending on the group's difficulty (variance) and unobserved random factors:
-% \begin{equation}
-%     \beta_{0j} = \gamma_{00} + \gamma_{01} \cdot \mathrm{Var}_j + u_j
-%     \label{eq:level2}
-% \end{equation}
-% where:
-% \begin{itemize}[noitemsep]
-%     \item $\gamma_{00}$: The grand mean intercept (overall baseline comfort potential).
-%     \item $\gamma_{01}$: The effect of group variance. We expect $\gamma_{01} < 0$, as higher preference diversity makes consensus more difficult physically.
-%     \item $u_j$: Session-level random effect, $u_j \sim N(0, \sigma_u^2)$, capturing unobserved contextual factors (e.g., weather mood, workload).
-% \end{itemize}
-
-% \emph{Combined Model}
-% Substituting Eq. (\ref{eq:level2}) into Eq. (\ref{eq:level1}) yields the final model used for estimation:
-% \begin{equation}
-%     \ln \left( \frac{P_{ij}}{1 - P_{ij}} \right) = \underbrace{(\gamma_{00} + \gamma_{01} \mathrm{Var}_j + u_j)}_{\text{Session Baseline Context}} + \beta_1 |\mathrm{Gap}_{ij}|
-%     \label{eq:combined_glmm}
-% \end{equation}
-
-% \paragraph{Hypothesis for Evaluation}
-% The validity of the proposed HVAC control strategy is evaluated based on the coefficient $\beta_1$. 
-% A statistically significant negative value ($\beta_1 < 0$) would confirm that minimizing the deviation from the dynamic optimal setpoint increases the probability of meeting individual comfort needs, even after controlling for the difficulty imposed by occupancy variability ($\mathrm{Var}_j$).
-% This confirms that the control logic has a statistically causal benefit beyond random chance.
 
 
 

@@ -1,0 +1,258 @@
+\SetPicSubDir{pic/ch2-Review}
+
+\subsection{Literature Review}
+\label{sec:LitReview}
+
+In this section, the challenges in current OCC examples are investigated and identified to clarify directions for future research and development.
+
+A systematic review was conducted to summarize existing research on OCC.
+\autoref{table:search_criteria} presents the search criteria used to identify relevant articles from the Scopus database. 
+The initial search resulted in 309 publications.
+The titles and abstracts of these studies were screened to identify relevant studies focusing on thermal comfort control, resulting in 188 papers. 
+
+\begin{table}[pos=!bt]
+  \centering
+  \input{pic/ch2-Review/criteria}
+  \caption{Search criteria for paper selection}
+  \label{table:search_criteria}
+\end{table}
+
+\section{Static and custom comfort models in operation}
+\label{subsec:StaticandCustom}
+
+First, trends in control–option determination methods used in selected OCC studies are analyzed.
+Target cases are classified into “temperature threshold–based,” “PMV threshold–based,” and “custom comfort model–based” depending on how control actions are chosen.
+The first two types typically rely on a preset indicator—such as a predefined temperature setpoint or a PMV threshold—rather than focusing on occupants’ thermal perceptions. 
+In practice, the temperature–threshold approach is a conventional range–based control that does not reflect specific occupant feedback. 
+Meanwhile, the PMV–threshold method determines setpoints to bring the environment within a comfortable range based on PMV, representing a collective or typical occupant’s sensation rather than accounting for personal variability. 
+Consequently, neither of these two methods truly addresses individual differences among people actually working in the space. 
+In contrast, approaches in the “custom comfort model–based” category select control options according to specialized models tailored to specific needs, thereby capturing occupant–specific preferences.
+
+\begin{figure}[pos=!bt]
+  \centering
+  \includegraphics[width=0.6\linewidth]{\Pic{png}{comfort_determining_all}}
+  \caption{OCC studies by control setpoint determination methods (All)}
+  \label{fig:metrics_all}
+\end{figure}
+
+\begin{figure}[pos=!bt]
+  \centering
+  \begin{minipage}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{\Pic{png}{comfort_determining_Field}}
+    \caption{Field Studies}
+    \label{fig:metrics_field}
+  \end{minipage}\hfill
+  \begin{minipage}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{\Pic{png}{comfort_determining_simu}}
+    \caption{Simulation}
+    \label{fig:metrics_simu}
+  \end{minipage}
+\end{figure}
+
+\autoref{fig:metrics_all}–\autoref{fig:metrics_simu} show an increasing trend in simulation cases, whereas the increase in real–building cases is less pronounced.
+Under “thermal comfort” and “OCC”–related keywords, many examples still use temperature or PMV threshold control, especially in simulations.
+However, field studies utilizing custom comfort models remain limited.
+
+\section{Occupancy conditions in existing OCC studies}
+
+\subsection{Target space occupancy count}
+
+This and the following subsection investigate occupancy–related contexts focusing on OCC examples that correspond to “custom comfort model–based” in \autoref{subsec:StaticandCustom}.
+Because the number of occupants in a space (i.e., occupancy scale) can profoundly impact control strategies, this subsection explores relationships to experimental settings, control resolution, and algorithms.
+
+\begin{figure}[pos=!bt]
+  \centering
+  \includegraphics[width=0.7\linewidth]{\Pic{png}{Occu_histo_FieldSimu}}
+  \caption{Occupancy count of target spaces in field and simulation settings}
+  \label{fig:Occu-Field}
+\end{figure}
+
+\autoref{fig:Occu-Field} shows the ratio of field and simulation studies along the occupancy scale.
+For single–occupant spaces, both simulation and field studies are common.
+However, for multi–occupant spaces, the ratio of field studies is relatively higher—relevant for real operations (e.g., offices), highlighting the need for OCC strategies that address shared usage dynamics.
+
+\subsection{Control resolution}
+
+The relationship between occupancy scale and control resolution (HVAC control granularity) is examined, and strategies are classified into three categories: room control, group control, and personal control.
+
+In room control, the system determines options (e.g., VAV setpoint) for the entire room.  
+For single–occupant rooms, applying comfort models is straightforward.
+Multi–occupant rooms require careful consideration of diverse preferences.
+
+In group control, the system conditions room subzones via additional devices (e.g., ceiling fans or radiant panels), enabling more flexible satisfaction of target groups based on merged comfort models \cite{ono_effects_2022}.
+
+In personal control, the system adjusts to individual preferences, often with personal devices \cite{andre_user-centered_2020,xu_towards_2022,aryal_intelligent_2021}.
+This review also includes seat/room assignment approaches \cite{nagarathinam_user_2021,sood_spacematch_2020} that match occupants to environments.
+
+\begin{figure}[pos=!bt]
+  \centering
+  \includegraphics[width=0.7\linewidth]{\Pic{png}{ControlReso_Occu}}
+  \caption{Control–resolution trends across occupancy levels}
+  \label{fig:Occu-conreso}
+\end{figure}
+
+\autoref{fig:Occu-conreso} indicates most studies adopt room–level control—even for multi–occupant rooms—likely because VAV/FCU/DX room–level systems are common in practice.
+Fewer studies consider group/personal control using additional equipment (e.g., ceiling fans \cite{lei_practical_2022}, personal devices \cite{boudier_analysis_2022,aryal_intelligent_2021}, radiant panels \cite{lee_implementation_2019}).
+
+\subsection{Occupant-centric control in dynamic occupancy context}
+
+In dynamic occupancy environments, occupancy density and distribution fluctuate throughout the day, making static strategies ineffective \cite{ono_occupant-centric_2024,sood_spacematch_2020}.
+A strategy optimized for one scenario becomes suboptimal for another, leading to discomfort, reduced productivity, and higher energy use.
+
+% \textcolor{red}{[Add more ABW studies]}
+
+Two control directions under dynamic seating emerge: (i) space–matching and (ii) dynamic–occupancy–based control.
+
+\subsubsection{Space–matching method}
+
+The idea is to provide a range of indoor environments rather than a single uniform condition, then assign occupants to maximize preference–environment matches.
+Assignments can be at the room level or seat level.
+
+Room–level examples include \cite{sood_spacematch_2020,ding_enhancing_2023,nagarathinam_user_2021,huang_space-matching_2025,huang_improving_2023}.
+Ding et al.~(2023) \cite{ding_enhancing_2023} simulated comfort/energy impacts of room–selection strategies with different setpoints.
+Ono et al.~(2024) \cite{ono_occupant-centric_2024} extended objective dimensions (preference, availability, function type, travel distance, whole–building energy).
+
+Some studies tested in real buildings: Huang et al.~(2023) \cite{huang_improving_2023} examined satisfaction in meeting rooms; Sood et al.~(2020) \cite{sood_spacematch_2020} clustered preferences and suggested seats accordingly.
+
+Seat–level examples include \cite{nagarathinam_user_2021}; similarly, \cite{huang_space-matching_2025} combined CFD with seating policies and found dynamic seating reduces energy in simulations.
+
+While space–matching can incorporate diverse factors (lighting, visual/acoustic conditions, equipment availability), weights differ across workers, and selections may deviate from system suggestions.
+
+\subsubsection{Dynamic–occupancy–based control}
+
+As noted in reviews \cite{xie_review_2020}, integrating diverse preferences across multiple occupants remains underexplored.
+This section focuses on how comfort models are incorporated into control.
+
+In some studies on the effectiveness of OCC, such as \cite{jung_energy_2020}, occupancy is often assumed to be static.  
+However, in today’s dynamic working environments—where hybrid working, combining remote and office-based work, has become commonplace\cite{redmond_rise_nodate} —this static assumption may underestimate the impact of occupancy characteristics.
+
+\autoref{table:OccuIntegration} compares field studies that integrate multiple personal comfort models within the same control zone.
+
+The “Occupancy Adaptation” column indicates each framework’s ability to handle different occupancy patterns; “dynamic” adjusts to real–time combinations, while “static” assumes fixed configurations. 
+Only \cite{lei_practical_2022} considers transitions among combinations by pre–training multiple RL models for frequent patterns—data–and compute–intensive.
+
+\begin{table}[pos=!bt]
+  \centering
+  \input{pic/ch2-Review/ModelIntegration.tex}
+  \caption{Field OCC studies integrating multiple personal comfort models}
+  \label{table:OccuIntegration}
+\end{table}
+
+\begin{figure}[pos=!bt]
+  \centering
+  \includegraphics[width=\linewidth]{\Pic{png}{DynamicOccu}}
+  \caption{Schematic of dynamic occupancy}
+  \label{fig:Upd-Field}
+\end{figure}
+
+Historically, tracking personal–level occupancy was difficult in typical BMS; this has changed with IoT systems enabling occupancy/location tracking \cite{soleimanijavid_challenges_2024}.
+Thus, \autoref{table:OccuIntegration} underlines the potential of real–time occupancy for OCC frameworks as an underexplored domain.
+
+\section{Comfort models in occupant-centric control}
+
+% \subsection{Developing group/zone comfort models}
+
+% As suggested by \autoref{fig:Occu-conreso}, interest is growing in group/zone comfort models comprising multiple occupants within the same control area.
+% Two approaches exist:
+% \begin{enumerate}
+%   \item Train individual PCMs for multiple occupants and aggregate them.
+%   \item Train group models without modeling individual differences.
+% \end{enumerate}
+
+% \textcolor{red}{[Add analysis on group comfort vs. aggregation of PCMs]}
+
+\subsection{Updating comfort models during operation}
+\label{sec:UpdComMod}
+
+For long–term OCC, updating comfort models becomes inevitable.
+Models calibrated for specific seasons/conditions may degrade as clothing insulation and metabolic rates change.
+As noted by \cite{aguilera_thermal_2019}, using fixed PCMs over long periods without updates can reduce satisfaction, particularly when initial data are insufficient.
+
+\begin{figure}[pos=!bt]
+  \centering
+  \includegraphics[width=0.7\linewidth]{\Pic{png}{Update_fldsimu}}
+  \caption{Ratio of studies updating comfort models by experiment setting}
+  \label{fig:Upd-Field}
+\end{figure}
+
+\begin{figure}[pos=!bt]
+  \centering
+  \includegraphics[width=0.75\linewidth]{\Pic{png}{ConAlgo_Upd}}
+  \caption{Ratio of studies updating models by control algorithm}
+  \label{fig:Upd-Algo}
+\end{figure}
+
+Notably, even though reinforcement learning (RL) updates action values with state transitions, the comfort–model component is seldom revised; \cite{lei_practical_2022} is a rare exception.
+Most RL work focuses on learning HVAC control policies and building dynamics, not updating the comfort models themselves.
+
+\begin{table}[pos=!bt]
+  \centering
+  \input{pic/ch2-Review/UpdateStudies}
+  \caption{Studies updating comfort models during operation}
+  \label{table:UpdateStudies}
+\end{table}
+
+\subsection{State-of-the-art comfort model development methods}
+
+Recent deep learning advances enable more efficient and accurate models, reducing survey effort.
+
+Transfer learning leverages knowledge from a source dataset to efficiently train new models: pretrain on a large source dataset, then adapt to a smaller target dataset.  
+For instance, \cite{gao_transfer_2021,somu_hybrid_2021} used the ASHRAE Global Thermal Comfort Database \cite{foldvary_licina_development_2018} and improved accuracy compared to training on limited data.
+
+Combining transfer learning with active learning can further reduce survey counts by querying the most informative samples \cite{tekler_data-efficient_2024}.
+\cite{horikoshi_developing_2024} examined how the quantity of survey data affects comfort and energy across different control settings.
+
+Despite these advantages, most applications target individual PCMs.  
+In principle, OCC does not always require finely tuned PCMs for every occupant: in real buildings with many users, zone- or group-level models may provide sufficient accuracy while further reducing the survey burden.
+This is because the marginal value of distinguishing each individual diminishes when the occupant pool is large and heterogeneous\cite{jung_energy_2020}.
+Conversely, under states such as small groups or high turnover, the added resolution of individual PCMs can be highly informative and justify additional survey effort.
+Therefore, while TL and AL are primarily proposed as methods to ease the creation of personal models, a practical OCC framework must balance between individual- and group-level modeling, depending on occupancy context.
+
+\section{Summary of literature review and identified knowledge gap}
+
+Key gaps observed in OCC research:
+\begin{itemize}
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Single–occupant scenarios predominate in both field and simulation studies. 
+  \item Even with multiple occupants, room–level control is the default.
+\end{itemize}
+
+Operational adaptability gaps:
+\begin{itemize}
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Few studies update comfort models during operation. 
+  \item Real–time occupancy is rarely incorporated within simple, practical frameworks.
+  \item No framework effectively integrates individual PCMs in real time under continuous occupancy fluctuations.
+\end{itemize}
+
+On comfort–model development:
+\begin{itemize}
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Transfer/active learning reduce workload for individual PCMs. 
+  \item For group models, aggregating many PCMs may be impractical; scalable alternatives are needed for real–world deployment.
+\end{itemize}
+
+\label{sec:researchaim}
+As outlined in the introduction, this research addresses the critical gaps limiting the practical application of Occupant-Centric Control.
+
+\subsection{Research Problem and aim}
+There is no clear guidance on when personal comfort models are preferable at the room-control resolution, especially under conditions with dynamic seating and turnover.  
+Specifically, this study aims to Provide principled guidance for selecting room-level comfort model strategies under real-world, dynamic occupancy, and
+
+\subsection{Research Questions and Hypotheses}
+The investigation is guided by specific research questions (RQs) and hypotheses (Hs), which are structured around the two-step experimental approach.
+This experiment examines how occupancy patterns affect the performance gap between dynamic and static comfort models.
+
+\textbf{Hypothesis 1 (H1):}  
+The effectiveness of static GCMs diminishes as occupancy conditions become unstable.
+
+\textbf{Research Question 1 (RQ1):}  
+To what extent do occupancy patterns (average occupancy, variability, and user turnover rate) influence the relative effectiveness of PCMs over static GCMs in office environments?
+
+\textbf{Hypothesis 2 (H2):}  
+Leveraging real-time occupancy with PCMs improves thermal comfort and energy efficiency compared with static, group-based control at the room level.
+
+\textbf{Research Question 2 (RQ2):}  
+To what extent does using real-time occupancy and a dynamic PCM-based framework improve room-level OCC in terms of comfort and energy, relative to a static, group-based approach?
