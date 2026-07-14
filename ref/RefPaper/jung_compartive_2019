@@ -1,0 +1,127 @@
+4. Results
+4.1. Analyses with actual comfort datasets
+In Fig. 11, the six thermal comfort profiles that were created by using direct extraction of thermal votes from prior studies have been illustrated. To verify the normality of six human agents’ thermal votes, we conducted the Kolmogorov-Smirnov test, one of the commonly used normality method [48], and confirmed their normality (Table 4) with p-values less than 0.05 for all the cases. Note that the zeros in Table 4 are below 2.2251×e−308and treated as zeros by MATLAB. It appeared that (1) human agents #1 and #3, (2) human agent #2 and 5, and (3) human agent #4 and 6 have similar thermal preferences. However, when it comes to thermal comfort sensitivity, human agent #3 had a better tolerance toward lower temperatures, compared to human agent #1. Human agent #2 had almost equivalent thermal comfort sensitivity to high and low temperatures in contrast to human agent #5, who had better tolerance to low temperatures. Human agent #4 was the most sensitive to temperature variations, and human agent #6 showed a better tolerance, compared to human agent #4.
+Fig. 10. Example of the third conditioning strategy.
+=+=>
+=<==
+T T interval if V or V and TS
+T interval if V or V and TS T if V and TS
+, 1 0 0 , 1 0 0
+, 0 0
+i n
+i T i n
+i T i n
+i T
+i n
+i T i n
+i T i n
+i T
+i n
+i T i n
+i T
+, , ,
+, , ,
+, , (12)
+Table 3 Pseudo code for the third conditioning strategy – the use of thermal vote and comfort sensitivity.
+W. Jung and F. Jazizadeh Building and Environment 158 (2019) 104–119
+https://lh3.googleusercontent.com/notebooklm/AKXwDQHW-VrExkFjqTw-COXlJ40KtKiboGjBmw5M6Pzw7AS86-f8-RT3FJL-zymfoNZmlb3QsKgu9_nk6Z4wCom8klhBNgyJTK4UAFlgo0I76Axrq22lRNY6nwnh9lvLk1sy_nOkb9buFA=w839-h1119-v0
+With these six human agents, different multi-occupancy cases were simulated to account for diverse scenarios. Scenarios, in which different combinations of two to five human agents interacting with a single HVAC agent, were simulated. The number of cases (NC) in each multi-occupancy scenario can be computed by Equation (13), where k is the number of human agents in multi-occupancy spaces and n represents the maximum number of human agents (six in this case).
+=Nn k n k
+! !( )!C (13)
+In the case with six human agents, we could only obtain a single output. Therefore, we eliminated that scenario because the statistical analysis was not possible. Through pair-sampled t-tests utilizing the number of cases, we have investigated the difference between the set-points from the third and the first two strategies. Fig. 12 shows the selected temperature setpoints by three operational strategies for combinations of two human agents, 28.0 °C as initial setback tem-perature, and 1 °C as operable temperature setpoint interval. Even though Fig. 12 represents a limited number of scenarios in our analyses, it clearly demonstrates the differences among different operational strategies. Highlighting the impact of the initial temperature setpoint, the first operational strategy often selected 24.0 °C or 25.0 °C (80%) given that three human agents preferred temperatures above 24.0 °C. On the other hand, the second strategy often ended up with 23.0 °C (46.7%) to find an equidistance from human agents’ thermal pre-ferences. The third operational strategy, however, chose 22.0 °C with a higher frequency (46.7%). The high thermal comfort sensitivity of human agent #4 and #6 contributed to these results. Similar tendencies could be observed throughout different scenarios, in which other combinations of humans share the same thermal zone.
+Table 5 shows the p-values from the paired-sample t-tests. With 0.95 significance level, 29 cases out of 48 cases (60.4%) showed statistically significant differences (the bold texts in Table 5). This demonstrates that thermal comfort sensitivity played a pivotal role in creating a collectively acceptable condition in a multi-occupancy space even for scenarios that three groups of human agents preferred similar tem-peratures.
+The averaged probabilities of being comfortable, derived from human agents, were also compared as presented in Fig. 13. Generally speaking, the more human agents are present in a multi-occupancy space, the lower the probability of collective thermal satisfaction. The diversity in thermal preferences and comfort sensitivities across dif-ferent human agents plays a part in this trend. As the results show, the third operational strategy outperformed the rest of the strategies. In some cases, the first operational strategy resulted in similar prob-abilities, but this strategy could be considerably affected by the initial temperature values (i.e., the starting point). When human agents can be grouped based on their thermal preferences (e.g., human agent #1 and #3 (with the thermal preference of 22.0 °C) vs. #4 and #6 (with the thermal preference of 25.0 °C)), the first strategy usually gets stuck with one group's thermal preference. We have illustrated this concept in Fig. 14. Hence, if the human agents in the group whose thermal pre-ferences are far from the initial temperature are sensitive to thermal variations, the overall probability of being comfortable drops. In other
+Fig. 11. Six human agents' comfort profiles based on actual thermal votes.
+Table 4 P-values of each human agent's thermal votes derived from the Kolmogorov-Smirnov test.
+Number of human agents
+P-value
+Uncomfortably cool Comfortable Uncomfortably warm
+1 8.039×e−212.079×e−319.152×e−29
+2 1.645×e−155.857×e−122.735×e−32
+3 5.857×e−128.039×e−219.785×e−14
+4 2.156×e−089.785×e−140 5 0 9.785×e−149.785×e−14
+6 8.882×e−162.220×e−162.156×e−08
+Fig. 12. Examples of the selected temperature setpoints from three operational strategies.
+W. Jung and F. Jazizadeh Building and Environment 158 (2019) 104–119
+https://lh3.googleusercontent.com/notebooklm/AKXwDQGz_20B-eCN-_m3iiFyYI5lHOVpl0ZiabIA5AEDUJ7kz4UBdisj1UaYper9zRMC9SVIr5bCNgPYJLKBDg0IkNJee3zOk2465yqE8-Kef0--rNljx9DzZhPYAZD_ZyKY4mELaTE3tg=w839-h1119-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQF-45P3SJ-RAQIc694EBVEOlHW2KvKK1T8yK_ihDIcT3P5lKA1CfVN-yiY-QFoMJVC__AKR0mUNB3ow4IJFrTVErBP116zu-YR1gwKWVhEOqpDZ2rmDVlH-MMEssS7fzhhbBIluvw=w732-h39-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQGudBiGEvL6OZO3vRmA_877fZ_mdL3hv1g4HnocKZZhUXCdgFchvXMkYasfw_GtOk8JZgG7Xagk2Lu_RqeaM4Gcgfa8WlLSu6CUiMqUicQbc7L4Wgzr9Aigugs1T3x9WWstOThg=w265-h35-v0
+https://lh3.googleusercontent.com/notebooklm/AKXwDQHbc2VYFZfFuZ3HrBj6b17U9rXC_rEO0p0bq39DZCpCCkITlouS4QCJVo4FbI8kOO4qn5HBWlV7GQuNaeEfgNFRdl9ZHaOu4pnt_NCwKeAajrqXjGzEY8ydXK9noEluIPlA6hA-=w262-h35-v0
+words, the performance of this strategy shows instability, compared to the rest.
+The second strategy is not influenced by the initial temperature, but it has demonstrated the worst performance. Fig. 15 illustrates one of the reasons for the low performance: this strategy seeks to find the tem-perature setpoint that is equidistant from all the preferred temperatures by disregarding the sensitivity to temperature variations.
+Lastly, investigating different temperature setpoint intervals shows that the use of 0.1 °C has the best performance in most scenarios and the use of 0.5 °C was the second best – that is, high flexibility in operable temperature setpoints provides better solutions to human agents.
+Table 5 P-values from paired-sample t-tests between the operational strategies (forgoing thermal comfort sensitivity in (#1 and #2) vs. accounting for thermal comfort sensitivity (#3)) for example actual thermal comfort profiles.
+Number of human agents (Number of configurations) P-values from pair-simple t-tests
+Strategy #1 vs. #3 Strategy #2 vs. #3
+Temperature setpoint interval (Initial temperature: 20.0 °C)
+0.1 °C 0.5 °C 1.0 °C 0.1 °C 0.5 °C 1.0 °C
+2 (15) .0062 .1643 .0192 3.927×e−043.816×e−049.199×e−04
+3 (20) 3.753×e−043.379×e−04.0021 .2406 .1893 .5409 4 (15) .0104 .3343 4.264×e−04.0492 .0359 .0061 5 (6) .1742 .0756 .0756 .0151 .1747 .1747 Initial temperature: 28°C 2 (15) .0208 .1502 .0069 .0114 .1189 .3636 3 (20) .0021 3.379×e−043.753×e−04.2406 .1893 .5409 4 (15) 6.467×e−043.973×e−044.264×e−04.0341 .0359 .0061 5 (6) .0250 .0756 .0756 .0151 .1747 .1747
+Bold texts are below 0.05 (statistically significantly different).
+Fig. 13. Averaged probability of being comfortable for different multi-occupancy scenarios and control configurations: three operational strategies, two initial temperatures, and three operable temperature setpoint intervals.
+Fig. 14. Example of temperature setpoint selection process using the first op-erational strategy from different initial temperature values.
+W. Jung and F. Jazizadeh Building and Environment 158 (2019) 104–119
+https://lh3.googleusercontent.com/notebooklm/AKXwDQEC6uW-k3QAPZwE2RjDBToMBBlK7EXr602QuyRcoFZ8zqM6jsoK1iCp3_XNDp-04t-Ia1nlItfIt80Dz6MzuFP3tlJvZmjJQRzQOHt5fqqMYWP5h4kNqlybat10q15DH5Z_hV_zuw=w839-h1119-v0
+However, the gap between the overall probabilities derived from two intervals was insignificant (the highest gap was 0.9%, for scenarios with two human agents and the initial temperature of 20.0 °C). Therefore, the resolution of the temperature setpoints does not appear to be an important factor for the evaluated cases.
+4.2. Analyses with synthesized comfort datasets
+To further explore the importance of thermal comfort sensitivity, as noted earlier, we created 15 synthesized comfort profiles to represent more diverse human agents. Before applying the Bayesian network modeling process, we checked votes data for normality (Table 6). As
+noted, the second approach helped us evaluate more combinations of scenarios and cases, compared to the use of actual thermal profiles in Section 4.1. It is worth mentioning that since the original profiles in Daum et al. [7] were created using a large number of data points from each individual (6851 entries for 28 participants), our approach of randomly sampling 50 points from the original profiles results in creating 15 different comfort profiles. Unlike the actual thermal pro-files, which could be grouped by preferences, in using synthesized profiles, we diversified thermal preferences. As shown in Fig. 16 thermal preferences were distributed across a temperature range from 20.05 to 27.31 °C, which is an acceptable range according to the field study by Klein et al. [40]. They utilized 242 thermal votes from per-manent and temporary occupants of a building and presented a dis-tribution of their thermal preferences (from 18.33 to 27.22 °C). In general, compared to the comfort profiles presented in Section 4.1, several human agents including #2, #8, #10, #11, and #12 had higher tolerances to temperature variations.
+With 15 human agents, diverse multi-occupancy scenarios were si-mulated by using combinations from 2 to 10 human agents in a space. Similar operational strategies as presented in Section 4.1 were used in the analysis of this section. Table 7 shows the p-values for the t-test between the selected temperature setpoints by the third operational strategy vs. the first and second strategies. The number of cases (NC) in each multi-occupancy scenario were computed by using Equation (13). In this case, almost for all the scenarios (97.2% of cases), statistically significantly different setpoints with a significance level more than 0.95 were observed. This is a clear increase, compared to the previous results (60.4%). In other words, when the diversity of thermal preferences and comfort sensitivities of human agents are taken into consideration, there is a high potential that the HVAC agent selects different tem-peratures setpoint. Note that the zeros in Table 7 are below 2.2251×e−308and are treated as zero.
+When it comes to the average probability of collective comfort, as shown in Fig. 17, similar to what we observed before, the third strategy outperformed the other two strategies. These graphs also reveal that when the number of human agents in a thermal zone increases, the
+Fig. 15. Example of a selected temperature setpoint by the second operational strategy.
+Table 6 P-values of each human agent's thermal votes derived from the Kolmogorov-Smirnov test.
+Number of human agents
+P-value
+Uncomfortably cool Comfortable Uncomfortably warm
+1 3.535×e−103.620×e−186.157×e−20
+2 7.564×e−101.051×e−219.785×e−14
+3 2.137×e−162.780×e−171.268×e−14
+4 2.220×e−169.785×e−145.309×e−27
+5 8.882×e−163.600×e−332.756×e−09
+6 1.110×e−162.137×e−166.969×e−28
+7 5.857×e−121.645×e−158.039×e−21
+8 2.137×e−162.355×e−242.220×e−16
+9 5.857×e−126.157×e−202.137×e−16
+10 3.535×e−106.157×e−203.620×e−18
+11 2.156×e−86.243×e−350 12 0 2.780×e−174.047×e−26
+13 4.545×e−114.719×e−193.620×e−18
+14 1.268×e−141.268×e−144.719×e−19
+15 1.268×e−142.780×e−172.137×e−16
+W. Jung and F. Jazizadeh Building and Environment 158 (2019) 104–119
+https://lh3.googleusercontent.com/notebooklm/AKXwDQGfR6tSjgBdKP6pEQuOaD1fddRatn_DNO1sxvYzQxvJ5RYGDWDNqYSHzyeyKIkEklrVX-dCZ4_duG-R5K2qxeqW0eBC3B6VwC4olEVjVhQgqSknY9V00uDkfG8qOkJWhALXYGDX=w839-h1119-v0
+probability of collective comfort decreases, and the performances of different operational strategies converge. The influence of initial tem-perature on the first operational strategy was observed in this case as well. However, due to the differences between the thermal preferences and increases in the thermal tolerances, the variations between
+different configurations in the first and second strategies do not affect the performance as dramatic as we observed in Section 4.1. Similarly, the resolution of the temperature sensing system does not appear to have a significant impact on performance.
+Table 7 P-values from paired-sample t-tests between the operational strategies (forgoing thermal comfort sensitivity in (#1 and #2) vs. accounting for thermal comfort sensitivity (#3)) for synthesized thermal comfort profiles.
+Number of human agents (Number of cases) P-value from pair-simple t-tests
+Strategy #1 vs. #3 Strategy #2 vs. #3
+Temperature setpoint interval (Initial temperature: 20 °C)
+0.1 °C 0.5 °C 1.0 °C 0.1 °C 0.5 °C 1.0 °C
+2 (105) 6.610×e−173.661×e−133.112×e−093.788×e−04.0137 0.0296 3 (455) 2.601×e−721.487×e−671.308×e−874.357×e−062.951×e−04.1290 4 (1365) 2.193×e−1987.379×e−1081.054×e−757.870×e−231.299×e−172.393×e−12
+5 (3003) 0 0 0 7.216×e−748.093×e−461.185×e−20
+6 (5005) 0 1.318×e−2333.687×e−1544.477×e−1151.974×e−1301.275×e−85
+7 (6435) 0 0 0 0 3.746×e−2008.328×e−122
+8 (6435) 0 0 0 0 0 5.945×e−208
+9 (5005) 0 0 0 0 2.620×e−2924.194×e−185
+10 (3003) 0 0 0 0 1.896×e−2714.550×e−141
+Initial temperature: 28 °C 2 (105) 4.461×e−131.433×e−103.822×e−086.875×e−05.0415 .6594 3 (455) 2.110×e−683.351×e−731.247×e−554.357×e−062.951×e−04.1290 4 (1365) 6.801×e−1583.598×e−1041.553×e−57.004 3.047×e−112.393×e−12
+5 (3003) 0 0 0 7.216×e−748.093×e−461.185×e−20
+6 (5005) 0 0 3.631×e−2257.477×e−1048.116×e−1261.275×e−85
+7 (6435) 0 0 0 0 3.746×e−2008.328×e−122
+8 (6435) 2.646×e−550 1.345×e−430 0 5.945×e−208
+9 (5005) 0 0 0 0 2.620×e−2924.194×e−185
+10 (3003) .0132 1.034×e−282.656×e−510 1.896×e−2714.550×e−141
+Bold texts are below 0.05 (statistically significantly different).
+Fig. 16. Fifteen synthesized comfort profiles to represent human agents used in the analyses.
+W. Jung and F. Jazizadeh Building and Environment 158 (2019) 104–119
+https://lh3.googleusercontent.com/notebooklm/AKXwDQEk2tlxeQzjdLSlUt4HIfSS_USnYmA3vRLldKAS5UXVPy8B8cSb-R4wZ1hr3gNzoKCPFaoYeVF6YZ_mD3zbRPOjNyfm-9myE4yCLY_FQ2jyoc3m4s_awuTgslNl9T9pFveQ7nCYxQ=w839-h1119-v0
+5. Discussion
+The observations, in this study, could facilitate a more fundamental discussion on control strategies according to personalized thermal comfort in multi-occupancy spaces. According to these observations, one could ask (1) whether the air conditioning systems should provide an equally fair ambient condition for all the occupants or (2) providing a comfortable environment for the majority of occupants is a better strategy? Fig. 15 could be used as a clarifying example. In this figure, the HVAC agent could use comfort sensitivity to account for a fair and balanced temperature setpoint, or it could alternatively shift to meet the thermal preferences of two occupants and recommend adaptation strategies to the third occupant. In other words, there could be several possibilities to better serve multiple occupants in a space. A study by Shin et al. [49] proposed an approach to managing the fairness by HVAC systems in a multi-occupancy space. They have stated that a single optimized temperature setpoint could result in consistent dis-satisfaction of some occupants and therefore selecting the majority vote or the mean (or median) temperature value might be unfair. Accord-ingly, they have proposed to minimize the accumulated discomfort by varying the temperature setpoint over time to meet the desire of all occupants at least for a period of time. In other words, in the case of examples in Fig. 15, their approach proposes to occasionally set the temperature setpoint according to the preference of the third occupant to be fair. Nonetheless, adjusting the clothing level or using local and personalized air conditioning systems could be recommended in case of having dissatisfied occupants while using an optimized temperature setpoint. In this study, we have explored the impact of different stra-tegies including our proposed strategy that account for thermal comfort sensitivity and thus left further research into control fairness for future studies.
+6. Conclusion
+In this study, we have evaluated the performance of HVAC opera-tional strategies that leverage personalized thermal comfort profiles as contextual information. In doing so, we have specifically investigated the role of thermal comfort sensitivity on HVAC operation in driving the temperature control setpoint and the average probability of
+collective thermal satisfaction. Simulating the interactions between occupants and HVAC systems through agent-based modeling, we com-pared three operational strategies by evaluating (1) the selected tem-perature setpoints, and (2) the average probability of collective thermal comfort in multioccupancy scenarios. Two of these strategies solely rely on thermal preferences, obtained from personalized thermal comfort profiles, while the third one accounts for thermal comfort sensitivity as well. We have further investigated the impact of temperature setpoint resolution in achieving higher overall thermal satisfaction. To this end, we explored three temperature setpoint resolutions of 0.1, 0.5, and 1.0 °C. The evaluated scenarios included combinations of occupants from 2 to 10 human agents by using six real-world and 15 synthesized thermal comfort profiles. Among all the evaluated scenarios, in 85.9% (134 out of 152) cases, statistically significant differences in tempera-ture setpoints were observed when thermal comfort sensitivity was taken into consideration while the overall probability of having com-fortable states increased. The results of the analyses demonstrated that the temperature setpoint resolution does not significantly influence the average collective satisfaction. We have also assessed the operational strategies, proposed by previous studies, which employ personalized comfort profiles. Therefore, this study also contributes to a better un-derstanding of collective conditioning by using personalized comfort profiles.
+There are also limitations in this study. As noted, this study was conducted under the assumption of having a uniform temperature distribution in a space, which is the reason that we did not specify the characteristics of the simulated spaces. Addressing the dynamic dis-tribution of temperature in a thermal zone could potentially improve the operational strategies and it can be reflected in agent-based mod-eling by using computational fluid dynamics (CFD). Also, we have analyzed the performance of different strategies at the time when the environment has been stabilized. In the case of having field studies, HVAC systems’ response time could affect the results. Moreover, as the number of occupants in a multi-occupancy space increases, as it is ex-pected, the efficacy of integrating personalized thermal comfort profiles reduces and legacy operational methods could show the same outcome. Lastly, in investigating the impact of the temperature setpoint resolu-tions, we have considered values as low as 0.1 °C, which might not be feasible given the existing technologies. The reason for its inclusion was
+Fig. 17. Average probability of being comfortable in several multi-occupancy scenarios – each operation strategy, two initial temperatures, and three operable temperature setpoint intervals.
+W. Jung and F. Jazizadeh Building and Environment 158 (2019) 104–119
+https://lh3.googleusercontent.com/notebooklm/AKXwDQHJWTmgiRN8iwCNPF9dUEV-p58NUik4C4QExz3swn3oC_0w_skSyxapuBJkFXxAhQ25SaeVuqt9mGMRsfbopD7Re2SgmKv4wsejTp9fIjJxb8UOeNR8ZVfnLs_WPaQsB9O5_oyzyA=w839-h1119-v0
+to investigate the impact of a hypothetical scenario, in which sensing systems could enable us to achieve that level of resolution. However, the results showed that the impact of such a high resolution is subtle, compared to generally operable temperature intervals (i.e., 0.5 °C and 1.0 °C). These findings could contribute to a better understating of temperature resolution impact even if it may be considered as hy-pothetical.
+The proposed ABM model could be further developed to account for dynamic occupancy patterns, weighed comfort profiles, and real-world implementation. There could be a number of situations, where different weights can be assigned to different comfort profiles including perma-nent vs. temporary occupants, healthy vs. sick occupants, and adults vs. children occupants. The integration of the proposed operational strategy in this study could be reflected in the temperature setpoint configuration in real environments. The advancements of occupants' voting systems through mobile computing devices such as smartphones have paved the way for quantifying thermal comfort sensitivities. Accordingly, as the future directions of this study, we plan to leverage more complex agent-based-modeling to account for contextual in-formation of the space, occupancy patterns, occupants’ interactions, and energy consumption associated with different thermal comfort strategies and explore its integration into thermostat control logic.

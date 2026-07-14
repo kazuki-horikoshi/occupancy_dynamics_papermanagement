@@ -891,3 +891,813 @@ For each simulated realization, the three \acp{gcm} were formed by averaging the
 5. `table:OccuIntegration` は Introduction の根拠として残し、table description だけを短くする。
 6. 1.6 を research objective と evaluated policies/metrics だけに圧縮。
 7. Results/Discussion の局所的な反復と caption 不一致を修正。
+
+## 3. June 29th self-review
+### Method
+- The survey contents are summarized in Table4 として表示されているが、Appendix内のテーブルはAppendix内のテーブルとして番号表示をA.1などとしながらリンク先が表示されるようにしたい。
+  - 確認: `chapters/ch3-Method.tex` では `\autoref{table:comfsurvey}` を参照しているため、表示が `Table 4` になるか `Table A.1` になるかは Appendix 側の table counter 設定に依存する。
+  - 確認: `Draft_2026-Jan.tex` では `\input{chapters/chap-appendices}` の後に `\setcounter{table}{0}` と `\renewcommand{\thetable}{A.\arabic{table}}` が置かれているため、Appendix 内の既存 table には適用されていない可能性が高い。
+  - 修正案: Appendix を読み込む前に table/figure counter と表示形式を切り替える。
+
+```tex
+\appendix
+\label{appendix:XXX}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\renewcommand{\thetable}{A.\arabic{table}}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+\renewcommand{\theHtable}{A.\arabic{table}}
+\renewcommand{\theHfigure}{A.\arabic{figure}}
+
+\input{chapters/chap-appendices}
+\FloatBarrier
+```
+
+  - 補足: `\theHtable` / `\theHfigure` は hyperlink anchor の重複回避用。本文 Table 1 と Appendix Table A.1 のリンクが混ざるリスクを下げる。
+  - Method 本文の参照文は番号を直書きせず、現状通り `The survey contents are summarized in \autoref{table:comfsurvey}.` のままでよい。
+
+->OK
+
+- 2.3. Agentic simulationの冒頭、multiple realizationsが何のRealizationかわかるように、 Occupancy compositions and thermal preferenceのcombinationsのRealizationだとわかるようにしてほしい
+  - 確認: 現在の `Using the prepared location-log agents and \acp{pcm}, multiple realizations were generated...` は、何を変えた realization なのかが少し抽象的。
+  - 方針: `realization` は Monte Carlo 文脈では使えるが、最初に「occupancy composition と thermal-preference assignment の組み合わせ」と定義する。
+  - 修正案:
+
+```tex
+Using the prepared location-log agents and \acp{pcm}, Monte Carlo trials were generated to represent different combinations of observed occupancy compositions and assigned thermal-preference profiles for each target room.
+```
+
+  - 以降は `simulated realization` より `Monte Carlo trial` に寄せると読みやすい。
+
+->OK
+
+- Each simulation trial  first sampled a subgroup...の部分は前後で繰り返しになっているのではないか。
+  - 確認: 直前の文で「subgroups are repeatedly sampled」「PCMs are randomly reassigned」と説明した直後に、`Each simulation trial first sampled...` が同じ内容を繰り返している。
+  - 方針: 1 文目を目的、2 文目を具体手順にして、同じ動詞を繰り返さない。
+  - 修正案: 現行の 2 文を以下のように統合する。
+
+```tex
+To preserve room-specific usage patterns while varying the simulated occupant mix, each Monte Carlo trial sampled a subgroup of location-log agents from the regular member pool of room $r$ and randomly assigned \acp{pcm} to the selected location agents.
+```
+
+  - この文を入れる場合、後続の `The sampled agents retained...` は「何を保持し、何を入れ替えたか」を補足する役割に絞る。
+
+  ->OK
+
+- For a given trial, K remains fixed over simulation peropd,... の文章がわかりづらい
+  - 確認: `K` が subgroup size、`N_{r,t}` が時刻ごとの実在 occupancy count であることは重要だが、現行文は少し数式先行で読みにくい。
+  - 方針: まず概念を説明し、その後で記号を置く。
+  - 修正案:
+
+```tex
+Within a trial, the sampled subgroup size $K$ is fixed for the full simulation period. However, only a subset of those sampled agents is present at any control timestep, so the realized occupancy count varies according to the observed stay logs and is denoted by $N_{r,t}=|S_{r,t}|$.
+```
+
+  - これにより、`K` と `N_{r,t}` の違いが Method と Results/Discussion で一貫して使いやすくなる。
+
+->OK
+
+- The sampled agents retained their obsedved stay logs, の部分はin their original roomsなど追記した方が良いか？
+  - 判断: 追記した方がよい。今回の simulation は room-specific occupancy pattern を保存することが大事なので、`in their original rooms` を明示すると「場所ログまでシャッフルしているのか」という誤読を避けられる。
+  - 修正案:
+
+```tex
+The selected location agents retained their observed stay logs in their original rooms, while \acp{pcm} were randomly assigned to those selected location agents in each trial.
+```
+
+  - 注意: `sampled agents` より `selected location agents` の方が、PCM と location-log agent の対比が明確。
+
+- while PCMs were randomly assigned to themのThemをthe selected location agentsとする？前の文章とのWhileでの対比がわかりやすくなるように。
+  - 判断: `them` は避けて、`the selected location agents` または `those selected location agents` に置き換える。
+  - 理由: 直前に subgroup, agents, PCMs が並ぶため、代名詞だと参照先が曖昧になる。
+  - 修正案: 上の文とまとめて以下にする。
+
+```tex
+The selected location agents retained their observed stay logs in their original rooms, while \acp{pcm} were randomly assigned to those selected location agents in each trial.
+
+->OK
+```
+
+- For each simylationd realizationとあるが、Realizationより良い言葉があるか？
+  - 判断: `Monte Carlo trial` に統一するのがよい。
+  - 理由: `realization` は使えるが、前段で `trial` を使っているため、同じものを指す語が増えて読みにくい。Method では `trial`、必要なら初出で `Monte Carlo trial` とする。
+  - 修正案:
+
+```tex
+For each Monte Carlo trial, the three \acp{gcm} described above were compared by aggregating the assigned \acp{pcm} at different temporal resolutions.
+```
+
+  - ただし、この文自体も次の `Each group comfort representation...` と近いため、下の繰り返し整理と合わせて圧縮する。
+
+->OK
+
+- For all three GCM-based pliciesから始まる文章は繰り返し感がある
+  - 確認: `Each group comfort representation was formed...`、`The corresponding setpoint was selected...`、`For all three...` がほぼ同じ setpoint selection rule を説明している。
+  - 方針: setpoint selection rule は 1 回だけ説明し、policy differences は group definition の違いに限定して述べる。
+  - 修正案: 現行の `For each simulated realization...` から `The difference between policies...` までを以下に差し替える。
+
+```tex
+For each Monte Carlo trial, the three \acp{gcm} described above were formed by averaging the assigned individual ``No change'' probability curves at different temporal resolutions.
+For each policy, the selected setpoint was the temperature that maximized the corresponding aggregated ``No change'' probability.
+Thus, the three policies share the same setpoint-selection rule and differ only in whether the represented group is defined over the full study period, each day, or each control timestep.
+```
+
+  - この差し替え後に `Let $p_i(T)=...` の式へ入ると、文章説明から数式定義への流れが自然になる。
+
+->OK
+
+## 4. June 29th self-review 2nd
+### Introduction
+- In typical OCC frameworksの部分、いきなりSensingなどと言うとよくわからないので、There are three components; the sensing layer... などのように書くことが必要では？繋げながら一文で描きたい。
+  - 確認: `ch1-Intro.tex` 21 行目は `sensing collects...; learning develops...; and control translates...` と始まるため、読者が OCC framework の三層構造を先に知らないと少し唐突。
+  - 方針: 一文のまま維持しつつ、冒頭で「three components」を明示してから各 layer の説明へ入る。
+  - 修正案:
+
+```tex
+Typical \ac{occ} frameworks consist of three connected components: the sensing layer collects information such as environmental conditions, comfort feedback, and occupancy; the learning layer develops preference or occupancy models from these data; and the control layer translates the model outputs into \ac{hvac} actions \cite{soleimanijavid_challenges_2024,xie_review_2020}.
+```
+->ComponentsでなくLayersにしておく
+
+- 1.2Dynamic occupancy andのSubsectionが続けて始まっているが、Meanwhileなど文頭に置くことでThe rise of remote and hybrid workを前の文章に次の段落として繋げられないか？
+  - 確認: 直前 subsection は `real-world \ac{occ} applications... remain limited` で終わり、次 subsection が `The rise of remote and hybrid work...` で始まるため、段落間の関係が少し切れて見える。
+  - 方針: `Meanwhile,` を置いて、OCC の実装課題と同時に office usage 側も変化している、という接続にする。
+  - 修正案:
+
+```tex
+Meanwhile, the rise of remote and hybrid work has increased the use of \ac{abw} and other flexible office arrangements \cite{marzban_review_2023}.
+```
+->OK
+
+- as occupanyts arrive, leave or move between roomsの部分はoccupants move between different spaces throughout the dayに合体
+  - 確認: 現在は line 32 で `occupants move between different spaces throughout the day`、line 34 で `as occupants arrive, leave, or move between rooms` と近い内容が重複している。
+  - 方針: movement の説明は最初の文に集約し、次の文は「同じ人数でも誰がいるかが違う」点だけに絞る。
+  - 修正案:
+
+```tex
+In such workplaces, occupants arrive, leave, and move between different spaces throughout the day, causing fluctuations in both occupancy density and occupant composition within a zone \cite{motuziene_office_2022,pan_environmental_2025,huang_space-matching_2025,chang_statistical_2013,levene_problem_2020}.
+Dynamic occupancy should therefore be understood not only as a change in the number of people in a room, but also as a change in who is present.
+Even when the occupancy count is similar, the thermal preferences represented by the present group may differ.
+```
+->OK
+
+- Office projectsはof Japanese companiesと明記
+  - 確認: `\autoref{table:OccuTrack}` の説明が `office projects` だけだと、対象が一般的な global field studies のようにも読める。
+  - 修正案:
+
+
+```tex
+\autoref{table:OccuTrack} provides examples of office projects by Japanese companies that use IoT data for individual-level real-time occupancy tracking.
+```
+->OK
+
+
+- Second issueとして次の1.3のSubsectionが始まっているが、そんなに対比できるほどFisrt issueを書けているか？ここまで分離できないのでは？
+  - 確認: 現在の `dynamic occupancy raises a second issue` は、前 subsection で明示的に `first issue` として整理していないため、やや強い対比に見える。
+  - 方針: `second issue` を避け、前 subsection で説明した dynamic occupancy を受けて「shared-space OCC では aggregation 問題になる」と自然につなぐ。
+  - 修正案:
+
+```tex
+In shared-space \ac{occ}, these dynamic occupancy patterns make comfort aggregation a central control problem: the controller must decide how individual comfort information should be aggregated for a room-level setpoint.
+```
+->継続検討。前後の中で両者が最適な導入として書かれているか？
+
+- but such an approach can be data- and compute-intensive にand not all representations are represented.と追記
+  - 確認: Lei et al. の方法の限界として、data / compute intensive だけでなく、frequent combinations に基づくため全 occupant combinations をカバーしない点も重要。
+  - 方針: `not all representations are represented` はやや不自然なので、`may not cover all possible occupant combinations` と書く。
+  - 修正案:
+
+```tex
+Lei et al.~\cite{lei_practical_2022} addressed dynamic occupancy using multiple reinforcement-learning models for frequent occupant combinations, but such an approach can be data- and compute-intensive and may not cover all possible occupant combinations.
+```
+->OK
+
+- Therefore, a simpler practical questionの部分が急すぎる。
+  - 確認: 現在は既存研究の限界からすぐに `Therefore, a simpler practical question remains` へ飛ぶため、本研究の static/daily/real-time GCM 比較へ橋渡しが弱い。
+  - 方針: 「個別 combination ごとのモデルを大量に持つ代わりに、aggregation の時間解像度を選ぶ問題として整理する」と一文挟む。
+  - 修正案:
+
+```tex
+Rather than preparing separate control models for many occupant combinations, a more deployable strategy is to vary the temporal resolution at which individual comfort information is aggregated.
+This leads to a practical question: when is static, daily, or real-time aggregation sufficient for room-level control?
+```
+->OK
+
+- Focus of researchの部分、Three GCMs are comparedの部分は論文全体でどこが良いか判断。後のMethodでも同じような説明がされている。
+  - 確認: Introduction line 70 と Method `Three-level time-resolution \ac{gcm}s` で、SGCM/DGCM/RTGCM の定義が近い内容で繰り返されている。
+  - 方針: Introduction では detailed definition を短くし、「三つの aggregation resolutions を比較する」と研究範囲だけを示す。各 GCM の正式な操作的定義は Method に置く。
+  - 修正案:
+
+```tex
+The analysis compares three levels of group-comfort aggregation, from fixed room-member aggregation to daily and real-time occupant-composition updates, with the operational definitions provided in the Method section.
+```
+->OK
+
+- Using field data from real office spaces... の分はコメントアウトし非表示
+  - 確認: line 72 の `Using field data from real office spaces...` は research objective の締めとしては情報量が多く、Method の説明とも重なる。
+  - 方針: 本文ではコメントアウトし、直前の `Building on prior work...` と次の `Specifically...` を直接つなげる。
+  - 修正案:
+
+```tex
+% Using field data from real office spaces, the study relates model performance to subgroup size, mean occupancy, occupancy variability, and \ac{utr}.
+```
+->OK
+
+### Method
+- Target building...のSubsectionのうち、The control variable is the zone air temperature setpointの文章は削除
+  - 確認: `ch3-Method.tex` line 25 の文は設備説明の直後にあり、後の control policy / setpoint 定義で十分に説明される。
+  - 方針: 削除でよい。target building の説明は building / rooms / participants に集中させる。
+  - 修正案: 以下の文を削除。
+
+```tex
+The controlled variable is the zone air temperature setpoint.
+```
+->OK
+
+- Suevey answers and location tracking data from...の前にConsidering the sufficience of collected surveysのような文を前置きし、かつこの文章全体を45 office workers who regularlyのあとに置いて流れをよくする
+  - 確認: 現在は IRB / consent / anonymization の後に `Survey answers... from 39 participants...` があり、参加者数の流れが分断されている。
+  - 方針: `45 invited` の直後に、有効分析対象が 39 名であることを置く。理由は `Considering the sufficiency and completeness...` のように、survey/location data の usable sample として説明する。
+  - 修正案:
+
+```tex
+\qty{45} office workers who regularly work in the designated target rooms were invited to participate.
+Considering the completeness of the collected survey answers and location tracking records, data from \qty{39} participants were used in the analysis.
+This study has been approved by the National University of Singapore Institutional Review Board (NUS-IRB Reference Code: NUS-IRB-2025-498).
+Informed consent was obtained from all participants prior to the study.
+All location and survey data were anonymized by the building administrator before being accessed by the research team to protect privacy.
+```
+
+  - 注意: `sufficience` ではなく `sufficiency` だが、この文脈では `completeness` の方が自然。
+->OK
+
+- 2.1.3の箇所、BMSのデータは使っていないので、BMSのデータを利用と書いてある部分は削除、compact sensorsだけ残す
+  - 確認: line 43 で `obtained from the \ac{bms} and compact sensors` となっているが、実際に BMS data を使っていないなら Method とデータ出所が不一致。
+  - 方針: primary measurements は compact sensors 由来に限定し、BMS を削除する。
+  - 修正案:
+
+```tex
+The primary measurements were \ac{ti} and \ac{rh}, obtained from compact sensors (HIOKI E.E. Corporation, Nagano, Japan) installed in the target rooms.
+```
+->OK
+
+- 2.1.4の最後の箇所、sucsection.2.となっているが、appendixでの章の表記に。A.1, B.1などのような
+  - 確認: `\autoref{app:occupancy_reconstruction}` が `subsection 2` のように出ている可能性がある。Appendix 内で `\subsection` から始まっているため、番号・autoref 名が不自然になりやすい。
+  - 方針: Appendix 側の構成を `\section` 単位にするか、本文参照だけ `Appendix~\ref{...}` に変更する。最小修正なら本文側の参照文を変える。
+  - 修正案（最小）:
+
+```tex
+The detailed procedure for this reconstruction is described in Appendix~\ref{app:occupancy_reconstruction}.
+```
+
+  - 修正案（構成を整える場合）: `chapters/chap-appendices.tex` の各 `\subsection` を `\section` に変更し、Appendix A, Appendix B... として出す。さらに table/figure は各 appendix section ごとに A.1, B.1 のようにしたい場合は、section ごとに `\renewcommand{\thetable}{\thesection.\arabic{table}}` などを検討する。
+->OK
+
+- 2.2.1 Simulation designの中、最後のAt each control timestep, the location-log agentsの一文は繰り返しになっていないか検討
+  - 確認: Simulation Design line 64 の `At each control timestep...` は、後の Agentic simulation line 100 で active set と setpoint selection をより具体的に説明している。
+  - 方針: Simulation Design では high-level overview に留め、control timestep の詳細は Agentic simulation subsection に任せる。
+  - 修正案: 以下の文を削除またはコメントアウト。
+
+```tex
+% At each control timestep, the location-log agents determined the simulated room occupant composition.
+```
+->コメントアウト
+
+- 2.2.3.のThree-level time-resolution GCMsは論文全体の中でどこが良いか検討。Introductionで触れているなら、ここは圧縮もしくは削除まで考えられる。もしくはIntroductionで定義した上で、次のSubsectionの中で、as describedのように引用して再起させるなど
+  - 確認: Introduction で三つの GCM に触れ、Method でも line 79--83 で定義している。完全削除すると数式定義前の読者導線が弱くなるため、Method に短い operational definition は残した方がよい。
+  - 方針: subsection として独立させず、`Simulation Design` の終盤または `Agentic simulation` 冒頭で `As introduced above...` と短く再定義する。
+  - 修正案:
+
+```tex
+As introduced in the research focus, the simulation evaluates three temporal resolutions of \ac{gcm} aggregation: \ac{sgcm}, based on the sampled regular room-member group over the study period; \ac{dgcm}, based on the sampled attendees on each day; and \ac{rtgcm}, based on the sampled occupants present at each control timestep.
+```
+
+  - 実装時の選択肢: `\subsubsection{Three-level time-resolution \ac{gcm}s}` を削除し、この一文を `Agentic simulation` の数式前に移すと重複が最も少ない。
+
+->OK
+
+
+- Thus, the three policies..の文章でdiffer only in whether...と書かれているが、whetherで違いを述べるのはわかりづらい。updating timestep such as...などのように名詞のように書けないか
+  - 確認: `differ only in whether...` は文法上は通るが、違いが categorical choice ではなく update timescale なので名詞句の方が明瞭。
+  - 修正案:
+
+```tex
+Thus, the three policies share the same setpoint-selection rule and differ only in the update timescale of the represented group: the full study period, each day, or each control timestep.
+```
+->OK
+
+
+- indexed by i はiが個人IDだと論文の中で分かるように
+  - 確認: line 105 の `indexed by $i$` は、$i$ が location-log agent / assigned PCM / individual participant proxy のどれを指すか少し曖昧。
+  - 方針: $i$ は selected location-log agent に割り当てられた individual comfort profile の index として明示する。
+  - 修正案:
+
+```tex
+Let $p_i(T)=P_i(S_{th}=0\mid T)$ denote the ``No change'' probability predicted by the \ac{pcm} assigned to selected location-log agent $i$, where $i$ indexes an individual occupant proxy in the simulation, at \acl{ti} $T$.
+```
+->OK
+
+- occupancy variabilityは現在は使っていないので、該当箇所をコメントアウト
+  - 確認: Method では daily occupancy standard deviation `\sigma_{N,r,d}` を定義しているが、現在の主要 Results が使っていないなら reader に余計な分析軸を期待させる。
+  - 方針: `Occupancy variability` paragraph と式 `eq:occ_var` をコメントアウト。Introduction / Focus に残っている `occupancy variability` も削るか、使う場合のみ残す。
+  - 修正案:
+
+```tex
+% \paragraph{Occupancy variability}
+% To capture within-day fluctuations in room load, the daily standard deviation of realized occupancy count is used:
+% ...
+% \label{eq:occ_var}
+```
+->OK
+
+- UTRのDaily summariesも現在の分析の中で使っていなければコメントアウト。
+  - 確認: Results が timestamp-level `\mathrm{UTR}_{r,t}^{30}` を使い、daily summary `\mathrm{UTR}_{r,d}` を使っていないなら、daily UTR の式は不要。
+  - 方針: timestamp-level UTR definition は残し、daily summaries の段落と式だけコメントアウトする。
+  - 修正案:
+
+```tex
+% For daily summaries, timestamp-level \ac{utr} values are averaged within each room-day:
+% ...
+% The daily \ac{utr} captures how much the present group composition changes over short horizons, even when the occupancy count is similar.
+```
+->OK
+
+- 2.4.2 comfort-related outcomesのなか、pを変換するのにqで書くのはわかりにくくないか？
+  - 確認: `q_{i,t}^{policy}=p_i(T_set...)` は「PCM probability curve を policy setpoint で評価した score」として数学的には妥当だが、記号が増えて読みにくい。
+  - 方針: `q` を廃止し、`p_i(T_{\mathrm{set}}^{policy}(t))` を CP 式に直接入れる。本文では「evaluated no-change probability」と説明する。
+  - 修正案:
+
+```tex
+For each present member $i\in S_{r,t}$, the setpoint generated by a policy is evaluated by the predicted ``No change'' probability $p_i(T_{\mathrm{set}}^{\mathrm{policy}}(t))$ from the assigned \ac{pcm}.
+```
+
+```tex
+\mathrm{CP}_{r,d}^{\mathrm{policy}}
+=
+\frac{
+\sum_{t\in\mathcal{T}_{r,d}}
+\sum_{i\in S_{r,t}}
+p_i\!\left(T_{\mathrm{set}}^{\mathrm{policy}}(t)\right)
+}{
+\sum_{t\in\mathcal{T}_{r,d}}
+|S_{r,t}|
+}.
+```
+->OK
+
+- policy一覧にStatic, Daily, RTとなっているが、これらは\ac{}での略称記号を支えているか
+  - 確認: 本文の policy set は mathematical labels として `\mathrm{Static}`, `\mathrm{Daily}`, `\mathrm{RT}` を使っている。一方、本文上のモデル名は `\ac{sgcm}`, `\ac{dgcm}`, `\ac{rtgcm}`。
+  - 方針: 数式ラベルは短く保ってよいが、読者が acronym と対応づけられるように一度だけ明記する。
+  - 修正案:
+
+```tex
+Here, $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{RT}\}$ corresponds to the \ac{sgcm}, \ac{dgcm}, and \ac{rtgcm} policies, respectively.
+```
+->OK
+
+  - もしくは数式 label 自体を `\mathrm{SGCM}`, `\mathrm{DGCM}`, `\mathrm{RTGCM}` に変える。ただし式が長くなるため、現状の `Static/Daily/RT` に対応説明を足す方が読みやすい。
+
+- 2.4.3 control related outcomes の中で、温度差分の計算式は良いが、式(14)の中に絶対値も再度表現するのはわかりづらい。というか式としてこの前の部分で完結しているので、絶対値表記は不要
+  - 確認: `\delta T` の定義式に `\qquad |\delta T|` が並んでおり、1 つの式で二つの量を定義しているように見える。
+  - 方針: 式は signed difference の定義だけにし、絶対値は本文で「magnitude is evaluated as...」と説明する。
+  - 修正案:
+
+```tex
+\begin{equation}
+\delta T_{r,t}^{\mathrm{RT}}
+=
+T_{\mathrm{set}}^{\mathrm{RT}}(t)
+-
+T_{\mathrm{set}}^{\mathrm{RT}}(t-\Delta t),
+\label{eq:rt_setpoint_step}
+\end{equation}
+```
+->OK
+
+```tex
+where $\Delta t=\qty{30}{\minute}$ is the control timestep. The adjustment magnitude is evaluated as $|\delta T_{r,t}^{\mathrm{RT}}|$.
+```
+
+- C+r,dの部分、イプシロンの設定はしていたか？温度変動のレンジを確かめる上では余計ではないか？
+  - 確認: `\varepsilon=\qty{0.05}{\celsius}` は numerical noise 除外としてはあり得るが、本文で根拠を示していないため恣意的に見える。温度変動レンジを見る目的なら全 valid timestep の差分分布で十分。
+  - 方針: `\mathcal{C}_{r,d}^{+}` と epsilon threshold を削除し、mean absolute step は全 valid consecutive timesteps で計算する。もし「変更が発生したときのみ」の分析を残すなら、Results figure caption と整合させて threshold の根拠を脚注的に説明する。
+  - 修正案（threshold を外す）:
+
+```tex
+\begin{equation}
+\overline{|\delta T|}_{r,d}^{\mathrm{RT}}
+=
+\frac{1}{|\mathcal{C}_{r,d}|}
+\sum_{t\in\mathcal{C}_{r,d}}
+\left|\delta T_{r,t}^{\mathrm{RT}}\right|,
+\label{eq:rt_mean_abs_step_daily}
+\end{equation}
+```
+
+```tex
+where $\mathcal{C}_{r,d}$ is the set of timestamps on day $d$ in room $r$ for which both $T_{\mathrm{set}}^{\mathrm{RT}}(t)$ and $T_{\mathrm{set}}^{\mathrm{RT}}(t-\Delta t)$ are defined.
+```
+->実際のコードを確認してから修正すること。
+
+- 2.5. Analysis outcomeの部分、単独でsubsectionが必要か？目的が分かりやすくなっている？
+  - 確認: `Analysis outcomes` は Method の最後にあるが、評価指標の定義後に analysis flow を整理する役割はある。一方で短い subsection なので、独立させるほどの内容かは微妙。
+  - 方針: 残すなら名前を `Analysis procedure` または `Outcome comparisons` にして、何を比較するかを簡潔に列挙する。削る場合は `Evaluation Metrics` の最後の段落として統合する。
+  - 修正案（統合）:
+
+```tex
+The defined metrics are used for three comparisons: mean comfort probability and improvement relative to the fixed \qty{24}{\celsius} baseline across subgroup sizes and \ac{gcm} resolutions; real-time control burden through mean absolute setpoint adjustment; and the relationship between \ac{utr} and the 30-minute action-needed window ratio.
+```
+
+  - 実装時は `\subsection{Analysis outcomes}` を削除し、この文を `Control-related outcomes` の後に置くと Method の構造が締まる。
+
+->Evauation metricsの章に合流で良い。
+
+## 5. Selfーreview on June 30th
+### Method
+- 2.2と2.3で章を分けているが、統合できるのでは？Agentic simulationの大枠の説明は被っているはず
+  - 確認: 現在の `ch3-Method.tex` では `Occupancy-log-based agentic comfort simulation` の中に `Simulation Design` と `Personal Comfort Model (PCM)` があり、その直後に別 subsection として `Agentic simulation` が置かれている。
+  - 確認: `Simulation Design` は「PCM と location-log agent を分離し、Monte Carlo-style resampling を行う」という大枠、`Agentic simulation` は「subgroup sampling, PCM assignment, GCM aggregation, setpoint selection」を詳述しているため、章の階層としては分けすぎに見える。
+  - 方針: `Occupancy-log-based agentic comfort simulation` を大見出しとして残し、その下に `Simulation design`, `Personal comfort model`, `Monte Carlo simulation and GCM policies` を並べる構成にする。つまり現行の `\subsection{Agentic simulation}` は `\subsubsection{Monte Carlo simulation and GCM policies}` に下げる。
+  - 修正案:
+
+```tex
+\subsection{Occupancy-log-based agentic comfort simulation}
+\subsubsection{Simulation design}
+...
+\subsubsection{Personal comfort model}
+...
+\subsubsection{Monte Carlo simulation and GCM policies}
+As introduced in the research focus, ...
+```
+
+  - 追加整理案: `Simulation Design` 末尾の `Based on the simulated occupant compositions...` は、後続の `Monte Carlo simulation and GCM policies` と重複するため削除またはコメントアウトしてよい。
+  - 注意: `Agentic simulation` を subsection として残すと、2.2 と 2.3 が並列に見えるが、実際には同じ方法論の内部手順なので、subsubsection 化の方が論理構造に合う。
+
+->重複していた箇所はコメントアウトしつつ、章の構成を調整すること。
+
+### Result
+- 3.1 でComfort probabilityと書かれているが、ちゃんと前セクションのEvaluation metricsで定義済みだったか？そのほか指標の定義と実際のResult Section内での利用について矛盾がないか確認
+  - 確認: `Comfort probability` は Method の `Comfort-related outcomes` で `\mathrm{CP}_{r,d}^{\mathrm{policy}}` と `\overline{\mathrm{CP}}_{r,K}^{\mathrm{policy}}` として定義されている。Result 3.1 の `mean comfort probability` はこの `\overline{\mathrm{CP}}` に対応しているため、大枠では矛盾なし。
+  - 確認: 一方、Result 3.1 で使う `improvement relative to the fixed \qty{24}{\celsius} baseline` は Method で文章としては触れているが、式として明示されていない。読者には `percentage point difference` なのか `relative percentage increase` なのかが曖昧になり得る。
+  - 方針: Method の comfort-related outcomes に baseline improvement の定義を 1 式追加する。Result では `improvement in mean comfort probability relative to the fixed baseline` と書き、必要なら `percentage-point improvement` と明示する。
+  - 修正案:
+
+```tex
+The improvement relative to the fixed \qty{24}{\celsius} baseline is computed as
+\begin{equation}
+\Delta \overline{\mathrm{CP}}_{r,K}^{\mathrm{policy}}
+=
+\overline{\mathrm{CP}}_{r,K}^{\mathrm{policy}}
+-
+\overline{\mathrm{CP}}_{r,K}^{24\,^\circ\mathrm{C}} .
+\label{eq:comfort_probability_improvement}
+\end{equation}
+```
+->OK
+
+  - 指標対応チェック:
+    - 3.1 `mean comfort probability`: Method の `\overline{\mathrm{CP}}_{r,K}^{policy}` に対応。
+    - 3.1 `improvement relative to baseline`: 上の式を追加すれば明確。
+    - 3.2 `temperature adjustment magnitude`: Method の `|\delta T_{r,t}^{RT}|` と `\overline{|\delta T|}_{r,d,+}^{RT}` に対応。ただし `+` と epsilon threshold は「実際のコード確認後」として保留中。
+    - 3.3 `action-needed window ratio`: Method の `\mathrm{AWR}_{r,d}^{30}` に対応。
+    - 3.3 `\ac{utr}`: Method の timestamp-level `\mathrm{UTR}_{r,t}^{30}` に対応。daily UTR はコメントアウト済みなので、Result でも daily summary と誤読されないよう `30-minute \ac{utr}` または `timestamp-level \ac{utr}` と書く。
+
+- 3.1.Although both the \ac{dgcm} and \ac{rtgcm} maintain performance improvements over the baseline, the gap between them increases as room size expands. This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
+ここについては断言できないのでコメントアウト。これを示すことのできる追加グラフは作成可能か検討
+  - 確認: 現在の文は「gap が room size とともに増える」だけでなく、「larger rooms では dynamic occupant transitions のため RTGCM が有利」と因果的に読める。現行 Figure だけでは occupant transition の強さを直接示していないため、断言は避けるべき。
+  - 方針: 本文ではコメントアウトし、現時点では観察事実に留める。代替文を入れる場合も `may` や `suggests the need to examine` に留める。
+  - コメントアウト案:
+
+```tex
+% Although both the \ac{dgcm} and \ac{rtgcm} maintain performance improvements over the baseline, the gap between them increases as room size expands.
+% This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
+```
+
+  - 弱めた代替案:
+
+```tex
+The difference between the \ac{dgcm} and \ac{rtgcm} should therefore be interpreted together with occupancy-composition dynamics, rather than subgroup size alone.
+```
+
+  - 追加グラフ案:
+    - `\overline{CP}^{RT} - \overline{CP}^{Daily}` を y 軸、mean \ac{utr} または 30-minute \ac{utr} summary を x 軸にした scatter/contour plot。
+    - `\overline{CP}^{RT} - \overline{CP}^{Daily}` を y 軸、subgroup size `K` を x 軸、色を mean \ac{utr} または mean occupancy ratio にした plot。
+    - room ごとに `RT-Daily gap` と `UTR` の関係を示す small multiples。
+  - 追加グラフで示せること: RTGCM と DGCM の差が「room size」ではなく「occupant-composition turnover」と関係するかを検証できる。これが出せれば、コメントアウトした主張を Discussion で限定的に復活できる。
+
+->追加検討中。保留。
+
+- 3.1. 少しボリュームが足りていない気がする。語りを膨らませられる内容を検討
+  - 確認: 現在の 3.1 は Figure の説明、policy ranking、subgroup size による低下、SGCM の baseline 接近、DGCM/RTGCM の positive improvement までで構成されている。主張は通るが、各結果の意味づけが短め。
+  - 方針: 新しい因果主張を足すより、Method で定義した `K` と `N_{r,t}` の違い、policy resolution の違い、baseline との差を使って結果の読み方を補強する。
+  - 追記候補 1: 3.1 冒頭で Figure の読み方を補足。
+
+```tex
+Here, subgroup size $K$ represents the sampled regular-member group size, not the number of occupants present at every timestep. Therefore, the trend across $K$ indicates how the tested policies behave as the potential room-member pool expands.
+```
+->OK
+
+  - 追記候補 2: SGCM の低下を説明。
+
+```tex
+The decline of the \ac{sgcm} improvement indicates that a fixed room-member aggregation becomes less distinct from the fixed-temperature baseline as more heterogeneous comfort profiles are averaged into a single representation.
+```
+->OK
+
+  - 追記候補 3: DGCM/RTGCM の positive improvement を中立的に説明。
+
+```tex
+The positive improvement maintained by the \ac{dgcm} and \ac{rtgcm} indicates that updating the represented occupant group can preserve comfort benefits even when the potential member pool becomes larger.
+```
+->OK
+
+  - 注意: `RTGCM benefits from dynamic occupant transitions` のような説明は、追加グラフで確認できるまで 3.1 では避ける。
+
+- 3.2のcontrol-adjustment burdenという件、burdenは負担という単語に聞きこえて重い。もう少しNeutralな単語はないか
+  - 確認: `burden` は実務負荷の意味として Discussion では有用だが、Results subsection の見出しや説明ではやや評価的に聞こえる。
+  - 方針: Results では neutral に `control adjustment`, `setpoint adjustment`, `control-update requirement` などを使い、Discussion で必要に応じて operational burden と解釈する。
+  - 候補:
+    - `Effect of \ac{rtgcm} on setpoint adjustment`
+    - `Setpoint adjustment characteristics under the \ac{rtgcm}`
+    - `Control-update requirements under the \ac{rtgcm}`
+    - `Temperature setpoint adjustment under the \ac{rtgcm}`
+  - 修正案:
+
+```tex
+\subsection{Setpoint adjustment characteristics under the \ac{rtgcm}}
+...
+This subsection investigates the setpoint adjustment characteristics introduced by the \ac{rtgcm}.
+```
+
+  - Method 側も `control burden` と言っている箇所があるため、Results だけでなく Method の `To quantify the control burden...` も `To quantify setpoint adjustment requirements...` に変えると全体のトーンがそろう。
+
+->setpoitd adjustment characteristicsでOK
+
+- This analysis intends to visualize the effect of occupancy size from two aspects: subgroup size, which shows sample sizes, and normalizedmean occupancy ratio, which shows the density/sparceness of the target room.
+と追記したが、Sample sizeをこの文脈で適切に示す言葉づかいはあるか
+  - 確認: ここでの `subgroup size` は statistical sample size ではなく、simulation condition として sampled regular-member pool の大きさを示す `K`。`sample size` と書くと統計的なサンプル数や trial 数に見える。
+  - 方針: `sample size` は避け、`sampled regular-member group size`, `potential room-member group size`, `simulated room-member pool size` のいずれかにする。
+  - `normalizedmean occupancy ratio` は typo があり、`normalized mean occupancy ratio` または `mean occupancy normalized by subgroup size` とする。
+  - 修正案:
+
+```tex
+This analysis visualizes occupancy scale from two complementary perspectives: subgroup size $K$, which represents the sampled regular-member group size in each simulation condition, and the normalized mean occupancy ratio, which represents how densely that sampled group is occupied during operation.
+```
+
+->OK
+
+  - さらに簡潔にする案:
+
+```tex
+Here, subgroup size $K$ represents the simulated regular-member pool, whereas the normalized mean occupancy ratio represents realized occupancy density within that pool.
+```
+->一つ上のもので採用
+
+  - `density/sparseness of the target room` は room 自体の密度というより sampled group に対する realized occupancy の疎密なので、`realized occupancy density within the sampled group` がより正確。
+
+
+- 3.3. adjustment events of at least 0.5degreeは表現として違和感。適切な言葉に。
+  - 確認: Method では `action-needed window ratio` を「30-minute window 内に rounded real-time setpoint update が \qty{0.5}{\celsius} 以上ある場合」と定義している。したがって `temperature adjustment events of at least 0.5 degree` は少し粗く、window-based metric であることが伝わりにくい。
+  - 方針: `event` ではなく `30-minute windows requiring an actionable setpoint change` と書く。
+  - 修正案:
+
+```tex
+\autoref{fig:CtrlWindowRatio} shows the 30-minute action-needed window ratio across different \ac{utr} levels, where an action-needed window is defined as a window containing at least one rounded \ac{rtgcm} setpoint change of \qty{0.5}{\celsius} or larger.
+```
+->OK
+
+  - 短い案:
+
+```tex
+\autoref{fig:CtrlWindowRatio} shows the relationship between \ac{utr} and the share of 30-minute windows requiring an actionable setpoint change of at least \qty{0.5}{\celsius}.
+```
+
+  - 併せて直後の `probability of required temperature adjustment` は `action-needed window ratio` に統一する。
+->一つ上のもので採用
+
+## Potential references
+jung energy 2020: in a responsive and adaptive building system, the dynamic diversity of pcm in thermal zones provides opportunities for dynamic setpoint adjustment
+jung energy 2020: it comes to the improvement in thermal comfort, the thermal comfort sensitivity based approach had the best
+jung energy 2020(discussion ): long-term acclimatation to  the climate... 
+jung energy 2020(conclusion):as number of occupants per multioccupancy zone increases, the opportunities
+jung energy 2020(conclusion): by having more than six occupants per zone, the benefit of using pao dininishes
+jung energy 2020(conclusion): the performance from the integration of personal comfort model converges to that of conventional generalized models
+jung comparative 2019thermal preferences were distributed across a range from 20 to 27, which is an acceptable range according to the field study
+
+## 6. Discussion reinforcement from potential references and RefPaper notes
+
+Discussion はすでに `Effect of occupancy parameters on comfort performance`, `Effect of occupancy parameters on control`, `Limitations` の3部構成になっている。
+RefPaper の Result/Discussion から補強できる論点は、単に「先行研究と一致した」ではなく、本研究の貢献である occupancy dynamics / time resolution / practical control relevance をより明確にする方向で使うのがよい。
+以下では、それぞれ「参照できる先行研究の論点」「本研究結果との接続」「追記案」を近くにまとめる。
+
+### 6.1 Group size effect は既存Discussionにあるが、SGCMだけでなく DGCM/RTGCM との差分を新規性として強調する
+
+- 参照できる論点:
+  - \mycite{jung_energy_2020}\cite{jung_energy_2020} は、multi-occupancy zone で人数が増えると personal comfort integration の便益が小さくなり、一定人数以上では conventional/generalized model に近づくことを示している。
+  - \mycite{jung_comparative_2019}\cite{jung_comparative_2019} でも、occupants の人数が増えるほど collective comfort probability が下がり、複数戦略の性能差が収束する傾向が示されている。
+
+- 本研究との接続:
+  - SGCM の改善率が subgroup size とともに小さくなり、K=5--7 付近で fixed baseline に近づく点は先行研究と整合する。
+  - ただし、本研究の新規性は「人数が増えると個人差が平均化される」だけでなく、DGCM/RTGCM が subgroup size 増加後も positive improvement を維持する点にある。
+  - これは「人数」だけでなく、「その日に誰が来たか」「時刻ごとに誰に入れ替わったか」という occupancy dynamics が comfort aggregation の有効性を左右する、という解釈につなげられる。
+
+- 追記候補:
+
+```tex
+This agreement with previous studies should be interpreted mainly for the \ac{sgcm}, which represents a relatively static aggregation of the potential room-member group.
+The more distinctive finding of the present study is that the \ac{dgcm} and \ac{rtgcm} maintain positive improvement even when the subgroup size becomes larger.
+This suggests that the diminishing return of personal-comfort integration with increasing group size can be partly offset when the represented group is updated according to realized attendance or real-time occupant composition.
+Thus, the effective aggregation scale in shared offices is not determined only by the number of potential users assigned to a room, but also by how frequently the actually present occupants differ from that static membership.
+```
+
+- 挿入先:
+  - `Effect of occupancy parameters on comfort performance` の第1段落後、既存の `At the same time, the \ac{dgcm} and \ac{rtgcm} maintain positive improvement...` の周辺に入れる。
+  - 既存文と重複するため、入れる場合は現在の2段落目を置き換えるのがよい。
+
+- 注意:
+  - `room size` と言い切るより `subgroup size`, `potential room-member group`, `realized attendance` の語を使う。
+  - 「人数が6人を超えると必ず無効」とは書かず、先行研究と本研究条件での傾向として扱う。
+
+### 6.2 Dynamic diversity を RTGCM の価値説明に使う
+
+- 参照できる論点:
+  - \mycite{jung_energy_2020}\cite{jung_energy_2020} は、responsive/adaptive building system では thermal zone 内の personal comfort models の dynamic diversity が dynamic setpoint adjustment の機会になる、という方向の議論をしている。
+
+- 本研究との接続:
+  - 本研究はこの dynamic diversity を、実測の location log と \ac{utr} によってより具体的に扱っている。
+  - \ac{utr} は人数の多寡ではなく「誰が置き換わったか」を表すため、RTGCM が DGCM より意味を持つ条件を説明する指標になる。
+  - Discussion では `mean occupancy` と `\ac{utr}` の違いをもう一段はっきり書くと、Results の control window ratio とつながる。
+
+- 追記候補:
+
+```tex
+The role of \ac{utr} also extends the notion of dynamic diversity discussed in prior comfort-driven control studies.
+While mean occupancy indicates how many occupants are present, \ac{utr} indicates whether the comfort profiles represented by the present group are being replaced over time.
+Therefore, a room with the same occupancy count can require different \ac{rtgcm} setpoints when occupant composition changes, whereas a room with stable membership may not benefit substantially from real-time aggregation.
+This distinction helps explain why real-time tracking is most relevant when occupant turnover changes the represented comfort distribution, rather than merely when the room is sparsely occupied.
+```
+
+- 挿入先:
+  - `Effect of occupancy parameters on control` の \ac{utr} 説明段落、現在の `Mean occupancy and occupancy variability describe...` の直後。
+
+- 注意:
+  - Results 側で RTGCM/DGCM の差を動的遷移だけに過度に帰属させない。
+  - Discussion では「結果の解釈」として、\ac{utr} が real-time aggregation の operational relevance を示す、と書くのが安全。
+
+### 6.3 Comfort model resolution と HVAC/control resolution のミスマッチを、RTGCM導入条件の議論に拡張する
+
+- 参照できる論点:
+  - \mycite{ono_effects_2022}\cite{ono_effects_2022} は、thermal comfort model の occupancy resolution と HVAC control の occupancy/control resolution が合わないと、comfort improvement や energy saving の便益が失われることを示している。
+  - lower control resolution に対して high-resolution comfort model を使っても、実際に好ましい条件へ調整できない場合がある。
+
+- 本研究との接続:
+  - 現Discussionにはすでに `resolution-mismatch argument` があるが、さらに「RTGCMを使うべきかどうかは、tracking availability だけでなく actuator/control interval/resolution に依存する」と明確にできる。
+  - 本研究では \qty{0.1}{\celsius} の制御解像度を仮定し、\qty{0.5}{\celsius} 以上の action-needed window を確認しているため、実務的な制御分解能との接続を議論しやすい。
+
+- 追記候補:
+
+```tex
+This also means that \ac{rtgcm}-level information is not automatically useful unless the control system can act on the resulting setpoint differences.
+The present simulation assumed a fine setpoint resolution of \qty{0.1}{\celsius}, but the action-needed-window analysis separately examined whether the difference would exceed a more common \qty{0.5}{\celsius} control step.
+In this sense, the proposed metrics help distinguish latent comfort-model differences from actionable control differences.
+Such a distinction is important for avoiding a resolution mismatch in which real-time comfort information is available but the HVAC system cannot respond at the same practical resolution.
+```
+
+- 挿入先:
+  - `Effect of occupancy parameters on control` の Ono paragraph の後。
+  - 既存の `The present results show this trade-off...` と一部重複するため、置き換えまたは後半を統合する。
+
+- 注意:
+  - \qty{0.1}{\celsius} は実装上やや仮想的な細かさとして扱う。
+  - \qty{0.5}{\celsius} は「一般的な thermostat step」として operational threshold に使う、という説明がよい。
+
+### 6.4 Collective comfort と fairness の限界を、平均CPだけに依存する本研究の制約として書ける
+
+- 参照できる論点:
+  - \mycite{jung_comparative_2019}\cite{jung_comparative_2019} は、multi-occupant conditioning では majority / mean / median のような単一集約が、特定occupantの継続的不満足を生む可能性を議論している。
+  - \mycite{topak_collective_2023}\cite{topak_collective_2023} は collective comfort probability を扱いつつ、occupant locations や micro-thermal conditions を利用することで、平均的な室温だけでは見えない快適性改善を示している。
+
+- 本研究との接続:
+  - 本研究の \ac{gcm} 評価は mean comfort probability を主指標としており、誰かが繰り返し不利になる fairness は直接評価していない。
+  - Discussion の Limitations に、平均CPの改善が occupant-level fairness を保証しない点を追加すると強い。
+  - 特に RTGCM は occupant composition に応じて setpoint を変えるため、短期的な平均改善だけでなく、occupantごとの累積不快や公平性を将来的に見る必要がある。
+
+- 追記候補:
+
+```tex
+Another limitation is that the present analysis evaluates group performance primarily through mean comfort probability.
+Although this metric is useful for comparing aggregation levels, it does not show whether the same occupants repeatedly receive lower comfort probability under a group-optimal setpoint.
+Prior discussions on collective conditioning have noted that majority- or mean-based setpoint selection may improve average comfort while raising fairness concerns for minority preference groups.
+Future work should therefore evaluate occupant-level cumulative discomfort or fairness-aware objectives together with the mean \ac{cp}, especially when real-time aggregation is used to update setpoints throughout the day.
+```
+
+- 挿入先:
+  - `Limitations` の `Third, comfort evaluation is based on predicted...` の後。
+
+- 注意:
+  - 本研究では actual person-specific PCM と movement が対応していないため、fairness を定量評価したとは書かない。
+  - 「将来課題」として置くのがよい。
+
+### 6.5 Non-uniform thermal conditions / spatial matching は本研究の範囲外だが、ABWとの接続を強められる
+
+- 参照できる論点:
+  - \mycite{topak_collective_2023}\cite{topak_collective_2023} は、shared open office では occupant location ごとの micro-thermal condition が異なり、personal comfort profiles と空間配置を組み合わせることで collective comfort を改善できることを示している。
+  - 同論文は、uniform room-average temperature を前提にする OCC 研究の限界も示唆している。
+
+- 本研究との接続:
+  - 本研究は room-level setpoint と location log に基づく occupancy dynamics を対象としており、室内位置ごとの温熱差や seating assignment optimization は扱っていない。
+  - ただし、ABW/free-address office では「誰が部屋にいるか」だけでなく「どこに座るか」も重要になるため、Discussion の future work として自然につなげられる。
+  - 本研究の \ac{utr} は room-level の入れ替わりを捉える指標だが、将来的には seat-level/micro-zone occupancy と組み合わせられる。
+
+- 追記候補:
+
+```tex
+The present study focuses on room-level setpoint selection and does not model non-uniform thermal conditions within each office room.
+However, studies on collective comfort in shared offices have shown that occupants at different locations can experience different micro-thermal conditions even under the same room-average operation.
+For activity-based or free-address offices, this implies that occupancy dynamics may interact with seat choice and spatial thermal heterogeneity.
+Combining \ac{utr}-based temporal dynamics with seat-level or micro-zone comfort modeling would be a natural extension for evaluating whether real-time comfort information should be used for setpoint control, seat recommendation, or both.
+```
+
+- 挿入先:
+  - `Limitations` の energy/HVAC response の制約の後、または Discussion 末尾に future work として追加。
+
+- 注意:
+  - 現在の結果は room-level simulation なので、Topak の non-uniform thermal field を直接比較しすぎない。
+  - ABW の文脈とつなげると Introduction/Discussion の一貫性が上がる。
+
+### 6.6 Thermal preference diversity と sensitivity を、PCM assignment の妥当性/限界として補足できる
+
+- 参照できる論点:
+  - \mycite{jung_comparative_2019}\cite{jung_comparative_2019} は、thermal preferences が広い温度範囲に分布し、thermal comfort sensitivity が collective conditioning の setpoint 選択に影響することを示している。
+  - \mycite{jung_energy_2020}\cite{jung_energy_2020} でも、occupants' thermal comfort characteristics のばらつきが comfort-driven control の重要因子として扱われている。
+
+- 本研究との接続:
+  - 本研究では PCM profiles を observed location-log agents に再割当てしているため、個人ごとの移動パターンと快適性嗜好の対応は直接保持していない。
+  - 一方で、複数PCMを組み合わせた Monte Carlo design によって、thermal preference diversity が occupancy dynamics と相互作用する状況を評価している、と説明できる。
+  - Discussion では妥当性と限界の両方を書くとよい。
+
+- 追記候補:
+
+```tex
+The Monte Carlo assignment of \ac{pcm} profiles should also be interpreted in relation to the diversity of thermal preference and comfort sensitivity reported in previous multi-occupant comfort studies.
+By repeatedly assigning different comfort profiles to observed location-log agents, the simulation explores how preference diversity can interact with the same occupancy dynamics.
+At the same time, because the assigned \ac{pcm} profiles are not linked to the actual occupants who generated the movement logs, the results do not capture possible correlations between a person's attendance pattern, seat choice, and thermal preference.
+```
+
+- 挿入先:
+  - `Limitations` の `Second, the agentic simulation reassigns \ac{pcm} profiles...` の周辺。
+
+- 注意:
+  - これは Method の Monte Carlo design の補足にもなる。
+  - 「本研究の弱点」だけでなく「なぜ再割当てに意味があるか」も明確にできる。
+
+### 6.7 Energy implications は今回の主結果ではないが、RTGCMの実装判断には必要と書ける
+
+- 参照できる論点:
+  - \mycite{jung_energy_2020}\cite{jung_energy_2020} は、comfort-driven control の energy implication が条件によって正にも負にもなり得ることを示している。
+  - \mycite{topak_collective_2023}\cite{topak_collective_2023} は、airflow direction の変更など、快適性改善とエネルギー影響が制御手段に依存することを示している。
+  - \mycite{ono_effects_2022}\cite{ono_effects_2022} は、適切な comfort/control resolution の組み合わせが energy saving にも影響することを示している。
+
+- 本研究との接続:
+  - 本研究は comfort probability と setpoint adjustment characteristics に焦点があり、energy consumption は直接評価していない。
+  - RTGCM は comfort improvement を増やせるが、setpoint変更頻度や制御応答が増える可能性があるため、energy/HVAC dynamics を今後評価すべきという議論につなげられる。
+
+- 追記候補:
+
+```tex
+Finally, the present results should not be interpreted as direct evidence of energy savings.
+Prior comfort-driven control studies have shown that the energy implication of personal comfort integration depends on occupancy level, comfort-profile diversity, control strategy, and available actuation.
+In the present study, \ac{rtgcm} improved comfort probability under some occupancy conditions, but the associated setpoint-update frequency may also affect equipment operation, response delay, and energy use.
+Evaluating this comfort-control trade-off with a dynamic HVAC or building-energy model is therefore necessary before translating the proposed aggregation levels into an operational control strategy.
+```
+
+- 挿入先:
+  - `Limitations` の `Energy consumption, \ac{hvac} response delay...` を置き換え/拡張。
+
+- 注意:
+  - Energy saving を主張しない。
+  - 「comfort benefit と operational/energy cost の trade-off」を評価課題として書く。
+
+### 6.8 Discussion全体の構成案
+
+- 現在の構成は保ったままでよい。
+- ただし、各 subsection の役割を少し明確にすると読みやすい。
+
+1. `Effect of occupancy parameters on comfort performance`
+   - Jung energy / Jung comparative と接続。
+   - group size による diminishing return。
+   - その上で DGCM/RTGCM の positive improvement を本研究の新規性として提示。
+
+2. `Effect of occupancy parameters on control`
+   - Ono mismatch と接続。
+   - RTGCM の setpoint difference が actionable かどうか。
+   - \ac{utr} による dynamic diversity / real-time relevance の説明。
+
+3. `Limitations and future work`
+   - mean CP は fairness を保証しない。
+   - PCM reassignment は preference diversity を探索するが、実個人との対応はない。
+   - non-uniform thermal conditions / seat-level control は未評価。
+   - energy and HVAC dynamics は未評価。
+
+- Discussionに本文反映する際の優先順位:
+  - 優先度高: 6.1, 6.2, 6.3, 6.6, 6.7
+  - 余裕があれば: 6.4, 6.5
+  - 特に 6.4 fairness と 6.5 spatial heterogeneity は、本文が長くなりすぎる場合は Limitations/Future work に短く入れる程度でよい。

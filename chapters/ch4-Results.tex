@@ -5,6 +5,45 @@
 
 Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows the mean comfort probability under the \ac{sgcm}, \ac{dgcm}, \ac{rtgcm}, and fixed \qty{24}{\celsius} baseline policies for different subgroup sizes across the four office rooms.
 Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows the improvement in mean comfort probability relative to the fixed \qty{24}{\celsius} baseline.
+Figure~\ref{fig:ImpGCDMvsRTGCM} shows the improvement ratio between the \ac{rtgcm} and \ac{dgcm}.
+Here, subgroup size $K$ represents the sampled regular-member group size, not the number of occupants present at every timestep.
+Therefore, the trend across $K$ indicates how the tested policies behave as the potential room-member pool expands.
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \begin{subfigure}{0.98\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{analysis21_a6_style_comfort_rates_expanded_pool_selected_k_adopted_20260630_083849}}
+        \caption{Mean comfort probability probability under different comfort-representation controls}
+        \label{fig:ComfAchi}
+    \end{subfigure}
+
+    \medskip
+
+    \begin{subfigure}{0.98\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{analysis21_a6_style_improvement_vs24_expanded_pool_selected_k_adopted_20260630_083849}}
+        \caption{Comfort probability improvement relative to the baseline control}
+        \label{fig:ComfImp}
+    \end{subfigure}
+    \caption{Comfort probability for different subgroup sizes}
+    \label{fig:ComfAgentic}
+\end{figure}
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis21_a6_style_rt_minus_dgcm_expanded_pool_selected_k_adopted_20260630_090131}}
+    \caption{Comfort probability improvement ratio between\ac{rtgcm} and \ac{dgcm}}
+    \label{fig:MeanOccuConf}
+\end{figure}
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis21_a6_style_rt_minus_dgcm_expanded_pool_selected_k_adopted_20260630_090131}}
+    \caption{Comfort probability improvement ratio between\ac{rtgcm} and \ac{dgcm}}
+    \label{fig:ImpGCDMvsRTGCM}
+\end{figure}
+
 Across all rooms, the baseline control remained nearly constant at approximately \qtyrange{65}{70}{\percent} across subgroup sizes.
 The \ac{rtgcm} produced the highest mean comfort probability for every room and subgroup size, followed by the \ac{dgcm} and then the \ac{sgcm}.
 The performance of the \ac{rtgcm} and \ac{dgcm} decreases at similar rates as subgroup size increases, while the performance of the \ac{sgcm} shows a more modest decrease.
@@ -12,32 +51,15 @@ The mean comfort probability across rooms ranged approximately \qtyrange{80}{98}
 
 The improvement relative to the 24 \si{\celsius} baseline decreased as subgroup size increased.
 \ac{sgcm} improvement approaches zero in larger rooms, especially around subgroup size of 5--7 users.
+The decline of the \ac{sgcm} improvement indicates that a fixed room-member aggregation becomes less distinct from the fixed-temperature baseline as more heterogeneous comfort profiles are averaged into a single representation.
 
-In contrast, the \ac{rtgcm} and \ac{dgcm} maintain positive improvements at the largest tested subgroup size, with \ac{rtgcm} improvement remaining approximately \qtyrange{15}{20}{\percent} and \ac{dgcm} improvement approximately \qtyrange{5}{20}{\percent}.
+In contrast, the \ac{rtgcm} and \ac{dgcm} maintain positive improvements at the largest tested subgroup size for each target rooms, with \ac{rtgcm} improvement remaining approximately \qtyrange{15}{20}{\percent} and \ac{dgcm} improvement approximately \qtyrange{5}{20}{\percent}.
+The positive improvement maintained by the \ac{dgcm} and \ac{rtgcm} indicates that updating the represented occupant group can preserve comfort benefits even when the potential member pool becomes larger.
+Also, \autoref{fig:ImpGCDMvsRTGCM} shows that the improvement ratio between the \ac{rtgcm} and \ac{dgcm} initially increases at the small subgroup sizes such as below 6, and converges to a stable value around at larger subgroup sizes.
+This indicates that the \ac{rtgcm} is more effective than the \ac{dgcm} in smaller rooms, due to the more dynamic occupant transitions that can be captured by the real-time model.
 
-Although both the \ac{dgcm} and \ac{rtgcm} maintain performance improvements over the baseline, the gap between them increases as room size expands.
-This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
-
-\begin{figure}[pos=htbp!]
-    \centering
-    \begin{subfigure}{0.98\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{a6p_static_realtime_daily_by_subgroup}}
-        \caption{Mean comfort probability under different comfort-representation controls}
-        \label{fig:ComfAchi}
-    \end{subfigure}
-
-    \medskip
-
-    \begin{subfigure}{0.9\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{a6p_improvement_vs24_by_subgroup}}
-        \caption{Comfort improvement relative to the baseline control}
-        \label{fig:ComfImp}
-    \end{subfigure}
-    \caption{Agentic simulation results for different subgroup sizes.}
-    \label{fig:ComfAgentic}
-\end{figure}
+% Although both the \ac{dgcm} and \ac{rtgcm} maintain performance improvements over the baseline, the gap between them increases as room size expands.
+% This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
 
 % \autoref{fig:MeanOccuConf} shows the improvement ratio relative to the baseline control ($24^\circ\mathrm{C}$) as a function of daily mean occupancy. The figure presents the relationship between daily mean occupancy and improvement for the real-time and static group comfort models using density contours and fitted linear regression lines. Most observations are concentrated in regions where the improvement ratio is below 20\%. The fitted lines further indicate that the real-time group comfort model is more effective under sparse occupancy conditions. As mean occupancy increases to around 4--5 occupants, the improvement ratio approaches zero. This suggests that, even when room size (subgroup size) is fixed, the actual mean occupancy level still affects the achievable improvement.
 
@@ -48,20 +70,11 @@ This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic o
 %     \label{fig:MeanOccuConf}
 % \end{figure}
 
-\subsection{Effect of \ac{rtgcm} on control adjustment}
+\subsection{Setpoint adjustment characteristics under the \ac{rtgcm}}
 \label{subsec:controleffect}
 The previous subsection showed that the \ac{rtgcm} maintained a \qtyrange{15}{30}{\percent} higher mean comfort probability than the \ac{sgcm} across room member sizes.
-This subsection investigates the control-adjustment burden introduced by the \ac{rtgcm}.
+This subsection investigates the setpoint adjustment characteristics introduced by the \ac{rtgcm}.
 Because the \ac{sgcm} and \ac{dgcm} use coarser occupant-composition representations, frequent setpoint updates are primarily required under \ac{rtgcm}-based control.
-
-\autoref{fig:DynSpStepHist} shows the distribution of temperature adjustment magnitudes under the \ac{rtgcm} across daily mean occupancy.
-As daily occupancy increases, the range of temperature adjustment magnitude slowly shrinks.
-However, the mean value remains approximately around \qty{1.0}{\celsius} even at the highest occupancy levels.
-
-Similarly, \autoref{fig:DynSpStepHeatmap} maps the temperature adjustment magnitude over subgroup size and mean occupancy ratio at the control timestep.
-The magnitude of this temperature range shrinks as both subgroup size and mean occupancy ratio increase.
-At small subgroup sizes such as $K=4$, the mean adjustment magnitude is over \qty{1.0}{\celsius} in most cases.
-
 
 \begin{figure}[pos=htbp!]
     \centering
@@ -72,15 +85,29 @@ At small subgroup sizes such as $K=4$, the mean adjustment magnitude is over \qt
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.8\linewidth]{\Pic{png}{analysis23_k_normalized_mean_occupancy_mean_abs_step_when_changed_heatmap_regime_style_expanded_pool_overlap_dense_ybins05pct_kle16_minn20}}
+    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis23_k_normalized_mean_occupancy_mean_abs_step_when_changed_heatmap_regime_style_expanded_pool_overlap_dense_ybins05pct_kle16_minn20}}
     \caption{Mapping of temperature adjustment magnitude over subgroup size and mean occupancy ratio}
     \label{fig:DynSpStepHeatmap}
 \end{figure}
 
-\subsection{Effect of occupancy dynamics on control action frequency}
+\autoref{fig:DynSpStepHist} shows the distribution of temperature adjustment magnitudes under the \ac{rtgcm} across daily mean occupancy.
+It can be observed that as daily occupancy increases, the range of temperature adjustment magnitude slowly shrinks.
+This may because that as the number of occupants increases, the optimal temperature range for the group becomes more stable, leading to smaller adjustments.
+However, the mean value remains approximately around \qty{1.0}{\celsius} around mean occupancy(1--5) and marks around \qty{0.8}{\celsius} even at the highest occupancy levels in our analysis.
 
-\autoref{fig:CtrlWindowRatio} shows the probability of temperature adjustment events of at least \qty{0.5}{\celsius} across different \ac{utr} levels.
-As \ac{utr} increases, the probability of required temperature adjustment also increases; when \ac{utr} reaches approximately 0.7--0.8, the probability of temperature adjustment reaches \qty{90}{\percent}.
+Similarly, \autoref{fig:DynSpStepHeatmap} maps the temperature adjustment magnitude over subgroup size and mean occupancy ratio at the control timestep.
+This analysis visualizes occupancy scale from two complementary perspectives: subgroup size $K$, which represents the sampled regular-member group size in each simulation condition, and the normalized mean occupancy ratio, which represents how densely that sampled group is occupied during operation.
+The magnitude of this temperature range shrinks as both subgroup size and mean occupancy ratio increase.
+At small subgroup sizes such as $K=4$, the mean adjustment magnitude is over \qty{1.0}{\celsius} in most cases.
+For most cases, the temperature adjustment magnitude remains around \qty{0.5}{\celsius}, which is common \ac{hvac} setpoint adjustment range.
+This can be interpreted that in general building \ac{hvac} operation, these adjustment range can be wider than controlable range, thus this adjustment magnitude can be practical in actual \ac{hvac} operation.
+
+\subsection{Effect of occupancy dynamics on control action frequency}
+After investigating the magnitude of temperature adjustment in the previous subsection, this subsection investigates the effect of occupancy dynamics on the frequency of actionable setpoint changes under \ac{rtgcm}-based control.
+\autoref{fig:CtrlWindowRatio} shows the 30-minute action-needed window ratio across different \ac{utr} levels, where an action-needed window is defined as a window containing at least one rounded \ac{rtgcm} setpoint change of \qty{0.5}{\celsius} or larger.
+Here, \ac{utr} indicates how much occupancy composition present in the room shift between two control timesteps.
+It can be seen that as \ac{utr} increases, the action-needed window ratio also increases; when \ac{utr} reaches approximately 0.7--0.8, the action-needed window ratio reaches \qty{90}{\percent}.
+This indicates that large occupant-composition shifts, as captured by \ac{utr}, are associated with more frequent actionable setpoint changes.
 
 \autoref{fig:UTRexamples} shows the mean \ac{utr} transition by time of day, calculated as the weekday mean in four offices.
 Generally, \ac{utr} marks the highest values around \DTMtime{08:00:00} to \DTMtime{08:30:00} and around \DTMtime{17:30:00} to \DTMtime{18:00:00}, which are typical occupant arrival and departure times, respectively.
@@ -91,8 +118,8 @@ Except these cases, the \ac{utr} values are generally between 0.2 to 0.5.
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.9\linewidth]{\Pic{png}{analysis25_utr30_endpoint_k_scaling_step_rate_full_confirm_rng_k16_trial1_1000_combined_20260416_073500}}
-    \caption{Relationship between 30-minute user turnover rate and action-needed window ratio}
+    \includegraphics[width=0.9\linewidth]{\Pic{png}{analysis25_final_15min_action_step_rate_by_15min_utr_member_size}}
+    \caption{Relationship between 15-minute user turnover rate and action-needed window ratio. Confidence intervals are 95\% date-cluster bootstrap intervals with 1,000 resamples}
     \label{fig:CtrlWindowRatio}
 \end{figure}
 

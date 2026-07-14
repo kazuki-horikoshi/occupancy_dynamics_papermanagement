@@ -18,7 +18,7 @@ This one-size-fits-all approach is inherently limited in achieving widespread oc
 
 In recent years, \ac{occ} has emerged as a promising \ac{hvac} strategy that uses occupant information to support more individualized building operation \cite{soleimanijavid_challenges_2024}.
 IEA EBC Annex 79 defines \ac{occ} as an ``occupant-in-the-loop'' approach that seeks to provide optimal and personalized conditions rather than imposing fixed settings \cite{wagner_international_2024}.
-In typical \ac{occ} frameworks, sensing collects information such as environmental conditions, comfort feedback, and occupancy; learning develops preference or occupancy models from these data; and control translates the model outputs into \ac{hvac} actions \cite{soleimanijavid_challenges_2024,xie_review_2020}.
+Typical \ac{occ} frameworks consist of three connected layers: the sensing layer collects information such as environmental conditions, comfort feedback, and occupancy; the learning layer develops preference or occupancy models from these data; and the control layer translates the model outputs into \ac{hvac} actions \cite{soleimanijavid_challenges_2024,xie_review_2020}.
 Among these functions, the connection between personal comfort information and the control decision is especially important because it determines how individual preferences affect the final setpoint.
 
 In shared office spaces, however, \ac{occ} cannot rely only on isolated \acp{pcm}, because a single room-level \ac{hvac} setpoint must represent multiple occupants at the same time.
@@ -28,10 +28,10 @@ Despite growing recognition in the industry and active framework development in 
 
 \subsection{Dynamic occupancy and real-time tracking in activity-based working environments}
 
-The rise of remote and hybrid work has increased the use of \ac{abw} and other flexible office arrangements \cite{marzban_review_2023}.
-In such workplaces, occupants move between different spaces throughout the day, causing fluctuations in occupancy density and distribution within a zone \cite{motuziene_office_2022,pan_environmental_2025,huang_space-matching_2025,chang_statistical_2013,levene_problem_2020}.
+Meanwhile, the rise of remote and hybrid work has increased the use of \ac{abw} and other flexible office arrangements \cite{marzban_review_2023}.
+In such workplaces, occupants arrive, leave, and move between different spaces throughout the day, causing fluctuations in both occupancy density and occupant composition within a zone \cite{motuziene_office_2022,pan_environmental_2025,huang_space-matching_2025,chang_statistical_2013,levene_problem_2020}.
 Dynamic occupancy should therefore be understood not only as a change in the number of people in a room, but also as a change in who is present.
-Even when the occupancy count is similar, the thermal preferences represented by the present group may differ as occupants arrive, leave, or move between rooms.
+Even when the occupancy count is similar, the thermal preferences represented by the present group may differ.
 This makes static temperature control less reliable, because a condition optimized for one attendance pattern may not represent another.
 
 % To incorporate occupancy information in \ac{occ} frameworks, two main approaches can be identified: prediction-based methods and real-time sensing.
@@ -39,7 +39,7 @@ This makes static temperature control less reliable, because a condition optimiz
 % However, as noted in prior research \cite{goyal_occupancy-based_2013}, such prediction methods often entail high computational costs, may be more expensive than real-time sensing, and may not offer sufficient accuracy or reliability.
 
 Recent IoT and building-management technologies have made room- or occupant-level occupancy data more accessible through sources such as PIR, CO$_2$, and Wi-Fi-based sensing \cite{soleimanijavid_challenges_2024,zafari_survey_2019,brambilla_potential_2021}.
-\autoref{table:OccuTrack} provides examples of office projects that use IoT data for individual-level real-time occupancy tracking.
+\autoref{table:OccuTrack} provides examples of office projects by Japanese companies that use IoT data for individual-level real-time occupancy tracking.
 Therefore, opportunities are emerging to use such data in \ac{occ} systems that respond to changes in the occupants currently present.
 At the same time, the practical value of real-time occupant-composition data depends on whether the comfort benefit justifies the sensing, integration, privacy, and control burden.
 
@@ -54,8 +54,9 @@ These findings indicate that shared-space \ac{occ} requires attention to both co
 
 \autoref{table:OccuIntegration} compares field studies that integrate multiple \acp{pcm} within the same control zone.
 Most existing multi-occupant studies assume static occupant attendance configurations and do not account for occupants arriving and leaving dynamically \cite{lee_implementation_2019,li_indoor_2019,li_personalized_2017,li_indoor_2023,aguilera_thermal_2019,li_experimental_2021}.
-Lei et al.~\cite{lei_practical_2022} addressed dynamic occupancy using multiple reinforcement-learning models for frequent occupant combinations, but such an approach can be data- and compute-intensive.
-Therefore, a simpler practical question remains: when is static, daily, or real-time aggregation of individual comfort information sufficient for room-level control?
+Lei et al.~\cite{lei_practical_2022} addressed dynamic occupancy using multiple reinforcement-learning models for frequent occupant combinations, but such an approach can be data- and compute-intensive and may not cover all possible occupant combinations.
+Rather than preparing separate control models for many occupant combinations, a more deployable strategy is to vary the temporal resolution at which individual comfort information is aggregated.
+This leads to a practical question: when is static, daily, or real-time aggregation of individual comfort information sufficient for room-level control?
 
 \begin{table}[pos=!htbp]
   \centering
@@ -67,9 +68,9 @@ Therefore, a simpler practical question remains: when is static, daily, or real-
 \subsection{Focus of the research}
 
 Based on this background, this study evaluates when higher-resolution aggregation of individual comfort information improves predicted comfort in shared offices, and what operational burden is introduced by real-time occupant-composition updates.
-Three \acp{gcm} are compared: a \ac{sgcm} based on regular room members, a \ac{dgcm} based on daily attendees, and a \ac{rtgcm} based on occupants present at each control decision window.
-Building on prior work on group size and control granularity \cite{ono_effects_2022,jung_energy_2020}, the analysis introduces temporal occupancy variability as a key dimension of shared-space \ac{occ}.
-Using field data from real office spaces, the study relates model performance to subgroup size, mean occupancy, occupancy variability, and \ac{utr}.
+The analysis compares three levels of group-comfort aggregation, from fixed room-member aggregation to daily and real-time occupant-composition updates, with the operational definitions provided in the Method section.
+Building on prior work on group size and control granularity \cite{ono_effects_2022,jung_energy_2020}, the analysis introduces temporal occupancy dynamics, especially short-horizon occupant turnover, as a key dimension of shared-space \ac{occ}.
+% Using field data from real office spaces, the study relates model performance to subgroup size, mean occupancy, occupancy variability, and \ac{utr}.
 
 Specifically, the analysis compares \ac{sgcm}, \ac{dgcm}, and \ac{rtgcm} policies in terms of:
 (1) mean comfort probability and improvement relative to a fixed \qty{24}{\celsius} baseline;

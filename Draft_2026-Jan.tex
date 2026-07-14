@@ -349,6 +349,14 @@ XXX
 
 \appendix
 \label{appendix:XXX}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\renewcommand{\thetable}{A.\arabic{table}}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+\providecommand{\theHtable}{\thetable}
+\providecommand{\theHfigure}{\thefigure}
+\renewcommand{\theHtable}{A.\arabic{table}}
+\renewcommand{\theHfigure}{A.\arabic{figure}}
 
 \input{chapters/chap-appendices}
 \FloatBarrier
@@ -359,11 +367,6 @@ XXX
 % \verb+\printcredits+ command is used after appendix sections to list 
 % author credit taxonomy contribution roles tagged using \verb+\credit+ 
 % in frontmatter.
-
-\setcounter{table}{0}
-\setcounter{figure}{0}
-\renewcommand{\thetable}{A.\arabic{table}}
-\renewcommand{\thefigure}{A.\arabic{figure}}
 
 XXX
 
