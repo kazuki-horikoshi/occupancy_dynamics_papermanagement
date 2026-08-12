@@ -1,0 +1,30 @@
+\section{DISCUSSION}
+Using occupancy logs and field-derived PCMs under a shared setpoint-selection rule, this study shows that the value of temporal resolution depends on $K$, daily mean occupancy, and UTR.
+These metrics can identify where real-time tracking may justify its cost.
+
+\subsection{Why aggregation resolution changes the group-size result}
+Prior simulations showed that the benefits of PCM integration diminish as more occupants share a zone, particularly beyond six occupants \parencite{jung_energy_2020}; at larger group scales, increasing group size and internal preference diversity likewise reduced the potential maximum satisfaction rate, while larger groups became less thermally sensitive \parencite{wang_enhancing_2026}.
+The SGCM here follows the same directional pattern, crossing zero at $K\approx6$--8.
+DGCM and RT-GCM, however, retained positive improvement at the same $K$ by excluding absent members.
+This study therefore extends prior group-size findings by showing that comfort-aggregation outcomes depend not only on potential group size but also on realized occupancy (Figure~\ref{fig:OccuDensity}) and dynamic changes in occupant composition.
+RT-GCM also exceeded DGCM by 6--8 percentage points after the initial rise with $K$, reflecting the value of knowing who is present now rather than who attended that day.
+These predicted gains assume immediate setpoint selection and remain conditional on sensing reliability, HVAC response, and occupant adaptation.
+% This is not proof that every real-time system will deliver the same field improvement: the metric is a predicted mean ``No change'' probability under a shared setpoint with immediate setpoint selection, so it identifies a theoretical value of temporal resolution whose actual delivery depends on sensing reliability, response, and adaptation.
+
+\subsection{From comfort information to actionable control}
+A high-resolution comfort representation is useful only when the HVAC system can respond to the resulting setpoint differences, reflecting the mismatch between comfort-model and control resolution reported by \textcite{ono_effects_2022}.
+Although the simulation used a 0.1$^\circ$C grid, typical changed steps remained near 0.8$^\circ$C at higher mean occupancy and exceeded the 0.5$^\circ$C actionable threshold.
+This indicates actuation-relevant potential rather than delivered field benefit; reviews report limited field implementation and persistent data, computation, BAS-integration, and scalability barriers \parencite{xie_review_2020,soleimanijavid_challenges_2024}.
+UTR complements mean occupancy by indicating whether represented comfort profiles are being replaced, extending prior discussions of dynamic diversity in comfort-driven control \parencite{jung_energy_2020}.
+The near-overlap across $K$ in Figure~\ref{fig:turnover_action}(a) shows that turnover is a better guide to update frequency than $K$ alone.
+The three aggregation levels can consequently be treated as a deployment hierarchy: SGCM is defensible in stable assigned-seat zones, where UTR remained near 0.2--0.4 through office hours and the regular-member group matched presence; DGCM is a lower-complexity compromise when daily attendance varies but within-day composition stays relatively stable.
+RT-GCM is most valuable where UTR instead fluctuated dynamically, with sparse attendance and frequent movement.
+UTR can gate real-time updates to high-turnover periods, with deadbands or minimum hold times limiting excessive cycling.
+Such gating does not remove sensing trade-offs in accuracy, latency, energy use, cost, scalability, and privacy \parencite{zafari_survey_2019}.
+Because activity-based working outcomes depend on implementation and occupant use \parencite{marzban_review_2023}, these policy thresholds should be calibrated to each workplace.
+% Even there, UTR can gate real-time updates to high-turnover periods, with deadbands or minimum hold times preventing excessive cycling.
+
+\subsection{Limitations and research needs}
+The results are conditional on one Singapore office building, four weeks, four rooms, and 39 PCMs; random PCM assignment broadened the combinations, but comfort remained predicted rather than closed-loop.
+Energy use, HVAC dynamics and integration cost were not evaluated, so the deployment hierarchy should be interpreted as a comfort-based screening guide.
+Mean comfort probability also cannot show whether lower aggregate comfort reflects minority disadvantage or a low attainable maximum under preference diversity; future work should evaluate occupant-level fairness and group-relative performance \parencite{wang_enhancing_2026}.

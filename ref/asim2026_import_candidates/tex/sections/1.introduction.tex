@@ -1,0 +1,18 @@
+\section{INTRODUCTION}
+
+Occupant-centric control seeks to operate building systems using information about the people who occupy them, rather than applying one fixed condition to an assumed average occupant.
+Real-world implementation, however, remains limited by data availability, scalability, and operational complexity \parencite{xie_review_2020,soleimanijavid_challenges_2024}.
+These barriers become especially important in shared offices, where individual comfort information must ultimately be translated into a single heating, ventilation, and air-conditioning (HVAC) setpoint for several people.
+A personal comfort model (PCM) predicts an individual's thermal response.
+In a multi-occupant zone, PCMs must be combined into a group comfort model (GCM).
+The resulting setpoint depends on both the PCM formulation and on who is represented when the decision is made.
+Previous multi-occupant simulations showed that the comfort-side benefit of integrating personal comfort information diminishes as more occupants share a thermal zone, because heterogeneous preferences are averaged into a group representation \parencite{jung_energy_2020, wang_enhancing_2026}.
+% At larger group scales, recent stochastic simulations similarly showed that increasing group size and internal preference diversity reduced the potential maximum satisfaction rate, while larger groups exhibited lower thermal sensitivity \parencite{wang_enhancing_2026}.
+The usefulness of a high-resolution comfort model also depends on whether the HVAC system can act at a compatible spatial and control resolution \parencite{ono_effects_2022}.
+This aggregation problem is particularly important under dynamic occupancy, where arrivals, departures, and movement change both occupant count and composition \parencite{marzban_review_2023}.
+A static GCM representing all regular room members may therefore be poorly matched to sparse attendance, whereas a real-time GCM can update the represented comfort distribution whenever the occupant composition changes.
+Real-time occupancy tracking is becoming increasingly available in office practice through IoT and indoor-positioning systems \parencite{zafari_survey_2019}.
+However, using these data for real-time comfort aggregation adds sensing, computation, and control-update requirements.
+Its value should therefore be judged against simpler alternatives, not merely against a fixed thermostat.
+This paper compares three temporal resolutions of comfort aggregation: a static GCM (SGCM) based on regular room members, a daily GCM (DGCM) based on attendees on a given day, and a real-time GCM (RT-GCM) based on the occupants present at each interval.
+Using observed office movement records and field-derived PCMs, the study addresses three questions: (1) how the comfort benefit of each GCM changes with the sampled group size; (2) how realized occupancy affects the magnitude of real-time setpoint adjustments; and (3) how occupant-composition turnover affects the frequency of actionable setpoint updates.

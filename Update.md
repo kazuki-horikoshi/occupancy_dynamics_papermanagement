@@ -1701,3 +1701,396 @@ Evaluating this comfort-control trade-off with a dynamic HVAC or building-energy
   - 優先度高: 6.1, 6.2, 6.3, 6.6, 6.7
   - 余裕があれば: 6.4, 6.5
   - 特に 6.4 fairness と 6.5 spatial heterogeneity は、本文が長くなりすぎる場合は Limitations/Future work に短く入れる程度でよい。
+
+## 7. ASIM 2026 Conference稿の未解決コメントと追加内容の反映計画（2026-08-12）
+
+### 7.1 対象、扱い、結論
+
+- 参照元:
+  - `IBPSA ASIM 2026_OccupancySimulation/overleaf_comments_unresolved.csv`
+  - ASIM Conference稿の実コンパイル対象である `ASIM2026-fullpaper.tex` と `sections/1.introduction.tex` ～ `sections/5.conclusion.tex`
+  - ASIM側の `HANDOVER.md` と `content-selection-notes.md`
+- ASIM Conference側は**参照のみ**とし、ファイル変更は行わない。
+- CSVは旧ファイル名 `sections/method.tex` 等を参照しているが、実コンパイル対象は番号付きの `sections/2.method.tex` 等である。番号付き稿では、建物名の匿名化、対象4室の表、追跡方式、occupancy-density図、定量的Conclusionなど、コメントの一部がすでに反映されている。
+- CSVのコメント本文のうち No. 1, 5, 14, 15 は末尾が `...` で切れている。以下は取得できた範囲と、番号付きASIM稿で実際に行われた修正から判断した。最終回答前に、必要ならOverleaf上の完全なthreadを確認する。
+- 現行journal稿には、ASIM側で図・コード準拠に直された重要なerrataが残る。特に**15分／30分、改善幅、UTRとactionable率、低在室時のsetpoint step**は、文章追加より先に直す必要がある。
+- この章では、conference固有の体裁コメントと、同じデータ・解析に関わるjournal稿の科学的修正を分離する。
+
+### 7.2 優先順位
+
+#### P0: 投稿前に必ず直す
+
+1. **comfort outcomeとpolicy algorithmの整合を解決する。** 現行journal図はbinary comfort coverageであり、Methodのperson-time ``No change'' probabilityと一致しない。さらに現行workerではSGCMとDGCM/RT-GCMのsetpoint ruleが異なるため、aggregation resolutionの効果とalgorithm差が交絡している。
+2. ASIM採用comfort図のprovenanceと生成コードを確認する。軸はperson-time comfort probabilityだが、同じpipelineでSGCM/DGCM/RT-GCMが同一ruleから生成されたかは画像だけでは分からない。
+3. `chapters/ch3-Method.tex` の30-minute control timestep / UTR / action-needed-window定義を、実際に採用する生成pipelineと図に合わせて整理する。
+4. `chapters/ch4-Results.tex` のRT-GCM/DGCM改善幅を、採用が確定したprobability-based出力に合わせて修正し、`%` と percentage point を区別する。
+5. `chapters/ch4-Results.tex` の「UTR 0.7--0.8で90\%」を、採用するaction-frequency pipelineのbin別値へ修正する。
+6. `chapters/ch4-Results.tex` の低在室時setpoint adjustmentを、生成元データ確認後、約1.3°Cから始まる傾向として記載する。
+7. 15-minute transition metricと30-minute action window / rolling UTRを別指標として定義し、本文・式・図キャプションの時間幅を一致させる。
+8. room名の対応を確定する。現行稿の `R\&D Office / Admin Office C / Shared Office 2` とASIM稿の `Office 5A / Office 5B / Shared Office 5A / Shared Office 5B` の対応には不整合の可能性があるため、推測で置換しない。
+9. raw predicted probabilityと、各PCMのpeakでnormalizeしたscoreを区別する。normalized scoreを使う場合は`comfort probability`と呼ばない。
+10. 39 PCM participants、eligible location-log user pool、sampled subgroup $K$を別母集団として記述し、PCM samplingのwith/without replacementを実runから確定する。
+11. comfort estimandが全期間person-time poolingか、room-day内person-time平均をday間で等重みした値かを確定する。
+12. uncertainty band / CIの観測単位、resampling単位、含まれない不確実性を明記する。
+13. ASIM新図filenameの`raw2000`とMethodの1,000 trialsの不一致を解消し、figure source tableと本文のtrial数を一致させる。
+14. action metricの分母、empty set、欠測gap、日境界、rounding、bin edgeを生成コードから確定する。
+
+#### P0-1の詳細: comfort metricとpolicy rule
+
+- 現行journal Resultsが参照する `analysis21_a6_style_comfort_rates_expanded_pool_selected_k_adopted_...png` とimprovement図は、`static_ratio`, `dynamic_ratio`, `daily_fixed_ratio`を描いている。
+- `ref/a6_worker.py`では、これらは各PCMの`RangeMin <= setpoint <= RangeMax`を数える**binary comfort coverage**であり、Methodの「予測``No change'' probabilityのperson-time average」ではない。
+- 同workerでは、SGCM setpointは`sampled["PeakSET"].mean()`、DGCM/RT-GCMは`calculate_optimal_setpoint_from_curves(...)`で求める。したがって現行実装は、represented groupの時間解像度だけでなくsetpoint-selection algorithmも異なる。
+- `run_a7_prob_daily`はprobability-based評価を出すが、確認できた版ではSGCM setpointが依然としてmean PeakSETであり、DGCM列もない。これだけではMethodに書かれた「3 policyが同じmerged-curve argmax rule」を再現していない。
+- ASIM採用稿は別図 `fig1_analysis23nr_with_fixed24_raw2000_64_100_all_solid_small_markers_paper.png` を使い、軸を`Mean person-time comfort probability (%)`としている。しかしASIMフォルダ内に生成script/notebookがなく、journal側notebookにも同filenameの生成セルが見つからないため、provenanceが未確認である。
+- さらに、ASIM採用図では$K=2$のRT-GCMが目視で約92--93\%である一方、ASIM Results本文は96--97\%と記載しており、**ASIM採用稿の図と本文にも不一致が残る**。96--97\%は同フォルダ内の旧図 `fig1_comfort_probability_64_100_paper.png` に近い。新旧の数値を混在させない。
+
+推奨する解決策はAである。
+
+- **A（推奨）: probability-basedで再生成し、全policyのruleを統一する。** SGCM/DGCM/RT-GCMすべてについて、対応するrepresented groupのprobability curvesを平均し、同一candidate grid上のargmaxでsetpointを選ぶ。そのsetpointをpresent occupantsのPCMへ戻してperson-time mean probabilityを計算する。この設計なら、比較対象をaggregation resolutionに限定できる。
+- **B（非推奨）: 現行実装を正直に記述する。** binary coverageをoutcomeとし、SGCMはmean PeakSET、DGCM/RT-GCMはmerged-curve argmaxとMethodに書く。この場合、結果はaggregation resolution単独の効果ではなくalgorithm差を含むため、研究目的・title・causal languageを再定義する必要がある。
+
+Aを採用する場合の完了条件:
+
+1. SGCM、DGCM、RT-GCMが同じgroup-to-setpoint map、$g(G)=\arg\max_T |G|^{-1}\sum_{i\in G}p_i(T)$を通る。違うのは$G=R_r,A_{r,d},S_{r,t}$だけとする。
+2. 最適化とscoringの両方で、同じ$p_i(T)$定義を使う。raw/calibrated predicted probabilityを使うか、各PCM peakでnormalizeしたscoreを使うかを固定する。後者は`normalized comfort score`等と呼び、calibrated comfort probabilityと同一視しない。
+3. fixed 24°Cはgroup-to-setpoint ruleではなく外部baselineとし、present occupantsについて他policyと同じmetricでscoreする。
+4. PCM poolとlocation-agent poolを区別し、実runのpool size、eligible user条件、sampling replacement、random pairing、expanded poolの有無、$K$上限をsource tableへ保存する。
+5. estimandを固定する。全期間person-time poolingと、room-day内person-time平均をday間で等重みする集計は同じでないため、生成コード、Method式、本文表現を一致させる。
+6. room × $K$ × trial × dayの集計順、day/trial/roomの重み、欠測dayの扱いを明示する。
+7. probability-basedのcomfort本図、baseline improvement図、RT-GCM minus DGCM図を同じrunから再生成する。
+8. figure source table/CSV、seed、trial数、candidate grid、tie-breakingを保存する。ASIM新図filenameの`raw2000`がtrial数を意味するか確認し、Methodの1,000 trialsと不一致のまま使わない。
+9. error bar / bandについて、trial、room-day、transition binのどれを観測単位としたか、percentileかbootstrap CIかを記載する。Monte Carlo assignmentのspreadをpopulation CIと呼ばず、PCM推定誤差と同一occupancy log再利用が通常は含まれないことをLimitationsで明示する。
+10. Results、Abstract、Discussion、Conclusionの全数値を新しいsource tableから再抽出する。
+11. binary図とprobability図、異なるtrial数またはpolicy ruleの図を同じ本文で併用しない。
+
+Analysis manifestに必ず残す項目:
+
+- data snapshot/date、roomsと対応表、$K$ range、largest tested $K$、trial数、seed、script/version hash。
+- location-user eligibility、PCM eligibility、with/without replacement、location IDとPCMのrandom pairing。同じtrial内では全policyが同じpairingを共有する。
+- $R_r$, $A_{r,d}$, $S_{r,t}$の構築規則、empty $A/S$、raw detectionからanalysis gridへの変換、gapとday boundaryの扱い。
+- common optimizerの関数、raw/normalized curve、setpoint grid bounds/step、interpolation、missing curve、argmax tie-breaking。
+- scoring probability/scoreのrangeとNaN処理、person-time分母、day equal-weight / pooled、room/K/trialの要約順。
+- contrastは同じtrial内のpaired differenceをpercentage pointsで保存する。別々に集計した平均の差だけに依存しない。
+- action burdenのrounding tie、threshold、consecutive transition、empty-union UTR、bin edges、各binのsample size。
+- comfort本図、baseline差、RT-GCM minus DGCM、source CSVを同一manifestから生成し、ASIM画像だけを単独でコピーしない。
+
+#### P1: 再現性と主張の根拠のために追加する
+
+1. 4つのsimulation target roomsの一覧表をMethodに追加し、7つのdata-collection roomsとの違いを明記する。
+2. location trackingがroom entranceとcorridorに設置されたface-recognition system由来であることを、匿名化・IRBの説明とセットで明記する。
+3. candidate setpoint gridが0.1°C resolutionであることをMethodに追加する。
+4. setpoint-change図の帯が25--75 percentileと10--90 percentileであることをcaptionに明記する。
+5. partial attendanceがRT-GCM/DGCMの便益を残すという説明には、decision-time occupancy densityの結果または図を直接対応させる。
+6. AbstractとConclusionに、評価対象が`predicted person-time comfort probability`と`setpoint-update burden`であること、および主要な定量結果を追加する。
+
+#### P2: 追加分析または著者判断が必要
+
+1. 15分または30分を選んだ科学的・運用的理由を明記する。ASIM採用図と引継ぎメモは15-minute transitionを示す一方、journal workerは30-minute action windowを生成する。センサー分解能、stay-log再構成単位、HVAC運用周期のどれが各時間幅の根拠かは未確認である。
+2. UTRとactionable率の関係について、$K$だけでなく実在室人数 $N_{r,t}$ で層別した結果を確認する。現図の$K$ bandの近接だけでは「actual occupancyよりturnoverがdominant」とは断定できない。
+3. high-UTR binのtransition数を確認する。95\% date-cluster bootstrap CIは既存captionにあるが、端のbinのsample sizeが不明である。PCM推定誤差や別occupancy-log sampleへの一般化を表すCIではない。
+4. occupancy-density figureをjournal稿へ移植する場合、元集計、room label、confidence intervalとsimulation intervalの定義を確認する。
+5. 15-minute transitionを主解析にするなら、可能な範囲で30-minute definitionとのsensitivityを示す。入力gridが15分であるだけなら、HVAC control intervalと同一視しない。実施できなければLimitationsにtime-step dependenceを加える。
+
+### 7.3 現行journal稿への具体的修正指示
+
+#### 7.3.1 30分と15分の混在を解消する
+
+- 対象: `chapters/ch3-Method.tex`
+- 現時点では全記述を15分へ一括置換しない。journal側には、raw timestamp間のstep、30-minute window内にactionが一度でもあったwindow ratio、30-minute rolling UTRが共存している。ASIM側は別の15-minute actionable-step figureを採用しているが、その生成コードは確認できていない。
+- まず一般形を定義する。
+
+```tex
+For a lag $\Delta t$, occupant-composition turnover was quantified using the Jaccard distance between consecutive occupant sets:
+\begin{equation}
+\mathrm{UTR}_{r,t}^{\Delta t}
+=
+1-
+\frac{|S_{r,t}\cap S_{r,t-\Delta t}|}
+{|S_{r,t}\cup S_{r,t-\Delta t}|}.
+\end{equation}
+UTR equals zero when the two sets are identical and one when they have no members in common.
+```
+
+- そのうえで、採用するfigure pipelineに応じて次のどちらか一方を主指標にする。
+
+**A. ASIMの15-minute transition figureを採用する場合**
+
+```tex
+The RT-GCM setpoint was rounded to the nearest 0.5$^\circ$C. A 15-minute transition was classified as actionable when the absolute difference between consecutive rounded setpoints was at least 0.5$^\circ$C. The actionable-update rate was the number of actionable transitions divided by the number of valid occupied transitions in each UTR bin.
+```
+
+- この場合、`analysis25_final_15min_action_step_rate_by_15min_utr_member_size`のsource tableと生成codeを確保し、Methodの30-minute AWR式は削除またはauxiliary analysisへ移す。
+
+**B. journal workerの30-minute window metricを採用する場合**
+
+- `ref/a6_worker.py`の`dynamic_action_window_ratio_30m`に合わせ、現行の`\mathrm{AWR}_{r,d}^{30}`式を維持する。
+- この場合、ASIMの15-minute actionable率（37\%～89--93\%）とfigureは転用せず、30-minute window outputから本文数値と図を再生成する。
+
+- `analysis25_utr30_rolling_...` を使うweekday profileは、どちらの場合も主action-frequency metricとは別の**30-minute rolling diagnostic**として定義する。
+- ASIM番号付き稿でもFig. 4(b)は本文が30-minute、captionが15-minute、filenameが`utr30`となっており不一致が残る。codeまたはsource tableを確認するまでcaptionを確定しない。
+- 15分を選ぶ理由、または30-minute windowへ集約する理由を、sensor/stay-log resolutionとHVAC decision intervalのどちらに基づくか明記する。
+
+#### 7.3.2 comfort performanceの数値を図準拠にする
+
+- 対象: `chapters/ch4-Results.tex`
+- 現在の問題文:
+
+```tex
+... with \ac{rtgcm} improvement remaining approximately \qtyrange{15}{20}{\percent} and \ac{dgcm} improvement approximately \qtyrange{5}{20}{\percent}.
+```
+
+- まずP0-1のA案を完了し、同じprobability-based source tableから数値を再抽出する。現時点ではASIM本文の数値を「検証済み」と扱わない。
+- 特にASIM本文の$K=2$におけるRT-GCM 96--97\%は、実コンパイル対象の新図（目視約92--93\%）と一致しないため、journal稿へ転記しない。
+- 新pipeline確定後の文章形式は次とする。角括弧はsource tableから埋める。
+
+```tex
+At $K=2$, mean person-time comfort probability ranged from [xx--xx]\% under the \ac{rtgcm}, [xx--xx]\% under the \ac{dgcm}, and [xx--xx]\% under the \ac{sgcm}. At the largest tested subgroup sizes, the corresponding ranges were [xx--xx]\%, [xx--xx]\%, and [xx--xx]\%, respectively. Relative to the fixed \qty{24}{\celsius} baseline, the \ac{rtgcm} improvement at the largest tested subgroup sizes was [xx--xx] percentage points, and its additional improvement over the \ac{dgcm} was [xx--xx] percentage points.
+```
+
+- ASIM Abstract/Discussionには、最大KでRT-GCMのbaseline比12--15 points、DGCM比6--8 pointsと書かれており、実コンパイル対象の図とも概ね整合する。ただしprovenanceとpolicy ruleの確認後にのみ採用する。
+- `6--8 percentage points`はRT-GCMの**DGCMに対する追加便益**である。DGCMのbaseline差ではない。DGCMのbaseline差を併記する場合はsource tableから別に計算する。
+- `improvement ratio` ではなく、baselineとの差を引き算している限り `percentage-point improvement` とする。
+- `The previous subsection showed that the RTGCM maintained a 15--30 percent higher...` も、relative percentかpercentage-point differenceかを図から再確認してから修正する。
+
+#### 7.3.3 setpoint adjustmentの値と帯の定義を直す
+
+- 対象: `chapters/ch4-Results.tex`
+- 現在のアンカー:
+
+```tex
+However, the mean value remains approximately around 1.0°C around mean occupancy(1--5) ...
+```
+
+- `analysis23_mean_occupancy_moving_quantile...` のsource tableと集計対象（changed stepsのみ）を再確認した後、次へ置換する。
+
+```tex
+The central trend decreased from about \qty{1.3}{\celsius} near a daily mean occupancy of one to roughly \qty{1.0}{\celsius} near four and \qty{0.8}{\celsius} at the upper end of the observed daily mean-occupancy range. The spread was widest at low occupancy, while the typical changed step remained above the common \qty{0.5}{\celsius} thermostat resolution.
+```
+
+- `fig:DynSpStepHist` のcaption末尾に追加する。
+
+```tex
+Bands denote the 25th--75th and 10th--90th percentiles of the plotted simulation outcomes.
+```
+
+- `error band`とは書かない。trial、room-day、changed-step observationのどれをpercentile対象にしたかは生成code確認後にcaptionへ追加する。
+
+#### 7.3.4 UTRとactionable updateの結果を直す
+
+- 対象: `chapters/ch4-Results.tex`
+- 現在の誤記:
+
+```tex
+... when \ac{utr} reaches approximately 0.7--0.8, the action-needed window ratio reaches 90\%.
+```
+
+- 7.3.1でA（ASIMの15-minute transition metric）を採用し、source tableから再確認できた場合に限り次へ置換する。B（30-minute window metric）を採用する場合は、この数値を使わない。
+
+```tex
+The actionable-update rate increased monotonically from approximately 37\% at a 15-minute UTR near 0.05 to 63--69\% at 0.4, 77--78\% at 0.65, and 89--93\% at 0.9--1.0.
+```
+
+- その後の因果的に強い文は弱める。
+
+```tex
+The similar trends across the plotted $K$ strata indicate that the association between UTR and actionable-update frequency was not strongly modified by sampled subgroup size in this analysis. The independent contribution of instantaneous occupancy $N_{r,t}$ should be evaluated separately.
+```
+
+- `occupant replacement, rather than group size, was the dominant driver` は、$N_{r,t}$を含む比較分析を行うまでは使わない。
+- Figure captionの `user turnover rate` は `occupant turnover rate` に変更する。95\% date-cluster bootstrap intervals with 1,000 resamplesの記載はASIM引継ぎメモで検証済みとされているが、採用するsource tableとresampling codeが対応することを再確認して維持する。
+
+#### 7.3.5 対象室の説明を追加し、名称対応を固定する
+
+- 対象: `chapters/ch3-Method.tex` の `Target Building...` subsection、現在のtarget-room列挙の直後。
+- data collectionは7室、simulation resultsは4室である。本文で同じ「target rooms」と呼ぶと混乱するため、`data-collection rooms` と `simulation target rooms` を分ける。
+- ASIM稿で追加された4室表の内容:
+
+| Room ID | Job function | Seating | Floor area (m²) | Capacity |
+|---|---|---:|---:|---:|
+| Office 5A | Real estate development | Assigned | 221.40 | 15 |
+| Office 5B | Research & development | Assigned | 163.56 | 18 |
+| Shared Office 5A | Real estate development | Shared | 221.40 | 14 |
+| Shared Office 5B | Building construction | Shared | 213.73 | 20 |
+
+- この表はjournal稿にも有用だが、現行のroom名との対応を先に確定する。特に「MondayにUTR≈1.0」の室が現行稿では`R\&D Office`、ASIM稿では`Office 5A`と読めるため、表だけを先に移植しない。
+- 対応確定後、Resultsの各room名、figure内label、caption、Discussionを同じIDへ一括統一する。
+
+#### 7.3.6 location trackingの再現性を上げる
+
+- 対象: `chapters/ch3-Method.tex` の `Individual-level location tracking log`
+- 現在の冒頭文:
+
+```tex
+Individual-level location data were obtained from anonymized, timestamped records provided through the \ac{bms}.
+```
+
+- ASIM稿で開示された取得方式を反映する候補:
+
+```tex
+Anonymized individual-level location records were obtained from a face-recognition system installed at room entrances and in corridors. The timestamped zone-level records were reconstructed into continuous room-stay intervals with anonymized IDs and inferred start and end times.
+```
+
+- face recognitionというセンシティブな方式なので、直後のIRB、informed consent、administratorによる事前匿名化の説明を削らない。
+- detection accuracy、missed detections、重複・overlap解消規則がAppendixにある場合は相互参照する。精度が未評価なら、その点をLimitationsに短く追加する。
+
+#### 7.3.7 0.1°C gridと0.5°C actionable thresholdを区別する
+
+- 対象: `chapters/ch3-Method.tex` の `where $\mathcal{T}_{\mathrm{set}}$ is the temperature grid...` の後。
+- 追記候補:
+
+```tex
+The candidate setpoint grid had a resolution of \qty{0.1}{\celsius}. This fine grid was used to estimate the comfort-optimal setpoint, whereas the separate actionable-update analysis rounded setpoints to \qty{0.5}{\celsius} to test whether the predicted difference would remain relevant at a coarser thermostat resolution.
+```
+
+- 0.1°Cを実建物で実現したとは書かず、simulation assumptionとして扱う。
+
+#### 7.3.8 occupancy densityを根拠として追加する
+
+- コメントで問題になった説明は「large member poolでもpartial attendanceならpresent groupがregular membersやdaily attendeesと異なるため、高解像度aggregationの便益が残る」である。ただし$N_{r,t}/K$だけで示せるのはregular-member poolよりinstantaneous setが小さいことまでであり、daily attendee setとの差やcomposition mechanismは直接示せない。
+- 現行journal稿はこの説明をResultsで断定しているが、対応するoccupancy-density図を本文に出していない。
+- ASIMで新規追加された `occupancy_density_timeofday_k12_paper.png` をjournal側へコピーして使う場合、Conference側を変更せず、journal側のfigure directoryへ複製する。
+- 挿入先: `fig:ComfAgentic` の直後、comfort performance paragraphの前。
+- 本文候補:
+
+```tex
+Decision-time occupancy density, $N_{r,t}/K$, was generally below one and varied by room and time of day, indicating that the instantaneous occupant set was often smaller than the sampled regular-member pool.
+```
+
+- Discussionでのみ次のように解釈する。
+
+```tex
+This pattern is consistent with partial attendance as one reason why attendance-aware aggregation can remain beneficial at larger $K$; however, $N_{r,t}/K$ alone does not isolate changes in occupant composition or establish the mechanism.
+```
+
+- RT-GCMとDGCMの差を説明するなら、$|S_t\triangle A_d|$、Jaccard distance、またはwithin-day composition turnoverの直接分析を追加する。図を追加しない場合はResultsでは観測事実だけを書く。
+
+#### 7.3.9 Abstractを評価対象と定量結果が分かる形へ直す
+
+- 実際にコンパイルされるAbstractは `chapters/abstract.tex` ではなく `Draft_2026-Jan.tex` 内の直書き部分である。片方だけ修正すると反映されないため、`\input{chapters/abstract.tex}`へ一本化するか、両方を同期する。
+- `room-level setpoint` はoccupant-centric control全体の定義ではなく、本研究が扱うzone-level actuatorとして書く。
+- `mean occupancy approaches four to five occupantsでbenefit becomes limited` は、現稿に対応図がなくASIMでは撤回されたため、図を復活させない限りAbstractから削除する。
+- Abstractに最低限入れる内容:
+  - 評価対象: raw predicted person-time comfort probabilityまたは明示的に命名したnormalized score、baselineに対するpercentage-point difference、RT-GCM setpoint-change magnitude、採用した15-minute transitionまたは30-minute window metric
+  - データ: 39 PCM participants、responses retained for PCM fitting/analysis、four weeks、four simulation rooms。2,608がraw収集数か20-minute除外後の保持数かを確認する。
+  - 主結果: P0-1と7.3.1で確定したsource tableから、policy ranking、最大Kのbaseline/DGCM差、setpoint step、UTR-actionable rateを記載する。ASIM記載の12--15 points、6--8 points、約0.8°C、約37\%から約90\%は確認候補値であり、そのまま固定しない。
+  - 限定: predicted comfort / simulationであり、field-delivered comfortやenergy savingではない
+
+#### 7.3.10 DiscussionとConclusionを結果に対応させる
+
+- `chapters/ch5-Discussion.tex` 冒頭は、`value of temporal resolution`だけでなく、実在室・動的occupancyとの関係を明示する。ただしinteraction / multivariable effectを示したように書かない。A案完了後の候補:
+
+```tex
+Using observed occupancy logs and field-derived PCMs under a common group-to-setpoint rule, predicted comfort performance varied across subgroup-size and occupancy conditions, while actionable-update frequency increased with occupant-composition turnover.
+```
+
+- 先行研究との接続は現稿のJungとOnoだけで終わらせず、Introductionで使う実装障壁、dynamic occupancy、trackingの文献もDiscussionの該当主張に再接続する。ただし、引用数を増やすこと自体を目的にせず、本研究の結果をsupport/contrastする位置に置く。
+- ASIMで新規導入された `wang_enhancing_2026` は、large-group preference diversityとmaximum satisfactionの方向性を示す背景に使える。ただし対象は主に10人と50--500人の比較で、本研究の$K$ range、PCM、outcomeとは尺度も指標も異なる。直接的な数値支持や同一現象の再現とは書かない。journalの`references.bib`には現時点で同keyがないため、採用時にASIM側のBibTeX entryをコピーする。
+- `chapters/ch6-Conclusion.tex` は現在定量値がない。P0-1と7.3.1の検証後、以下の順で追記する。
+  1. 新しいsource tableの全room/Kセルで確認できた場合に限り、RT-GCMがhighest predicted mean CPだったと記載する。
+  2. 最大Kのbaseline差とDGCM差（ASIM記載候補は12--15 points、6--8 points）。
+  3. changed-stepのhigh mean occupancy側の値（ASIM記載候補は約0.8°C）。
+  4. 採用した15-minute transitionまたは30-minute window metricの低UTRから高UTRへの変化。異なる時間定義の数値を混在させない。
+  5. 以上はcomfort-only simulationの結果であり、energy/HVAC dynamics/privacy/costを未評価。
+
+### 7.4 CSV 17件のjournal稿への適用判定
+
+| No. | 指摘の要点 | journal稿への判定 | 対応 |
+|---:|---|---|---|
+| 1 | OCCをsetpoint変更と同一視していないか | 必須 | Abstract/Introで、setpoint selectionは本研究で扱うOCC actuationの一形態と限定する。 |
+| 2 | titleにある語をkeywordで重複させない | 要対応 | journal稿はtitle/highlights/keywordsが`XXX`。投稿先guideに従い、title確定後に非重複語を選ぶ。 |
+| 3 | affiliationのpostcode不要では | venue依存 | Elsevier CASのaffiliation fieldなのでASIM判断を転用せず、target journalのguide確認後に決める。 |
+| 4 | simulationで何を評価したか不明 | 必須 | Abstractにpredicted comfort performanceとcontrol-update burdenを明記する。 |
+| 5 | presence/absence detectionが曖昧 | 必須 | face-recognition system、設置位置、stay reconstruction、匿名化をMethodに記載する。 |
+| 6 | 建物名・会社名は不要 | venue・匿名化方針依存 | double-blind/author policyを確認し、必要ならproper nounを外す。Singapore office building、用途、HVAC、room typologyは科学的文脈として残す。funding/conflict disclosureとは分ける。 |
+| 7 | four roomsの一覧が必要 | 必須 | simulation 4室表を追加し、data collection 7室と区別する。 |
+| 8 | partial-attendance解釈の根拠がない | 必須 | density図はpartial attendanceの根拠に限る。composition-difference analysisを追加するか、便益機序の主張をDiscussionで弱める。 |
+| 9 | どのFigureが根拠か明記 | 必須 | occupancy-density figure番号を明記する。ただしRT-vs-DGの機序には別のcomposition指標が必要。 |
+| 10 | 15-minuteを選んだ理由 | 科学的理由・感度分析が必要 | data/control上の理由を確認し、可能なら15/30-minute sensitivityを示す。できなければLimitationsへ。 |
+| 11 | setpoint trendにerror bandsがあるか | 必須 | 25--75\%、10--90\% percentile rangesと定義し、集計単位を確認する。error / population CIと呼ばない。 |
+| 12 | shared/assigned roomがFigureで識別不能 | 必須 | room table、figure legend/caption、本文room IDを一致させる。 |
+| 13 | $K$ではなくactual occupancyの影響は | 追加分析推奨 | $N_{r,t}$またはoccupancy densityで層別。未実施ならdominant-driver主張を弱める。 |
+| 14 | 大きい$K$でもRT-GCMが10 points超改善 | 必須 | probability-based同一ruleの再解析で再確認後、最大Kのbaseline差をResults/Discussion/Conclusionに明記する。ASIM記載値は12--15 points。 |
+| 15 | Discussionで先行研究を十分再訪していない | 推奨 | Jung/Onoに加え、dynamic occupancy、tracking、implementation barrierの文献を該当結果へ接続する。 |
+| 16 | temporal resolutionよりreal/dynamic occupancyでは | 必須 | independent variableはaggregation resolution、適用条件はrealized/dynamic occupancyと書き分ける。 |
+| 17 | Conclusionに定量結果が必要 | 必須 | comfort、RT-vs-DGCM、setpoint step、UTR-action rateの代表値を追加する。 |
+
+### 7.5 ASIM稿から移植できる新規情報・データ
+
+#### provenance確認なしで移植できる記述情報
+
+- 39 participants、2,608 valid survey responses、four-week record、four simulation rooms。
+- face-recognition systemの設置位置、4室のfloor area / seating capacity / seating type。ただしroom mappingを確定してから使う。
+- limitationsとして、predicted comfort、one building/four weeks、random PCM assignment、energy/HVAC response/integration cost未評価、mean CPはfairnessを保証しないこと。
+
+#### 生成元を確認した後にのみ移植する定量結果
+
+- 各policyのpredicted mean comfort probability range。特に$K=2$はASIM新図と本文が不一致なので再抽出必須。
+- ASIM記載の、最大tested $K$でのRT-GCM baseline比12--15 percentage points、RT-GCMのDGCM比6--8 percentage points。
+- daily mean occupancyが約1、4、観測上限側のときのchanged-step central trend: 約1.3、1.0、0.8°C。
+- 15-minute transition metricを採用する場合のUTR bin別actionable rate: 約37\%、63--69\%、77--78\%、89--93\%。
+- 0.1°C candidate setpoint gridと0.5°C actionable thresholdの役割分担。
+- setpoint-change bandの定義: 25--75\%と10--90\% percentile ranges。
+
+#### ファイルを複製して追加する候補
+
+- `figures/occupancy_density_timeofday_k12_paper.png`: partial attendanceの根拠図。元集計とinterval定義確認後にjournal側へcopyする。
+- `figures/TargetRooms.tex`: 4室表。journalのtable styleへ変換し、room mapping確定後にcopyする。
+- `wang_enhancing_2026` BibTeX entry: large-group preference diversityのDiscussion用。原指標との差を説明して使う。
+
+#### 解釈としてのみ使い、結果のように書かない
+
+- SGCM / DGCM / RT-GCMをdeployment hierarchyとして使う提案。
+- UTRでreal-time updateをgateし、deadband/minimum hold timeでcyclingを抑える提案。
+- sensing reliability、latency、privacy、costを含む実装条件。
+
+### 7.6 現時点では移植しない内容
+
+- 現行journalのbinary comfort図と、その図から読んだ改善値。Methodのprobability outcomeと一致しない。
+- ASIMのprobability-labeled comfort図および本文数値。全policyのsetpoint ruleと生成pipelineが確認できるまでは、移植候補に留める。
+- `SGCM improvement crosses/approaches zero around K≈6--8`: 採用するprobability-based同一rule runで再確認するまで移植しない。
+- `mean occupancy 4--5でRT-GCM benefitがlimited/zeroに近づく`: 対応するcontour図を本文に出していないため、Abstractへ戻さない。
+- `occupant replacement was the dominant driver`: actual occupancyを含む比較がないため断定しない。
+- room-name置換: ASIM表、ASIM Results、現行journal Resultsの間でMonday peakのroom対応が未確定。
+- `15-minute interval was selected because ...`: 理由がsource filesに記載されていないため、推測で補わない。
+- postcode削除: conference format固有の可能性がある。
+- energy savings、field-delivered comfort、cost effectiveness: 本研究では直接評価していない。
+
+### 7.7 反映順
+
+1. P0-1のA案を実装・確認し、probability-basedかつ全policy同一ruleのsource tableと図を確定する。
+2. notebook/codeと最終figureから15-minute/30-minuteの各指標の役割とroom mappingを確認する。
+3. Methodのcomfort metric、policy rule、time grid、UTR、actionable metricを確定した実装に合わせて修正する。
+4. Resultsの数値、percentage point、band定義、room/captionをsource tableから修正する。
+5. occupancy-density図と4室表の採否を決める。
+6. Abstract、Discussion、Conclusionを修正済みResultsに合わせる。
+7. `Draft_2026-Jan.tex`のtitle/highlights/keywordsとAbstract入力方式を整理する。
+8. 全文で `user turnover rate` を `occupant turnover rate` に統一する。
+9. コンパイル後、本文・caption・式・図内labelのmetric、時間幅、room ID、単位、割合表現を目視確認する。
+
+### 7.8 独立レビュアーエージェントの判定
+
+- 独立レビュアーはASIM Conference側とjournal側を参照のみで確認し、ファイル編集は行っていない。
+- 総合判定: 第7章の方向性とA案は妥当。ただし、単なるconference文章の移植ではなく、comfort metric、policy rule、sampling population、estimand、uncertainty、time-step provenanceの監査を先に行う必要がある。
+- CSV 17件の分類:
+  - 必須: No. 1, 4, 5, 7, 8, 9, 11, 12, 14, 16, 17
+  - 追加分析推奨: No. 13, 15
+  - 投稿先・匿名化方針依存: No. 2, 3, 6
+  - 科学的理由または感度分析が必要: No. 10
+- A案を推奨する決定的な理由: 現在の実装ではaggregation resolutionとsetpoint-selection algorithmが交絡している。全policyへ同じ `group curves -> common-grid argmax -> present occupantsでscore` を適用して初めて、主な比較をrepresented groupの時間解像度へ限定できる。
+- Reviewer convergence criteria: 共通ruleの再生成、同一manifest/source tableからの全図作成、数値監査、Method確定、Results更新の後に、Abstract / Discussion / Conclusionを更新する。
+
+### 7.9 journal側へコピー済みの移植候補
+
+- 保存先: `ref/asim2026_import_candidates/`
+- ASIM Conference側は変更せず、次をjournal repository内へコピーした。
+  - occupancy-density図
+  - probability-labelled comfort図（provenance確認前の保留候補）
+  - setpoint adjustmentのcompact 2図
+  - UTR/actionのcompact 2図
+  - compact simulation workflow
+  - 4室表 `TargetRooms.tex`
+  - 実コンパイル対象のmain TeXと番号付き5 section、および未コンパイルの補足`appendix-draft.tex`のsnapshot
+  - `wang_enhancing_2026`の単独BibTeX entry
+  - unresolved-comment CSV、content-selection ledger、ASIM handover noteのsource snapshot
+- 各ファイルの移植目的、検証条件、既存journal図とのSHA-256重複、copy時点のhashは同フォルダの`README.md`に記録した。
+- active manuscriptからはまだ参照していない。room mapping、metric、policy rule、trial数、time resolutionを確定後、必要なファイルだけ`pic/`または本文tableへ昇格する。

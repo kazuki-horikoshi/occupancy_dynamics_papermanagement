@@ -1,0 +1,69 @@
+% Holding appendix for material removed from the eight-page ASim paper.
+% This file is intentionally NOT input by ASIM2026-fullpaper-template.tex because
+% the conference page limit includes appendices. It can be used as the basis of
+% a supplementary document or selectively restored if space becomes available.
+
+\appendix
+
+\section{SUPPLEMENTARY METHOD DETAILS}
+
+\subsection{Environmental measurements and survey filtering}
+
+Indoor air temperature and relative humidity were measured with compact sensors installed in each target room. When two or three sensors served the same room, their mean was used to reduce sensor-specific bias. The experimental indoor temperature setpoint was varied between 22$^\circ$C and 27$^\circ$C in 1$^\circ$C increments and the order was randomized across days; selected days used different morning and afternoon setpoints. Air speed and mean radiant temperature were recorded periodically as diagnostic variables. Survey responses submitted within 20 minutes of room entry were excluded to reduce transient-exposure effects.
+
+Raw anonymized location events were reconstructed as stay intervals. Each interval contained a participant ID, room ID, start time, and end time. Overlaps and repeated events were resolved before the stay intervals were converted to the regular 15-minute simulation grid. The conference manuscript omits these data-cleaning steps because they do not change the comparison among GCM resolutions.
+
+\subsection{Comfort and control metrics}
+
+For room $r$, day $d$, and policy $q$, the room-day person-time comfort probability was
+
+\begin{equation}
+ \mathrm{CP}_{r,d}^{q}=
+ \frac{\sum_{t\in\mathcal{T}_{r,d}}\sum_{i\in S_{r,t}}
+ p_i\!\left(T_{\mathrm{set}}^{q}(t)\right)}
+ {\sum_{t\in\mathcal{T}_{r,d}}|S_{r,t}|}.
+\end{equation}
+
+Empty timestamps did not contribute. Room-day values were averaged across valid days and 1,000 Monte Carlo trials for each room and subgroup size. Baseline improvement was calculated as a percentage-point difference,
+$\Delta\overline{\mathrm{CP}}^{q}_{r,K}=\overline{\mathrm{CP}}^{q}_{r,K}-\overline{\mathrm{CP}}^{24^\circ\mathrm{C}}_{r,K}$.
+
+The real-time setpoint adjustment was
+$\delta T^{\mathrm{RT}}_{r,t}=T_{\mathrm{set}}^{\mathrm{RT}}(t)-T_{\mathrm{set}}^{\mathrm{RT}}(t-\Delta t)$.
+The changed-step analysis retained intervals with $|\delta T^{\mathrm{RT}}_{r,t}|\geq0.05^\circ$C. The actionable analysis rounded setpoints to 0.5$^\circ$C and flagged consecutive 15-minute transitions with a rounded change of at least 0.5$^\circ$C.
+
+\section{SUPPLEMENTARY RESULTS}
+
+\subsection{Adjustment magnitude over subgroup size and occupancy ratio}
+
+Figure~\ref{fig:appendix-heatmap} maps the mean absolute changed-step magnitude against two occupancy-scale descriptors. Subgroup size $K$ is the sampled regular-member pool, while normalized mean occupancy describes the realized density within that pool. Adjustment magnitude generally decreases as both $K$ and occupancy ratio increase. This diagnostic was removed from the main paper because Figure~\ref{fig:control}(a) communicates the primary mean-occupancy trend more directly.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.72\linewidth]{setpoint_adjustment_heatmap}
+  \caption{RT-GCM setpoint adjustment magnitude across subgroup size and normalized mean occupancy.}
+  \label{fig:appendix-heatmap}
+\end{figure}
+
+\subsection{Rolling 30-minute turnover profiles}
+
+The room-level diagnostic in Figure~\ref{fig:appendix-turnover} shows that rolling 30-minute UTR was generally highest during morning arrival and evening departure, with additional peaks around lunch in shared offices. Non-peak values were commonly between approximately 0.2 and 0.5. The figure is retained as contextual evidence that turnover patterns depend on room use and time of day, but it is not needed to establish the main relationship between 15-minute UTR and actionable control steps.
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\linewidth]{turnover_profiles_by_room}
+  \caption{Representative rolling 30-minute UTR profiles by room and weekday. The source figure uses historical room labels.}
+  \label{fig:appendix-turnover}
+\end{figure}
+
+\section{FIGURE PROVENANCE}
+
+All numerical result figures were copied without data alteration from the adjacent \texttt{OccupancyDynamics} manuscript directory. The conference-paper filenames and their source analyses are:
+
+\begin{itemize}
+  \item \texttt{comfort\_probability\_by\_subgroup.png}: Analysis 21 mean comfort probability by subgroup size.
+  \item \texttt{comfort\_improvement\_by\_subgroup.png}: Analysis 21 improvement relative to the fixed 24$^\circ$C baseline.
+  \item \texttt{rt\_minus\_daily\_by\_subgroup.png}: Analysis 21 percentage-point difference between RT-GCM and DGCM.
+  \item \texttt{setpoint\_adjustment\_by\_occupancy.png}: Analysis 23 changed-step magnitude by mean occupancy.
+  \item \texttt{action\_rate\_by\_turnover.png}: Analysis 25 15-minute actionable-step rate by 15-minute UTR.
+  \item \texttt{setpoint\_adjustment\_heatmap.png} and \texttt{turnover\_profiles\_by\_room.png}: supplementary Analyses 23 and 25.
+\end{itemize}

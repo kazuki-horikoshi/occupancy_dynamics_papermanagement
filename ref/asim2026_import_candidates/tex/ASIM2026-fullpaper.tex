@@ -1,0 +1,77 @@
+% ASim 2026 full paper
+% Main manuscript: limited to eight pages including references.
+% Material held for a possible supplement is stored in appendix-draft.tex.
+
+\documentclass[12pt,a4paper]{article}
+\usepackage{Asim2026}
+\usepackage{microtype}
+
+\addbibresource{references.bib}
+\graphicspath{{figures/}}
+
+\setcounter{secnumdepth}{0}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\floatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}{10pt plus 2pt minus 2pt}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.90}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.85}
+
+\title{Comparative Assessment of Group Comfort Model Resolution in HVAC Control Using High-Resolution Occupancy Tracking}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent
+K.~Horikoshi$^{1}$,
+E.~Ono$^{2}$,
+K.~Mihara$^{3}$,
+A.~Chong$^{1,*}$
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\footnotetext[1]{Corresponding author email: adrian.chong@nus.edu.sg}
+\renewcommand{\thefootnote}{\arabic{footnote}}
+
+\vspace{\baselineskip}
+
+\noindent
+$^{1}$Department of the Built Environment, National University of Singapore, Singapore\\
+$^{2}$Kajima Technical Research Institute Singapore, Kajima Corporation, Singapore\\
+$^{3}$Kajima Technical Research Institute, Kajima Corporation, Tokyo, Japan
+
+\noindent\textbf{ABSTRACT}
+Occupant-centric HVAC control in shared offices must aggregate several personal comfort models into one room-level setpoint, yet hybrid and activity-based work change both the number and composition of occupants present.
+This study quantifies when daily or real-time group comfort models justify their additional occupancy information.
+Personal comfort models were developed for 39 participants from over 2,000 thermal-preference responses collected over four weeks in a Singapore office building, and an occupancy-log-based Monte Carlo simulation compared a static group model (regular room members), a daily model (daily attendees), a real-time model (occupants present at each interval), and a fixed 24$^\circ$C baseline.
+Across four rooms, the real-time model achieved the highest mean comfort probability at every tested group size and, at the largest sizes,
+exceeded the baseline by 12--15 and daily aggregation by 6--8 percentage
+points; the static model approached the baseline as group size increased.
+Real-time setpoint changes became smaller as mean occupancy increased but remained about 0.8$^\circ$C at the upper end of the observed daily mean-occupancy range, and the share of control intervals requiring an actionable setpoint step rose from about 37\% at low occupant turnover to roughly 90\% near complete turnover.
+These findings demonstrate that group size, daily mean occupancy, and occupant turnover jointly shape the practical value of higher-resolution comfort aggregation, providing criteria for selecting group comfort models in shared offices.
+
+\vspace{\baselineskip}
+\noindent\textbf{KEYWORDS}
+\noindent
+Occupant-centric control, Occupancy dynamics, Thermal comfort, Agent simulation
+
+\input{sections/1.introduction}
+
+\input{sections/2.method}
+
+\input{sections/3.results}
+
+\input{sections/4.discussion}
+
+\input{sections/5.conclusion}
+
+\section*{ACKNOWLEDGEMENTS}
+
+This research is supported by Kajima Corporation (grant number A-8001911-00-00).  
+
+\section*{REFERENCES}
+
+\printbibliography[heading=none]
+
+\end{document}
