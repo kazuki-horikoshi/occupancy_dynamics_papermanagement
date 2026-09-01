@@ -5,17 +5,22 @@ To examine these purposes, agentic-simulation framework is used based on field d
 The overall procedural flow of the study is illustrated in \autoref{fig:ex_flow}.
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{procedure}}
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{SimulationFlow_small}}
     \caption{Overall procedure flow of the study}
     \label{fig:ex_flow}
 \end{figure}
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \includegraphics[width=0.97\linewidth]{\Pic{png}{procedure}}
+%     \caption{Overall procedure flow of the study}
+%     \label{fig:ex_flow}
+% \end{figure}
 
 \subsection{Data Collection}
 \label{subsec:DataCollect}
 For the simulation, three primary types of field data were collected in the target building: real-time occupancy logs, subjective \ac{tcv} surveys and environmental measurement logs.
 
 \subsubsection{Target Building, Participant Recruitment and Ethical Considerations}
-
 \label{sec:TargetBuil}
 The data collection was conducted at The GEAR, an R\&D and administrative office building located in Singapore and operated by Kajima Corporation, from 29 September to 24 October 2025 (4 weeks).
 The 3rd to 6th floors, which accommodate a mix of shared-office and static seating work styles depending on departmental roles, were the target areas for data collection.
@@ -47,12 +52,10 @@ In addition, measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}
 % TO DO measurement equipment ONDOTORI
 
 \subsubsection{Individual-level location tracking log}
-Individual-level location data were obtained from anonymized, timestamped records provided through the \ac{bms}.
-The raw zone-level records were reconstructed into stay logs, where each entry represents a continuous period of presence by one participant in one room.
-Each stay-log entry contains an anonymized participant ID, room ID, start time, and end time.
+Anonymized individual-level location records were obtained from a face-recognition system installed at room entrances and in corridors.
+The timestamped zone-level records were reconstructed into stay logs, where each entry represents a continuous period of presence by one participant in one room and contains an anonymized participant ID, room ID, start time, and end time.
 These stay logs provide the basis for constructing location-log agents in the simulation.
 The detailed procedure for this reconstruction is described in Appendix~\ref{app:occupancy_reconstruction}.
-% TO DO: refine output to show as appendix, might be connected to how to show chapters in appendidices
 
 \subsection{Occupancy-log-based agentic comfort simulation}
 \subsubsection{Simulation Design}
@@ -66,7 +69,8 @@ A Monte Carlo-style resampling simulation was then conducted by combining sample
 
 \subsubsection{Personal Comfort Model (PCM)}
 Individual \acp{pcm} are developed for each participant to predict thermal preference based on room-level \ac{ti}.
-The \ac{pcm}s are developed using ordered multinominal logistic classification, used in similar agentic-based thermal comfort simulations~\cite{jung_comparative_2019, jung_energy_2020}.
+This input parameter selection reflects the intention to represent the actual controllable \ac{hvac} system parameters in the target buildings used for data collection.
+The \ac{pcm}s are developed using ordered multinominal logistic classification, used in similar agentic-based thermal comfort simulations~\cite{jung_comparative_2019, jung_energy_2020}, motivated by its interpretable representation of thermal comfort probabilities across input parameter values.
 The model predicts the probability distribution over three thermal preference classes: $S_{th} \in \{+1 (\text{Warmer}), 0 (\text{No change}), -1 (\text{Cooler})\}$, using \ac{ti} as the primary feature.
 \begin{equation}
 P(S_{th} = s \mid t_i)\,.
@@ -76,7 +80,7 @@ P(S_{th} = s \mid t_i)\,.
 % TO DO: need to consider if ref is needed for multinominal logistic classification
 
 \subsubsection{Monte Carlo simulation and GCM policies}
-As introduced in the research focus, the simulation evaluates three temporal resolutions of \ac{gcm} aggregation: \ac{sgcm}, based on the sampled regular room-member group over the study period; \ac{dgcm}, based on the sampled attendees on each day; and \ac{rtgcm}, based on the sampled occupants present at each control timestep.
+As introduced in \autoref{subsec:Focus}, the simulation evaluates three temporal resolutions of \ac{gcm} aggregation: \ac{sgcm}, based on the sampled regular room-member group over the study period; \ac{dgcm}, based on the sampled attendees on each day; and \ac{rtgcm}, based on the sampled occupants present at each control timestep.
 
 \begin{figure}[pos=!bt]
     \centering

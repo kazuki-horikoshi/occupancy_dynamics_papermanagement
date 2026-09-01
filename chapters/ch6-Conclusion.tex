@@ -1,9 +1,16 @@
 This study investigated how the temporal resolution of \ac{gcm} aggregation affects predicted comfort and control burden in dynamically occupied shared offices.
 Three \acp{gcm} were compared: a \ac{sgcm} based on regular room members, a \ac{dgcm} based on daily attendees, and a \ac{rtgcm} based on occupants present at each control decision window.
-
 Using field survey data and reconstructed location logs, the agentic simulation showed that higher-resolution \acp{gcm} can improve mean comfort probability relative to a fixed \qty{24}{\celsius} baseline and the \ac{sgcm}.
+\ac{rtgcm} achieved the highest predicted mean comfort probability across all tested rooms and group sizes, decreasing from \qtyrange{92}{93}{\percent} at $K=2$ to \qtyrange{78}{82}{\percent} at the largest tested $K$.
+At the largest group sizes, \ac{rtgcm} remained \qtyrange{6}{8}{\percent} gains above \ac{dgcm}, whereas \ac{sgcm} decreased to \qtyrange{64}{66}{\percent}, approximately converging with the \qtyrange{65}{70}{\percent} fixed baseline.
 The advantage of the \ac{rtgcm} was strongest under sparse or dynamically changing occupancy conditions.
+
 At the same time, the \ac{rtgcm} introduced operational demands, reflected in setpoint adjustment magnitude and the action-needed window ratio.
+The typical \ac{rtgcm} setpoint change decreased from approximately 1.5$^\circ$C at a daily mean occupancy near one to \qty{0.8}{\celsius} at the highest observed occupancy, remaining above the \qty{0.5}{\celsius} actionable threshold.
+The actionable-update rate increased from approximately 37\% at a \ac{utr} near 0.05 to \qtyrange{89}{93}{\percent} at a \ac{utr} of 0.9--1.0, with little dependence on $K$.
 
 These findings indicate that high-resolution occupancy tracking should be deployed selectively, based on occupancy metrics such as mean occupancy, subgroup size, occupancy variability, and \ac{utr}.
 Future work should include closed-loop field tests, energy analysis, \ac{hvac} dynamics, privacy-aware sensing implementation, and longer deployments across different office types.
+
+Within this comfort-only simulation scope, these results support static aggregation for stable membership, daily aggregation for variable attendance with moderate turnover, and real-time aggregation for sparse, rapidly changing occupancy.
+\ac{utr} could therefore serve as a screening metric for selecting the aggregation resolution.

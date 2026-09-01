@@ -3,60 +3,66 @@
 \SetPicSubDir{ch4-Results/agentic/Result_Agentic}
 \label{subsec:ComfPerf}
 
-Figure~\ref{fig:ComfAgentic}\subref{fig:ComfAchi} shows the mean comfort probability under the \ac{sgcm}, \ac{dgcm}, \ac{rtgcm}, and fixed \qty{24}{\celsius} baseline policies for different subgroup sizes across the four office rooms.
-Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows the improvement in mean comfort probability relative to the fixed \qty{24}{\celsius} baseline.
-Figure~\ref{fig:ImpGCDMvsRTGCM} shows the improvement ratio between the \ac{rtgcm} and \ac{dgcm}.
+Figure~\ref{fig:MeanOccuConf} shows the mean comfort probability under the \ac{sgcm}, \ac{dgcm}, \ac{rtgcm}, and fixed \qty{24}{\celsius} baseline policies for different subgroup sizes across the four office rooms.
+% Figure~\ref{fig:ComfAgentic}\subref{fig:ComfImp} shows the improvement in mean comfort probability relative to the fixed \qty{24}{\celsius} baseline.
+% Figure~\ref{fig:MeanOccuConfRTGCMvsDGCM} shows the improvement ratio between the \ac{rtgcm} and \ac{dgcm}.
 Here, subgroup size $K$ represents the sampled regular-member group size, not the number of occupants present at every timestep.
 Therefore, the trend across $K$ indicates how the tested policies behave as the potential room-member pool expands.
 
-\begin{figure}[pos=htbp!]
-    \centering
-    \begin{subfigure}{0.98\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{analysis21_a6_style_comfort_rates_expanded_pool_selected_k_adopted_20260630_083849}}
-        \caption{Mean comfort probability probability under different comfort-representation controls}
-        \label{fig:ComfAchi}
-    \end{subfigure}
-
-    \medskip
-
-    \begin{subfigure}{0.98\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{analysis21_a6_style_improvement_vs24_expanded_pool_selected_k_adopted_20260630_083849}}
-        \caption{Comfort probability improvement relative to the baseline control}
-        \label{fig:ComfImp}
-    \end{subfigure}
-    \caption{Comfort probability for different subgroup sizes}
-    \label{fig:ComfAgentic}
-\end{figure}
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \begin{subfigure}{0.98\linewidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{\Pic{png}{analysis21_a6_style_comfort_rates_expanded_pool_selected_k_adopted_20260630_083849}}
+%         \caption{Mean comfort probability probability under different comfort-representation controls}
+%         \label{fig:ComfAchi}
+%     \end{subfigure}
+%     \medskip
+%     \begin{subfigure}{0.98\linewidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{\Pic{png}{analysis21_a6_style_improvement_vs24_expanded_pool_selected_k_adopted_20260630_083849}}
+%         \caption{Comfort probability improvement relative to the baseline control}
+%         \label{fig:ComfImp}
+%     \end{subfigure}
+%     \caption{Comfort probability for different subgroup sizes}
+%     \label{fig:ComfAgentic}
+% \end{figure}
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis21_a6_style_rt_minus_dgcm_expanded_pool_selected_k_adopted_20260630_090131}}
-    \caption{Comfort probability improvement ratio between\ac{rtgcm} and \ac{dgcm}}
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{fig1_analysis23nr_with_fixed24_raw2000_64_100_all_solid_small_markers_paper}}
+    \caption{Mean comfort probability under the three GCM policies and fixed baseline}
     \label{fig:MeanOccuConf}
 \end{figure}
 
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis21_a6_style_rt_minus_dgcm_expanded_pool_selected_k_adopted_20260630_090131}}
-    \caption{Comfort probability improvement ratio between\ac{rtgcm} and \ac{dgcm}}
-    \label{fig:ImpGCDMvsRTGCM}
-\end{figure}
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \includegraphics[width=0.97\linewidth]{\Pic{png}{analysis21_a6_style_rt_minus_dgcm_expanded_pool_selected_k_adopted_20260630_090131}}
+%     \caption{Comfort probability improvement ratio between\ac{rtgcm} and \ac{dgcm}}
+%     \label{fig:MeanOccuConfRTGCMvsDGCM}
+% \end{figure}
 
 Across all rooms, the baseline control remained nearly constant at approximately \qtyrange{65}{70}{\percent} across subgroup sizes.
 The \ac{rtgcm} produced the highest mean comfort probability for every room and subgroup size, followed by the \ac{dgcm} and then the \ac{sgcm}.
 The performance of the \ac{rtgcm} and \ac{dgcm} decreases at similar rates as subgroup size increases, while the performance of the \ac{sgcm} shows a more modest decrease.
-The mean comfort probability across rooms ranged approximately \qtyrange{80}{98}{\percent} for the \ac{rtgcm}, \qtyrange{75}{95}{\percent} for the \ac{dgcm}, and \qtyrange{65}{73}{\percent} for the \ac{sgcm}.
+The mean comfort probability across rooms ranged approximately \qtyrange{80}{98}{\percent} for the \ac{rtgcm}, \qtyrange{75}{95}{\percent} for the \ac{dgcm}, and \qtyrange{70}{85}{\percent} for the \ac{sgcm}.
 
 The improvement relative to the 24 \si{\celsius} baseline decreased as subgroup size increased.
-\ac{sgcm} improvement approaches zero in larger rooms, especially around subgroup size of 5--7 users.
 The decline of the \ac{sgcm} improvement indicates that a fixed room-member aggregation becomes less distinct from the fixed-temperature baseline as more heterogeneous comfort profiles are averaged into a single representation.
 
 In contrast, the \ac{rtgcm} and \ac{dgcm} maintain positive improvements at the largest tested subgroup size for each target rooms, with \ac{rtgcm} improvement remaining approximately \qtyrange{15}{20}{\percent} and \ac{dgcm} improvement approximately \qtyrange{5}{20}{\percent}.
 The positive improvement maintained by the \ac{dgcm} and \ac{rtgcm} indicates that updating the represented occupant group can preserve comfort benefits even when the potential member pool becomes larger.
-Also, \autoref{fig:ImpGCDMvsRTGCM} shows that the improvement ratio between the \ac{rtgcm} and \ac{dgcm} initially increases at the small subgroup sizes such as below 6, and converges to a stable value around at larger subgroup sizes.
+Also, \autoref{fig:MeanOccuConf} shows that the improvement ratio between the \ac{rtgcm} and \ac{dgcm} initially increases at the small subgroup sizes such as below 6, and converges to a stable value around at larger subgroup sizes.
 This indicates that the \ac{rtgcm} is more effective than the \ac{dgcm} in smaller rooms, due to the more dynamic occupant transitions that can be captured by the real-time model.
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{occupancy_density_timeofday_k12_unaveraged_values_paper}}
+    \caption{Occupancy density $N_{r,t}/K$ by time of day: mean and central 50\% and 90\% observation intervals.}
+    \label{fig:OccuDensity}
+\end{figure}
+Figure~\ref{fig:OccuDensity} shows that mean occupancy density remained below full occupancy and varied by room and time.
+Thus, large member pools often produced partial attendance, allowing the present group to differ from regular membership and daily attendees and preserving an advantage for attendance-aware aggregation.
 
 % Although both the \ac{dgcm} and \ac{rtgcm} maintain performance improvements over the baseline, the gap between them increases as room size expands.
 % This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
@@ -76,21 +82,41 @@ The previous subsection showed that the \ac{rtgcm} maintained a \qtyrange{15}{30
 This subsection investigates the setpoint adjustment characteristics introduced by the \ac{rtgcm}.
 Because the \ac{sgcm} and \ac{dgcm} use coarser occupant-composition representations, frequent setpoint updates are primarily required under \ac{rtgcm}-based control.
 
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=0.8\linewidth]{\Pic{png}{analysis23_mean_occupancy_moving_quantile_dynamic_sp_mean_abs_step_when_changed_expanded_pool_overlap_dense_only}}
-    \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
-    \label{fig:DynSpStepHist}
-\end{figure}
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{\Pic{png}    
+%     {fig3a_setpoint_adjustment_by_occupancy_paper}}
+%     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
+%     \label{fig:DynSpStepHist}
+% \end{figure}
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{\Pic{png}    
+%     {fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
+%     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
+%     \label{fig:DynSpStepHist}
+% \end{figure}
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis23_k_normalized_mean_occupancy_mean_abs_step_when_changed_heatmap_regime_style_expanded_pool_overlap_dense_ybins05pct_kle16_minn20}}
-    \caption{Mapping of temperature adjustment magnitude over subgroup size and mean occupancy ratio}
-    \label{fig:DynSpStepHeatmap}
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{fig3a_setpoint_adjustment_by_occupancy_paper}}
+        \caption{Distribution of temperature adjustment magnitudes on daily mean occupancy}
+        \label{fig:DynSpStepvsMeanOccu}
+    \end{subfigure}
+    \medskip
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
+        \caption{Distribution of temperature adjustment magnitudes on group size and daily attendance ratio}
+        \label{fig:DynSpStepHeatmap}
+    \end{subfigure}
+    \caption{Distribution of temperature adjustment magnitudes}
+    \label{fig:DynSpStep}
 \end{figure}
 
-\autoref{fig:DynSpStepHist} shows the distribution of temperature adjustment magnitudes under the \ac{rtgcm} across daily mean occupancy.
+\autoref{fig:DynSpStepvsMeanOccu} shows the distribution of temperature adjustment magnitudes under the \ac{rtgcm} across daily mean occupancy.
 It can be observed that as daily occupancy increases, the range of temperature adjustment magnitude slowly shrinks.
 This may because that as the number of occupants increases, the optimal temperature range for the group becomes more stable, leading to smaller adjustments.
 However, the mean value remains approximately around \qty{1.0}{\celsius} around mean occupancy(1--5) and marks around \qty{0.8}{\celsius} even at the highest occupancy levels in our analysis.
@@ -100,7 +126,7 @@ This analysis visualizes occupancy scale from two complementary perspectives: su
 The magnitude of this temperature range shrinks as both subgroup size and mean occupancy ratio increase.
 At small subgroup sizes such as $K=4$, the mean adjustment magnitude is over \qty{1.0}{\celsius} in most cases.
 For most cases, the temperature adjustment magnitude remains around \qty{0.5}{\celsius}, which is common \ac{hvac} setpoint adjustment range.
-This can be interpreted that in general building \ac{hvac} operation, these adjustment range can be wider than controlable range, thus this adjustment magnitude can be practical in actual \ac{hvac} operation.
+This can be interpreted that in general building \ac{hvac} operation, these adjustment range can be wider than controllable range, thus this adjustment magnitude can be practical in actual \ac{hvac} operation.
 
 \subsection{Effect of occupancy dynamics on control action frequency}
 After investigating the magnitude of temperature adjustment in the previous subsection, this subsection investigates the effect of occupancy dynamics on the frequency of actionable setpoint changes under \ac{rtgcm}-based control.
@@ -118,14 +144,14 @@ Except these cases, the \ac{utr} values are generally between 0.2 to 0.5.
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.9\linewidth]{\Pic{png}{analysis25_final_15min_action_step_rate_by_15min_utr_member_size}}
+    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_final_15min_action_step_rate_by_15min_utr_member_size}}
     \caption{Relationship between 15-minute user turnover rate and action-needed window ratio. Confidence intervals are 95\% date-cluster bootstrap intervals with 1,000 resamples}
     \label{fig:CtrlWindowRatio}
 \end{figure}
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.9\linewidth]{\Pic{png}{analysis25_utr30_rolling_representative_k_separate_room_panels_30min_full_confirm_rng_k16_trial1_1000_combined_20260416_073500}}
+    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_utr30_rolling_representative_k_separate_room_panels_30min_full_confirm_rng_k16_trial1_1000_combined_20260416_073500}}
     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
     \label{fig:UTRexamples}
 \end{figure}
