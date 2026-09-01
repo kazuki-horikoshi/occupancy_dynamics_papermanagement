@@ -2,14 +2,11 @@
 
 \subsection{Why aggregation resolution changes the group-size comfort performance}
 % \subsection{Effect of occupancy parameters on comfort performance}
-\mycite{jung_energy_2020}\cite{jung_energy_2020} investigated how the number of occupants in a thermal zone affects the performance of member-oriented comfort models.
-Their study showed that the comfort benefit of personal-comfort-model integration tends to diminish as more occupants share the same zone, with the improvement converging to nearly two percent when the number of occupants increases to six.
-At larger group scales, increasing group size and internal preference diversity likewise reduced the potential maximum satisfaction rate, while larger groups became less thermally sensitive~\cite{wang_enhancing_2026}.
-
-This tendency is consistent with the present simulation results.
-As shown in \autoref{fig:MeanOccuConf}, the improvement of the \ac{sgcm} relative to the fixed \qty{24}{\celsius} baseline decreases as subgroup size increases and approaches zero around subgroup sizes of five to seven.
+Simulation studies indicate that the combined energy-and-comfort benefit of integrating \acp{pcm} can diminish as more occupants share a thermal zone \cite{jung_energy_2020}. A separate stochastic simulation likewise reported lower potential maximum satisfaction rates for larger groups \cite{wang_enhancing_2026}.
+These studies support a directional expectation that aggregation can dilute the influence of individual preferences, although their numerical results are not directly comparable with the present analysis because the control strategies, populations, and outcome definitions differ.
 
 These results are consistent with prior multi-occupant comfort-control studies showing that the benefit of integrating personal comfort information tends to diminish as more occupants are aggregated within a single thermal zone.
+As shown in \autoref{fig:MeanOccuConf}, the improvement of the \ac{sgcm} relative to the fixed \qty{24}{\celsius} baseline decreases as subgroup size increases and approaches zero around subgroup sizes of five to seven.
 As the realized group becomes larger, individual thermal preferences are averaged within the group representation, reducing the difference among alternative aggregation resolutions.
 At the same time, the \ac{dgcm} and \ac{rtgcm} maintain positive improvement over the fixed \qty{24}{\celsius} baseline even at larger subgroup sizes.
 This indicates that the value of higher-resolution \acp{gcm} depends not only on room-member size, but also on realized occupancy and occupant-composition dynamics.
@@ -28,13 +25,20 @@ In this simulation, the control temperature was assumed to be adjustable at a re
 A high-resolution comfort representation is useful only when the HVAC system can respond to the resulting setpoint differences.
 Although the simulation used a \qty{0.1}{\celsius} grid, typical changed steps remained near \qty{0.8}{\celsius} at higher mean occupancy and exceeded the \qty{0.5}{\celsius} actionable threshold.
 This indicates actuation-relevant potential; reviews report limited field implementation and persistent data, computation, BAS-integration, and scalability barriers field examples~\cite{xie_review_2020,soleimanijavid_challenges_2024}.
+The \qty{0.5}{\celsius} threshold is an operational analysis choice in the present study and should not be interpreted as a threshold established by prior work.
+At a different dimension of resolution, \mycite{ono_effects_2022}~\cite{ono_effects_2022} showed through simulation that the occupant resolution of a comfort model should be aligned with that of the \ac{hvac} control it informs.
+Together, these points distinguish model-information resolution from numerical setpoint resolution and from the physical ability of an \ac{hvac} system to realise a requested change.
 
-This finding also relates to the resolution-mismatch argument reported by \mycite{ono_effects_2022}\cite{ono_effects_2022}.
-A high-resolution comfort representation can only be useful in practice when the available \ac{hvac} control resolution can respond to the corresponding setpoint differences.
 The present results show this trade-off from the operational side: the \ac{rtgcm} can improve mean comfort probability, but it also introduces larger and more frequent setpoint adjustments.
+An actionable setpoint difference in simulation does not by itself establish field deployability. 
+Long-term and side-by-side field studies show that realised outcomes can depend on occupancy-sensor accuracy, communication with the \ac{bms}, damper or actuator cycling, outdoor conditions, controller design, and local operating constraints \cite{jiang_occupied_2023,kong_hvac_2022,zhang_impact_2023}.
+Closed-loop evaluation is therefore required to determine whether the predicted comfort advantage persists after sensing delay and \ac{hvac} dynamics are introduced.
 
 As examined in \autoref{fig:CtrlWindowRatio}, \ac{utr} has a strong effect on the probability of required temperature adjustment.
 Mean occupancy and occupancy variability describe how many people are present and how strongly the count fluctuates, whereas \ac{utr} captures who is replaced over short time intervals.
+Occupant-data taxonomies distinguish count from identity because the same count can correspond to different sets of people and therefore different personal comfort profiles \cite{nagy_ten_2023}.
+Common count-oriented sensing approaches can estimate occupancy patterns but do not necessarily identify which profiles have been replaced \cite{wang_modeling_2017}.
+In the present simulation, \ac{utr} is consequently interpreted as an indicator associated with composition replacement and control-update frequency, not as a causal determinant of comfort improvement.
 This distinction is important for \ac{gcm}-based control because the preferred group setpoint can change even when the occupancy count remains similar, if the occupant composition changes.
 
 \autoref{fig:UTRexamples} further shows different turnover patterns between shared offices and seat-assigned offices such as Admin Office C.
@@ -44,8 +48,14 @@ Some offices also show weekly turnover patterns; for example, Admin Office C and
 
 \ac{utr} complements mean occupancy by indicating whether represented comfort profiles are being replaced, extending prior discussions of dynamic diversity in comfort-driven control \cite{jung_energy_2020}.
 The near-overlap across $K$ in Figure~\ref{fig:CtrlWindowRatio} shows that turnover is a better guide to update frequency than $K$ alone.
-The three aggregation levels can consequently be treated as a deployment hierarchy: \ac{sgcm} is defensible in stable assigned-seat zones, where \ac{utr} remained near 0.2--0.4 through office hours and the regular-member group matched presence; \ac{dgcm} is a lower-complexity compromise when daily attendance varies but within-day composition stays relatively stable.
-\ac{rtgcm} is most valuable where \ac{utr} instead fluctuated dynamically, with sparse attendance and frequent movement.
+
+% The three aggregation levels can consequently be treated as a deployment hierarchy: \ac{sgcm} is defensible in stable assigned-seat zones, where \ac{utr} remained near 0.2--0.4 through office hours and the regular-member group matched presence; \ac{dgcm} is a lower-complexity compromise when daily attendance varies but within-day composition stays relatively stable.
+% \ac{rtgcm} is most valuable where \ac{utr} instead fluctuated dynamically, with sparse attendance and frequent movement.
+The three aggregation levels suggest a deployment hypothesis.
+A static representation may be adequate in zones with stable membership, daily updating may offer a lower-complexity response to attendance variation, and real-time updating may be most useful when within-day composition changes frequently.
+Longitudinal utilisation research shows that movement and workstation use vary by season and spatial context \cite{gocer_overlaps_2022}, while occupant-information reviews emphasise that higher resolution brings additional infrastructure, privacy, and data-management requirements \cite{nagy_ten_2023,obrien_key_2020,zafari_survey_2019}.
+The observed \ac{utr} ranges should therefore be validated locally.
+
 \ac{utr} can gate real-time updates to high-turnover periods, with deadbands or minimum hold times limiting excessive cycling.
 Such gating does not remove sensing trade-offs in accuracy, latency, energy use, cost, scalability, and privacy~\cite{zafari_survey_2019}.
 
@@ -62,4 +72,7 @@ Second, the agentic simulation reassigns \ac{pcm} profiles to observed location-
 This increases scenario coverage but does not represent the actual person-specific coupling between movement patterns and comfort preferences.
 Third, comfort evaluation is based on predicted ``No change'' probability rather than direct closed-loop field operation.
 Energy consumption, \ac{hvac} response delay, actuator constraints, and occupant adaptive behavior were not fully evaluated.
+Occupant responses may also lag changes in environmental stimuli.
+Field observations of shading behaviour, although not a direct test of temperature-setpoint response, demonstrate that adaptive actions can occur with temporal delay \cite{li_study_2022}.
+Future closed-loop evaluation should therefore represent both \ac{hvac} response time and occupant adaptation rather than assuming an instantaneous response.
 Finally, real-time tracking availability does not automatically imply deployability; privacy, sensing reliability, and integration cost remain practical constraints.
