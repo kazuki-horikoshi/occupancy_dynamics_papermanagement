@@ -20,12 +20,17 @@ The overall procedural flow of the study is illustrated in \autoref{fig:ex_flow}
 \label{subsec:DataCollect}
 For the simulation, three primary types of field data were collected in the target building: real-time occupancy logs, subjective \ac{tcv} surveys and environmental measurement logs.
 
+For thermal comfort surveys and indoor environment measurement, data collected and described in\cite{horikoshi_double_2026} are used.
+This subsection therefore describes the analysis target building and the procedure for location data tracking.
+
 \subsubsection{Target Building, Participant Recruitment and Ethical Considerations}
 \label{sec:TargetBuil}
 The data collection was conducted at The GEAR, an R\&D and administrative office building located in Singapore and operated by Kajima Corporation, from 29 September to 24 October 2025 (4 weeks).
 The 3rd to 6th floors, which accommodate a mix of shared-office and static seating work styles depending on departmental roles, were the target areas for data collection.
-Data collection was limited to the following rooms: 3F: Admin Office A, Admin Office B; 5F: R\&D Office, Admin Office C, Shared Office 1, Shared Office 2; 6F: Design Office.
+
+Data collection was limited to the seven office rooms summarized in~Table~\ref{tab:target_rooms}.
 % Data collection was limited to the following rooms: 3F: Office 3A, Office 3B; 5F: Katris Office, KD Office, Shared Office 1, Shared Office 2; 6F: ILYA Office.
+
 The target zones are served by a central air-conditioning system consisting of air-handling units and dedicated outdoor air-handling units, using variable air volume units capable of individual zone temperature and ventilation control.
 \qty{45} office workers who regularly work in the designated target rooms were invited to participate.
 Considering the completeness of the collected survey answers and location tracking records, data from \qty{39} participants were used in the analysis.
@@ -33,23 +38,30 @@ This study has been approved by the National University of Singapore Institution
 Informed consent was obtained from all participants prior to the study.
 All location and survey data were anonymized by the building administrator before being accessed by the research team to protect privacy. 
 
+% \begin{table*}[pos=htbp!]
+%     \centering
+%     \small
+%     % \TableSetup{4.0pt}{1.08}
+%     \caption{Target rooms used for field data collection.}
+%     \input{pic/ch3-method/TargetRooms}
+%     \label{tab:target_rooms}
+% \end{table*}
 
-\subsubsection{Thermal Comfort Survey}
-Subjective \ac{tcv} survey answers were collected via a web survey during work hours. 
-Items and scales follow ANSI/ASHRAE Standard 55:2023, Appendix~L \cite{ashrae_ansiashrae_2022}.
-The survey contents are summarized in \autoref{table:comfsurvey}.
-Responses within 20 minutes of room entry were excluded to avoid thermal transient effects.
-Participants were prompted up to six times per workday: three times in the morning and three times in the afternoon.
-Over the one-month observation period, \qty{2608} survey responses were collected in total.
+% \subsubsection{Thermal Comfort Survey}
+% Subjective \ac{tcv} survey answers were collected via a web survey during work hours. 
+% Items and scales follow ANSI/ASHRAE Standard 55:2023, Appendix~L \cite{ashrae_ansiashrae_2022}.
+% The survey contents are summarized in \autoref{table:comfsurvey}.
+% Responses within 20 minutes of room entry were excluded to avoid thermal transient effects.
+% Participants were prompted up to six times per workday: three times in the morning and three times in the afternoon.
+% Over the one-month observation period, \qty{2608} survey responses were collected in total.
 
-\subsubsection{Indoor Environmental Measurements}
-Indoor environmental data was monitored in parallel with \ac{tcv} survey.
-The primary measurements were \ac{ti} and \ac{rh}, obtained from compact sensors (HIOKI E.E. Corporation, Nagano, Japan) installed in the target rooms.
-For rooms with two to three compact sensors, their mean value was used as a representative room-level value to reduce sensor-specific measurement bias.
-To ensure sufficient variability of survey answers, \ac{ti} setpoints were cycled between \qtyrange{22}{27}{\celsius} in \qty{1}{\celsius} steps, with a randomized order across days.  
-On selected days, morning and afternoon setpoints differed to expand diversity.
-In addition, measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}) were recorded periodically as diagnostic checks rather than as main focus of the analysis.
-% TO DO measurement equipment ONDOTORI
+% \subsubsection{Indoor Environmental Measurements}
+% Indoor environmental data was monitored in parallel with \ac{tcv} survey.
+% The primary measurements were \ac{ti} and \ac{rh}, obtained from compact sensors (HIOKI E.E. Corporation, Nagano, Japan) installed in the target rooms.
+% For rooms with two to three compact sensors, their mean value was used as a representative room-level value to reduce sensor-specific measurement bias.
+% To ensure sufficient variability of survey answers, \ac{ti} setpoints were cycled between \qtyrange{22}{27}{\celsius} in \qty{1}{\celsius} steps, with a randomized order across days.  
+% On selected days, morning and afternoon setpoints differed to expand diversity.
+% In addition, measured air speed (\acs{v}) and mean radiant temperature (\acs{tr}) were recorded periodically as diagnostic checks rather than as main focus of the analysis.
 
 \subsubsection{Individual-level location tracking log}
 Anonymized individual-level location records were obtained from a face-recognition system installed at room entrances and in corridors.
@@ -65,7 +77,16 @@ In the simulation, these two components were intentionally separated so that com
 A Monte Carlo-style resampling simulation was then conducted by combining sampled location-log agents with randomly assigned \acp{pcm}.
 % At each control timestep, the location-log agents determined the simulated room occupant composition.
 % Based on the simulated occupant compositions, three \ac{gcm}-based \ac{occ} policies were evaluated from comfort and control perspectives.
-% TO DO: mention general room regular user agents are used
+
+For agentic simulations, 
+\begin{table*}[pos=htbp!]
+    \centering
+    \small
+    % \TableSetup{4.0pt}{1.08}
+    \caption{Target rooms used for field data collection.}
+    \input{pic/ch3-method/TargetRoom_4}
+    \label{tab:SimuTarget}
+\end{table*}
 
 \subsubsection{Personal Comfort Model (PCM)}
 Individual \acp{pcm} are developed for each participant to predict thermal preference based on room-level \ac{ti}.

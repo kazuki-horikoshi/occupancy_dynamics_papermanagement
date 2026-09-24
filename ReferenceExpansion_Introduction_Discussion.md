@@ -481,3 +481,166 @@ In addition, the group-level mean objective does not reveal whether an improveme
 4. four-room name mapping が正しいか。
 5. trial counts と Figure 1 error-bar definition をどの記述に統一するか。
 6. Abstract、Results、Conclusion に残る旧 SGCM 数値・zero-convergence 解釈をどのタイミングで修正するか。
+
+## 追加調査: Ono et al. / Jung et al. の引用連鎖と新規 Journal
+
+以下は Discussion を中心とした追加候補である。Introduction は追加しない。本文と references.bib はこの調査では変更せず、採用時に Expansion 案から反映する。
+
+### D-11. Jung et al. の先行研究を用いて、group-size 効果を thermal sensitivity まで分解する
+
+**挿入位置**
+
+Discussion 最初の subsection で jung_energy_2020 と wang_enhancing_2026 を比較した冒頭段落の直後。本研究の Figure 1 の結果説明へ入る前。
+
+**目的**
+
+人数増加に伴う性能低下を preferred temperature の平均化だけで説明せず、各 \ac{pcm} の曲線幅・傾きに対応する thermal comfort sensitivity も集団 setpoint に影響し得ることを示す。
+
+**根拠文献**
+
+jung_comparative_2019。この論文は jung_energy_2020 が直接参照している先行研究であり、2--10 人の multi-occupancy simulation で personal thermal comfort sensitivity を考慮すると setpoint が 86\% のケースで変わり、collective comfort probability が改善したと報告している。
+
+**追加英文案**
+
+~~~latex
+One mechanism underlying this group-size effect is variation not only in occupants' preferred temperatures but also in their thermal comfort sensitivities. In an earlier multi-occupancy simulation, incorporating personal thermal comfort sensitivity changed the selected setpoint in 86\% of the tested cases and increased the probability of collective comfort \cite{jung_comparative_2019}. Because the present \acp{gcm} average complete \ac{pcm} probability curves rather than point estimates of preferred temperature, both the location and the breadth of the individual curves can influence the merged optimum. The present analysis does not separately quantify these two contributions.
+~~~
+
+**前後の接続**
+
+直前の段落は group size が大きくなると individual preference の影響が薄まるという方向性を示している。この追加は、その方向性を preferred temperature と sensitivity の二要素へ分解する。その後に本研究の結果を置くことで、先行研究の機序候補から Figure 1 の解釈へ自然に移れる。ここでは本研究が sensitivity の因果効果を検証したとは述べない。
+
+### D-12. Jung et al. が参照した field study から、simulation-to-field gap を補強する
+
+**挿入位置**
+
+From comfort information to actionable control subsection の “Closed-loop evaluation is therefore required ...” で終わる段落の直後。\ac{utr} の説明へ移る前。
+
+**目的**
+
+simulation 上の actionable setpoint と field performance の間に差が生じ得る理由として、occupancy event の時間的・空間的配置と zone 間の熱的相互作用を追加する。
+
+**根拠文献**
+
+pritoni_field_2016。この論文は jung_energy_2020 が fairness-oriented setpoint switching の energy implication を論じる際に参照した field study である。3 棟の university residence hall を対象とした controlled field evaluation では、通常の academic period に standard-practice simulation が省エネ量を 2--10 倍過大評価し、短く分散した vacancy event と隣接 zone 間の熱的相互作用が重要だったと報告している。
+
+**追加英文案**
+
+~~~latex
+Field evidence also cautions against treating each occupancy-responsive setpoint change as an independent source of benefit. In a controlled evaluation of learning thermostats in three university residence halls, a standard-practice simulation overestimated academic-period energy savings by a factor of two to ten because the temporal and spatial distribution of vacancy events and thermal interactions among adjacent zones affected the realised outcome \cite{pritoni_field_2016}. Although residence halls differ from the shared offices studied here and that evaluation addressed energy rather than \ac{gcm}-based comfort, it supports validating the timing and spatial coincidence of occupancy changes at the whole-building level.
+~~~
+
+**前後の接続**
+
+直前は sensing delay と \ac{hvac} dynamics を含む closed-loop evaluation の必要性を述べる。この追加はその一般論へ具体的な field evidence を与える。次の段落は mean occupancy と \ac{utr} の違いを説明するため、最後を timing and spatial coincidence of occupancy changes とすることで occupancy composition の時間変化へ接続できる。
+
+### D-13. setpoint 変更後の occupant response を、thermostat interaction の直接的 evidence で補強する
+
+**挿入位置**
+
+Limitations の “Occupant responses may also lag changes in environmental stimuli.” の後。現在の li_study_2022 による shading behaviour の説明の前、またはその段落を短縮する場合は li_study_2022 の文の代替候補。
+
+**目的**
+
+shading behaviour からの間接的類推に加え、comfort survey と thermostat interaction を同期した field study を用いて、steady-state assumption と instantaneous response assumption の限界を直接補強する。
+
+**根拠文献**
+
+kang_longitudinal_2026。41 人・20 住宅・6 か月の longitudinal field study であり、app-based comfort survey、thermostat interaction、building time series を同期している。standard steady-state comfort model の誤差が spatiotemporal temperature variation 下で増える場合があり、manual setpoint change に household / occupant-specific temporal pattern が観察された。
+
+**追加英文案**
+
+~~~latex
+More direct evidence from thermostat interactions also indicates that comfort and control responses can be time-dependent. A six-month field study involving 41 occupants in 20 homes found that standard steady-state comfort models became less reliable under substantial spatiotemporal temperature variation and that manual setpoint changes exhibited occupant- and household-specific temporal patterns \cite{kang_longitudinal_2026}. Although the residential demand-response setting differs from the present shared offices, the findings reinforce the need for future closed-loop tests to represent dynamic occupant response and \ac{hvac} response rather than evaluating each selected setpoint as an instantaneous steady state.
+~~~
+
+**前後の接続**
+
+Limitations は直前まで energy、\ac{hvac} response delay、actuator constraints、occupant adaptive behavior が未評価であることを列挙しているため、この位置で dynamic response の evidence を示すのが自然である。住宅の demand-response study であることを同じ段落内で明示し、office \ac{gcm} に数値を直接転用しない。
+
+### 後方引用探索の判断
+
+| Candidate | 参照元 | Discussion への価値 | 判断 |
+|---|---|---|---|
+| jung_comparative_2019 | Jung et al. (2020) | preferred temperature だけでなく thermal sensitivity が collective setpoint に影響することを示す直接的な先行 simulation | D-11 として推奨。Zotero と PDF は既存 |
+| pritoni_field_2016 | Jung et al. (2020) | occupancy-responsive control の simulation-to-field gap と、vacancy の時間・空間配置の重要性を controlled field evaluation で示す | D-12 として推奨。公開 PDF を Zotero に保存 |
+| jayathissa_humans-as--sensor_2020 | Ono et al. (2022) | longitudinal subjective feedback と preference group の形成を支える | 既に Zotero / BibTeX にあり、Discussion では D-11 と内容が重なるため保留 |
+| chong_occupancy_2021 | Ono et al. (2022) | occupancy data の高い空間解像度が常に energy-model calibration を改善するとは限らないことを示す | outcome が \ac{occ} control ではなく building-energy model calibration で、信頼できる OA PDF も確保できなかったため保留・未登録 |
+| Shin et al. (2017), Exploring fairness in participatory thermal comfort control in smart buildings | Jung et al. (2020) | mean / majority aggregation が同じ occupant を継続的に不利にする可能性を扱う | 内容は有用だが conference paper。Journal 中心という条件と、既に wang_enhancing_2026 が fairness-oriented evaluation を提供することから今回は保留 |
+
+kang_longitudinal_2026 は Ono / Jung の参考文献ではないが、2026 年の open-access Journal field study として D-13 の dynamic-response limitation を直接補強するため採用候補に含めた。
+
+### Zotero / BibTeX の状態
+
+- 本文と references.bib は変更していない。採用時は Zotero から pritoni_field_2016 と kang_longitudinal_2026 の2エントリだけを同期する。
+- Zotero には pritoni_field_2016（item GF349DRW、PDF attachment 8VDW6WYH）と kang_longitudinal_2026（item BQS25N5C、PDF attachment DTLFRAMX）を追加した。
+- Pritoni et al. (2016) は最初の Connector 保存時に PDF なしの重複項目 KBV2GHKT も作成された。Zotero Desktop の Duplicate Items で GF349DRW 側を主項目として統合する。本文では PDF 付き項目の固定 citation key pritoni_field_2016 を使う。
+
+## 追加調査第2回: social interaction と sensing uncertainty
+
+今回も Introduction は追加せず、Discussion の既存論理を補う候補だけを選んだ。本文と references.bib は変更していない。
+
+### D-14. 独立な \ac{pcm} 出力の集約と、実際の社会的な妥協を区別する
+
+**挿入位置**
+
+Discussion 最初の subsection の末尾付近。\ac{rtgcm} と \ac{dgcm} の差を occupant composition dynamics で説明した後、現在の “These predicted gains assume immediate setpoint selection ...” の直前。
+
+**目的**
+
+本研究の \acp{gcm} が予測された個人選好を共通目的へ集約するモデルであり、共有空間で occupants が選好を表明・抑制・交渉する過程そのものはモデル化していないことを明示する。group size と thermal sensitivity を扱う D-11 の後に置き、数理的な aggregation の説明から未評価の social interaction へ論点を一段進める。
+
+**根拠文献**
+
+ding_reconciling_2026。20 人を対象とした controlled chamber study で、physiological、psychological、social needs を統合した evolutionary-game model を構築している。ablation study では social-feedback module を除くと temperature drift と step-change の両条件で intention-prediction error が増加した。一方、同論文の reward--punishment mechanism は参加者の social status が等しいと仮定し、実際の office hierarchy と interpersonal relationships を今後の課題としている。
+
+**追加英文案**
+
+~~~latex
+The present \acp{gcm} aggregate individual \ac{pcm} outputs as independent inputs to a common objective and therefore represent predicted thermal preferences rather than the social process through which occupants express, suppress, or negotiate those preferences in a shared office. In a controlled chamber study with 20 adults, an intrinsic-needs evolutionary-game model produced larger temperature-adjustment intention errors when its social-feedback module was removed under both temperature-drift and step-change conditions \cite{ding_reconciling_2026}. That model itself assumed equal social status among participants, and its authors identified workplace hierarchy and interpersonal relationships as remaining limitations. These results do not establish that game-theoretic control would outperform the present \acp{gcm}; instead, they identify social interaction as a separate dimension for future shared-office validation.
+~~~
+
+**前後の接続**
+
+直前では subgroup size、thermal sensitivity、realized composition が aggregation result に影響することを説明する。この追加は、それらをすべて個人 \ac{pcm} の属性として集約する本研究の範囲を明確にし、次の “These predicted gains assume ...” にある field conditions の限定へ接続する。\ac{pcm} を先に定義済みの Discussion であるため、ここで略称を新規導入する必要はない。
+
+### D-15. \ac{rtgcm} の sensing layer を不確実な入力として評価する
+
+**挿入位置**
+
+From comfort information to actionable control subsection の closed-loop evaluation 段落と D-12 の field evidence の後、\ac{utr} と occupant identity の説明へ移る前。
+
+**目的**
+
+real-time tracking を「利用可能／利用不可能」の二値条件として扱わず、sensing error が membership selection と selected setpoint にどう伝播するかを将来検証項目として具体化する。
+
+**根拠文献**
+
+bae_sensor_2021。building / \ac{hvac} control に対する sensor impact を扱った129報のレビューと expert interviews を統合し、sensor type、location、accuracy、reliability、cost、data delivery、control strategy を相互依存の設計要因として整理している。同レビューは、sensor accuracy や fault が control performance に与える影響を定量化した研究と、統一的な impact-evaluation framework が不足していると結論づけている。
+
+**追加英文案**
+
+~~~latex
+The sensing layer should also be evaluated as part of the control method rather than as a binary implementation prerequisite. A review of 129 studies, augmented by expert interviews, identified sensor type, location, accuracy, reliability, cost, and data delivery as coupled design factors and found limited quantitative analysis of how sensor accuracy or faults propagate to building-control performance \cite{bae_sensor_2021}. Because the \ac{rtgcm} selects a changing set of \acp{pcm}, future tests should perturb missed detections, false occupant assignments, identity uncertainty, and latency, and then quantify their effects on both group membership and the selected setpoint. The identity-specific error cases are proposed extensions for this method rather than effects directly quantified by Bae et al.
+~~~
+
+**前後の接続**
+
+直前の D-12 は occupancy events の時間・空間配置が realised field performance を変えることを示す。D-15 は、その events 自体が完全には観測されない場合へ議論を進める。直後の本文は count と identity を区別して \ac{utr} を説明するため、最後を group membership と selected setpoint への error propagation とすることで自然に接続する。
+
+### 第2回探索の判断
+
+| Candidate | 由来 | Discussion への価値 | 判断 |
+|---|---|---|---|
+| ding_reconciling_2026 | Jung et al. (2019) を直接参照する新規 Journal | independent preference aggregation では表現しない social feedback と compromise を、ablation study を含む実験で示す | D-14 として推奨。UCL の CC BY accepted manuscript PDF を Zotero に保存 |
+| bae_sensor_2021 | 追加の Journal 探索 | sensing を control と分離せず、accuracy / fault / location / cost を含む impact evaluation の不足を整理 | D-15 として推奨。DOE OSTI の公開 PDF を Zotero に保存 |
+| Azimi and O'Brien (2022), *Fit-for-purpose: Measuring occupancy to support commercial building operations: A review* | Ono et al. (2022) の直接引用 | application ごとに必要な occupancy resolution と sensing technology を対応づける | 有用だが購読版のみで信頼できる公開 PDF を確保できず、既存の resolution discussion とも重なるため保留・未登録 |
+| An et al. (2026), *A hierarchical thermal preference structure for understanding satisfaction in multi-occupant offices under cooling season conditions* | 最新 Journal 探索 | real office complaint data から、狭い comfort range を持つ少数 group が maximum collective satisfaction を制約する | fairness の根拠として非常に有力だが closed access で公開 PDF がなく、今回は保留・未登録 |
+| Alamirah and Tabet Aoul (2026), *Toward socially-aware Personal Comfort Models* | 最新 Journal 探索 | conformity、social roles、unequal control access を整理した socially-aware \ac{pcm} framework | CC BY 記録は確認したが直接取得可能な PDF URLを確保できず、field-validated model ではない。D-14 の Ding et al. を優先して保留・未登録 |
+| Lu et al. (2022), *Sensor impact evaluation in commercial buildings* | sensing-error 探索 | occupancy count / presence sensor の bias、latency、noise、misdetection を control outcome に結びつける | 内容は D-15 に直接的だが、OSTI と publisher は accepted-manuscript landing page のみで PDF を取得できなかった。公開 PDF を確認できる bae_sensor_2021 を採用し、未登録 |
+
+### Zotero / BibTeX の状態（第2回）
+
+- Zotero に ding_reconciling_2026（item FFBR7Q22、PDF attachment WLPGMIDJ）を追加した。PDF は UCL Discovery の CC BY accepted manuscript で、Zotero の全文索引を確認済み。
+- Zotero に bae_sensor_2021（item DFX9E43G、PDF attachment 9M5YWI48）を追加した。PDF は DOE OSTI で公開された Journal pre-proof で、Zotero の全文索引を確認済み。
+- 本文と references.bib は変更していない。D-14 / D-15 の採用時にのみ、上記2エントリを Zotero から references.bib へ同期する。

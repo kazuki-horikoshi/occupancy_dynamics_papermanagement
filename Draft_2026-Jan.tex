@@ -49,7 +49,8 @@
 % \usepackage{stfloats}
 % \usepackage{dblfloatfix}
 
-\newcommand\mycite[1]{\citeauthor{#1}~(\citeyear{#1})}
+\newcommand\mycite[1]{\citeauthor{#1}}
+% \newcommand\mycite[1]{\citeauthor{#1}~(\citeyear{#1})}
 
 %%% Handy commands for image/figure insertion
 \newcommand*{\RootPicDir}{pic}
@@ -89,13 +90,13 @@
 \def\textpagefraction{.001}
 
 % Short title
-\shorttitle{XXX}
+\shorttitle{Agentic simulation using location-logs and personal comfort models in dynamic occupancy shared office}
 
 % Short author
 \shortauthors{K Horikoshi et al.}
 
 % Main title of the paper
-\title [mode = title]{XXX}                      
+\title [mode = title]{Agentic simulation using location-logs and personal comfort models in dynamic occupancy shared office}                      
 % Title footnote mark
 % eg: \tnotemark[1]
 % \tnotemark[1,2]
@@ -136,7 +137,37 @@
     % state={},
     country={Singapore}}
 
+% Second author
+\author[2]{Eikichi Ono}[%
+   orcid=0000-0003-3876-1924]
+% \ead{e.ono@kajima.com.sg}
+\credit{Writing – review & editing,  Data curation, Methodology, Conceptualization}
+
+% Address/affiliation
+\affiliation[2]{organization={Kajima Technical Research Institute Singapore, Kajima Corporation},
+    %addressline={}, 
+    city={Singapore},
+    % citysep={}, % Uncomment if no comma needed between city and postcode
+    postcode={489690}, 
+    % state={},
+    country={Singapore}}
+
 % Third author
+\author[3]{Kuniaki Mihara}[%
+   orcid=0000-0002-1402-2847]
+% \ead{miharaku@kajima.com}
+\credit{Writing – review & editing,  Data curation, Methodology, Conceptualization}
+
+% Address/affiliation
+\affiliation[3]{organization={Kajima Technical Research Institute, Kajima Corporation},
+    %addressline={}, 
+    city={Tokyo},
+    % citysep={}, % Uncomment if no comma needed between city and postcode
+    postcode={182-0036}, 
+    % state={},
+    country={Japan}}
+
+% Fourth author
 \author[1]{Adrian Chong}[%
    % role=Co-ordinator,
    ]
@@ -182,8 +213,11 @@ These findings indicate that higher-resolution comfort aggregation is most benef
 
 % Research highlights
 \begin{highlights}
-\item XXX
-\item XXX
+\item Agentic simulation using location-logs and personal comfort models
+\item Three group comfort models uses static, daily and real-time occupancy
+\item 15--25\% improvement in "No change" probability is observed in large group
+\item Temperature adjustment in real-time control is mostly over 0.5 $^{\circ}$C
+\item User turn over ratio relates to control frequency
 \end{highlights}
 
 % Keywords Each keyword is seperated by \sep
@@ -192,6 +226,9 @@ XXX \sep XXX \sep
 \end{keywords}
 
 \maketitle
+
+\acrodef{hvac}[HVAC]{heating, ventilation, and air-conditioning}
+
 
 \section*{Nomenclature}
 \renewcommand{\baselinestretch}{0.75}\normalsize
@@ -219,30 +256,19 @@ XXX \sep XXX \sep
     \acro{pmv}[PMV]{Predicted Mean Vote}
     \acro{ppd}[PPD]{Predicted Percentage of Dissatisfied\acroextra{, \%}}
     \acro{set}[SET]{Standard Effective Temperature\acroextra{, $^{\circ}$C}}
-    \acro{tsv}[TSV]{Thermal Sensation Vote}
-    \acro{tpv}[TPV]{Thermal Preference Vote}
-    \acro{tcv}[TCV]{thermal comfort survey}
+    \acro{tsv}[TSV]{thermal sensation vote}
+    \acro{tpv}[TPV]{thermal preference vote}
+    \acro{tcs}[TCS]{thermal comfort survey}
 
-    \acro{occ}[OCC]{Occupant-centric control}
-    \acro{abw}[ABW]{Activity-based working}
+    \acro{occ}[OCC]{occupant-centric control}
     \acro{bms}[BMS]{building management system}
     \acro{pcm}[PCM]{personal comfort model}
     \acro{gcm}[GCM]{group comfort model}
     \acro{utr}[UTR]{user turnover rate}
-    \acro{hvac}[HVAC]{heating, ventilation, and air-conditioning}
 
     \acro{sgcm}[SGCM]{static group comfort model}
     \acro{dgcm}[DGCM]{daily group comfort model}
     \acro{rtgcm}[RT-GCM]{real-time group comfort model}
-
-    \acro{dml}[DML]{double machine learning}
-    \acro{logit}[Logit]{logistic regression}
-    \acro{nn}[NN]{neural network}
-    \acro{rf}[RF]{random forest}
-    % \acro{xgb}[XGB]{extreme gradient boosting}
-    \acro{pr2}[partial $R^2$]{partial coefficient of determination}
-    \acro{ic}[IC]{Increment accuracy}
-
 
 \end{acronym}
 \renewcommand{\baselinestretch}{1}\normalsize
@@ -271,7 +297,6 @@ XXX \sep XXX \sep
 \FloatBarrier
 
 \acresetall
-XXX
 
 % \section{Cross-references}
 % In electronic publications, articles may be internally

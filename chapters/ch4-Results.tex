@@ -1,6 +1,6 @@
 \subsection{Comfort performance across different resolution of \ac{gcm}}
 
-\SetPicSubDir{ch4-Results/agentic/Result_Agentic}
+\SetPicSubDir{ch4-Results}
 \label{subsec:ComfPerf}
 
 Figure~\ref{fig:MeanOccuConf} shows the mean comfort probability under the \ac{sgcm}, \ac{dgcm}, \ac{rtgcm}, and fixed \qty{24}{\celsius} baseline policies for different subgroup sizes across the four office rooms.
@@ -30,7 +30,7 @@ Therefore, the trend across $K$ indicates how the tested policies behave as the 
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.97\linewidth]{\Pic{png}{fig1_analysis23nr_with_fixed24_raw2000_64_100_all_solid_small_markers_paper}}
+    \includegraphics[width=0.97\linewidth]{\Pic{png}{fig1_gcm_consistent_comfort_rates_room}}
     \caption{Mean comfort probability under the three GCM policies and fixed baseline}
     \label{fig:MeanOccuConf}
 \end{figure}
@@ -82,39 +82,38 @@ The previous subsection showed that the \ac{rtgcm} maintained a \qtyrange{15}{30
 This subsection investigates the setpoint adjustment characteristics introduced by the \ac{rtgcm}.
 Because the \ac{sgcm} and \ac{dgcm} use coarser occupant-composition representations, frequent setpoint updates are primarily required under \ac{rtgcm}-based control.
 
-% \begin{figure}[pos=htbp!]
-%     \centering
-%     \includegraphics[width=0.5\linewidth]{\Pic{png}    
-%     {fig3a_setpoint_adjustment_by_occupancy_paper}}
-%     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
-%     \label{fig:DynSpStepHist}
-% \end{figure}
-% \begin{figure}[pos=htbp!]
-%     \centering
-%     \includegraphics[width=0.5\linewidth]{\Pic{png}    
-%     {fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
-%     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
-%     \label{fig:DynSpStepHist}
-% \end{figure}
-
 \begin{figure}[pos=htbp!]
     \centering
-    \begin{subfigure}{0.48\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{fig3a_setpoint_adjustment_by_occupancy_paper}}
-        \caption{Distribution of temperature adjustment magnitudes on daily mean occupancy}
-        \label{fig:DynSpStepvsMeanOccu}
-    \end{subfigure}
-    \medskip
-    \begin{subfigure}{0.48\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{\Pic{png}{fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
-        \caption{Distribution of temperature adjustment magnitudes on group size and daily attendance ratio}
-        \label{fig:DynSpStepHeatmap}
-    \end{subfigure}
-    \caption{Distribution of temperature adjustment magnitudes}
-    \label{fig:DynSpStep}
+    \includegraphics[width=0.5\linewidth]{\Pic{png}    
+    {fig3a_setpoint_adjustment_by_occupancy_paper}}
+    \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
+    \label{fig:DynSpStepvsMeanOccu}
 \end{figure}
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{\Pic{png}    
+    {fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
+    \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
+    \label{fig:DynSpStepHeatmap}
+\end{figure}
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \begin{subfigure}{0.48\linewidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{\Pic{png}{fig3a_setpoint_adjustment_by_occupancy_paper}}
+%         \caption{Distribution of temperature adjustment magnitudes on daily mean occupancy}
+%         \label{fig:DynSpStepvsMeanOccu}
+%     \end{subfigure}
+%     \medskip
+%     \begin{subfigure}{0.48\linewidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{\Pic{png}{fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
+%         \caption{Distribution of temperature adjustment magnitudes on group size and daily attendance ratio}
+%         \label{fig:DynSpStepHeatmap}
+%     \end{subfigure}
+%     \caption{Distribution of temperature adjustment magnitudes}
+%     \label{fig:DynSpStep}
+% \end{figure}
 
 \autoref{fig:DynSpStepvsMeanOccu} shows the distribution of temperature adjustment magnitudes under the \ac{rtgcm} across daily mean occupancy.
 It can be observed that as daily occupancy increases, the range of temperature adjustment magnitude slowly shrinks.
@@ -144,14 +143,14 @@ Except these cases, the \ac{utr} values are generally between 0.2 to 0.5.
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_final_15min_action_step_rate_by_15min_utr_member_size}}
+    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_final_15min_action_step_rate_by_15min_utr_member_size_readable}}
     \caption{Relationship between 15-minute user turnover rate and action-needed window ratio. Confidence intervals are 95\% date-cluster bootstrap intervals with 1,000 resamples}
     \label{fig:CtrlWindowRatio}
 \end{figure}
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_utr30_rolling_representative_k_separate_room_panels_30min_full_confirm_rng_k16_trial1_1000_combined_20260416_073500}}
+    \includegraphics[width=0.98\linewidth]{\Pic{png}{analysis25_utr30_rolling_representative_k_four_l5_rooms_readable}}
     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
     \label{fig:UTRexamples}
 \end{figure}

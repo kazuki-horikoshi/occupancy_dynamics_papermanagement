@@ -1,5 +1,10 @@
 \SetPicSubDir{chap-appe}
 
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\renewcommand{\thetable}{A.\arabic{table}}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+
 \subsection{Office tracking and visualization technology adoption cases}
 \label{app:Tracking}
 \autoref{table:OccuTrack} shows examples of offices that utilize worker's location information during operation.
@@ -10,6 +15,11 @@
   \caption{Office tracking and visualization technology adoption cases in Japan and Singapore}
   \label{table:OccuTrack}
 \end{table}
+
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\renewcommand{\thetable}{B.\arabic{table}}
+\renewcommand{\thefigure}{B.\arabic{figure}}
 
 \subsection{Occupancy Log Reconstruction Procedure}
 \label{app:occupancy_reconstruction}
@@ -29,7 +39,10 @@ From these discrete events, a structured ``stay log'' is generated to represent 
 
 This process yields a stay log with anonymized IDs, locations, and start–end times for subsequent analysis.
 
-
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\renewcommand{\thetable}{C.\arabic{table}}
+\renewcommand{\thefigure}{C.\arabic{figure}}
 
 \subsection{Occupancy tracking studies and examined parameters}
 \label{app:OccupancyStudy}
@@ -56,13 +69,3 @@ Below \autoref{table:comfsurvey} list up research studies that examined dynamic 
 The following clothing insulation values were used for clo-value calculation based on the selected clothing option: short-sleeve shirt and trousers, 0.57 clo; long-sleeve shirt and trousers, 0.61 clo; and long-sleeve shirt, jacket and trousers, 0.96 clo.
 
 \FloatBarrier
-
-
-\SetPicSubDir{ch4-Results}
-\subsection{An example of control simulation of \ac{ti} and predicted \ac{tpv} votes of attendees}
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=1.0\linewidth]{\Pic{png}{/agentic/Result_GEARsimulation/OperationExample}}
-    \caption{Example of daily temperature control and predicted comfort performance both on \ac{sgcm} and \ac{rtgcm}}
-    \label{fig:OpeExampls}
-\end{figure}
