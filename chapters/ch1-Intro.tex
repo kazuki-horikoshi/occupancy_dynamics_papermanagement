@@ -1,6 +1,5 @@
 \SetPicSubDir{ch1-Intro}
 \label{sec:Intro}
-
 Thermal comfort is a critical factor influencing not only occupant satisfaction but also productivity and health in indoor environments \cite{bueno_evaluating_2021}. 
 Studies have increasingly demonstrated the link between indoor environmental quality and occupant outcomes. 
 For instance, \mycite{bueno_evaluating_2021} \cite{bueno_evaluating_2021} confirmed this link, reporting that a substantial body of research demonstrates a significant relationship between indoor environmental conditions and occupant productivity.
@@ -11,30 +10,29 @@ While \ac{pmv} attempts to predict the average occupant's thermal sensation, it 
 Studies consistently demonstrate that even when \ac{pmv} predicts comfort, a significant percentage of occupants experience discomfort due to these variations \cite{cheung_analysis_2019}.  
 This one-size-fits-all approach is inherently limited in achieving widespread occupant satisfaction.
 This limitation reflects a difference in prediction target: the \ac{pmv} model represents the mean response of a population, whereas a \ac{pcm} aims to predict the response of a specific individual.
-Reviews and field-data analyses have documented substantial between-person variation and reduced predictive accuracy when population models are applied to individuals \cite{wang_individual_2018,cheung_analysis_2019,kim_personal_2018-1}.
+Reviews and field-data analyses have documented substantial between-person variation and reduced predictive accuracy when population models are applied to individuals \cite{wang_individual_2018,cheung_analysis_2019}.
 These \acp{pcm} address this limitation by learning an individual's response from personal feedback and contextual data, although their data requirements, updating procedures, and integration with building controls remain application-dependent \cite{kim_personal_2018-1}.
 
 \subsection{Occupant-centric control and shared-space comfort aggregation}
-
 In recent years, \ac{occ} has emerged as a promising \ac{hvac} strategy that uses occupant information to support more individualized building operation \cite{soleimanijavid_challenges_2024}.
 IEA EBC Annex 79 defines \ac{occ} as an ``occupant-in-the-loop'' approach that seeks to provide optimal and personalized conditions rather than imposing fixed settings \cite{wagner_international_2024}.
-In this context, occupant information can range from presence and count to activity and identity, and its usefulness depends on both spatial and temporal resolution \cite{nagy_ten_2023}. Higher information resolution can enable more individualized control, but it also increases sensing, data-management, integration, and privacy requirements.
+In this context, occupant information can range from presence and count to activity and identity, and its usefulness depends on both spatial and temporal resolution \cite{nagy_ten_2023}.
+Higher information resolution can enable more individualized control, but it also increases sensing, data-management, integration, and privacy requirements.
 Typical \ac{occ} frameworks consist of three connected layers: the sensing layer collects information such as environmental conditions, comfort feedback, and occupancy; the learning layer develops preference or occupancy models from these data; and the control layer translates the model outputs into \ac{hvac} actions \cite{soleimanijavid_challenges_2024,xie_review_2020}.
 The performance of this chain depends not only on model accuracy but also on sensing quality, communication with the \ac{bms}, controller design, and local operating conditions \cite{zhang_impact_2023}.
 Reported barriers to broader deployment include data availability and management, interoperability with existing systems, operator capacity, scalability, privacy, and validation across buildings and climates \cite{obrien_key_2020,nagy_ten_2023,soleimanijavid_challenges_2024}.
 Among these functions, the connection between personal comfort information and the control decision is especially important because it determines how individual preferences affect the final setpoint.
 
 In shared office spaces, however, \ac{occ} cannot rely only on isolated \acp{pcm}, because a single room-level \ac{hvac} setpoint must represent multiple occupants at the same time.
-Earlier work on shared offices noted that responding directly to one person's feedback implicitly assumes either single occupancy or identical preferences among occupants \cite{schumann_predicting_2010}.
-More recent collective-comfort studies likewise frame shared-zone control as a problem of combining heterogeneous preferences under a common environmental decision \cite{topak_collective_2023}.
+Recent collective-comfort studies frame shared-zone control as a problem of combining heterogeneous preferences under a common environmental decision \cite{topak_collective_2023, }.
 This makes the construction of a \ac{gcm}, which aggregates individual comfort information into a room-level representation, a central design issue for shared-space \ac{occ}.
 The key question is therefore not only how accurately individual \acp{pcm} predict comfort, but also which occupants should be represented when a room-level control decision is made.
 Despite growing recognition in the industry and active framework development in simulations, real-world \ac{occ} applications in buildings remain limited~\cite{soleimanijavid_challenges_2024}.
 
 \subsection{Dynamic occupancy and real-time tracking in activity-based working environments}
 
-Meanwhile, the rise of remote and hybrid work has increased the use of \ac{abw} and other flexible office arrangements~\cite{marzban_review_2023}.
-In such workplaces, occupants arrive, leave, and move between different spaces throughout the day, causing fluctuations in both occupancy density and occupant composition within a zone \cite{motuziene_office_2022,pan_environmental_2025,huang_space-matching_2025,chang_statistical_2013,levene_problem_2020}.
+Meanwhile, the rise of remote and hybrid work has increased the use of flexible office arrangements~\cite{marzban_review_2023}.
+In such workplaces, occupants arrive, leave, and move between different spaces throughout the day, causing fluctuations in both occupancy density and occupant composition within a zone \cite{motuziene_office_2022,pan_environmental_2025,huang_space-matching_2025}.
 Dynamic occupancy should therefore be understood not only as a change in the number of people in a room, but also as a change in who is present.
 This distinction corresponds to different grades of occupant information: occupancy count describes how many people are present, whereas identity-level information is needed to associate the present group with person-specific comfort profiles \cite{nagy_ten_2023}.
 Count data alone therefore cannot determine whether the group comfort representation should change when one occupant replaces another.

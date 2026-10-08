@@ -46,14 +46,11 @@ Across all rooms, the baseline control remained nearly constant at approximately
 The \ac{rtgcm} produced the highest mean comfort probability for every room and subgroup size, followed by the \ac{dgcm} and then the \ac{sgcm}.
 The performance of the \ac{rtgcm} and \ac{dgcm} decreases at similar rates as subgroup size increases, while the performance of the \ac{sgcm} shows a more modest decrease.
 The mean comfort probability across rooms ranged approximately \qtyrange{80}{98}{\percent} for the \ac{rtgcm}, \qtyrange{75}{95}{\percent} for the \ac{dgcm}, and \qtyrange{70}{85}{\percent} for the \ac{sgcm}.
-
 The improvement relative to the 24 \si{\celsius} baseline decreased as subgroup size increased.
 The decline of the \ac{sgcm} improvement indicates that a fixed room-member aggregation becomes less distinct from the fixed-temperature baseline as more heterogeneous comfort profiles are averaged into a single representation.
-
-In contrast, the \ac{rtgcm} and \ac{dgcm} maintain positive improvements at the largest tested subgroup size for each target rooms, with \ac{rtgcm} improvement remaining approximately \qtyrange{15}{20}{\percent} and \ac{dgcm} improvement approximately \qtyrange{5}{20}{\percent}.
-The positive improvement maintained by the \ac{dgcm} and \ac{rtgcm} indicates that updating the represented occupant group can preserve comfort benefits even when the potential member pool becomes larger.
-Also, \autoref{fig:MeanOccuConf} shows that the improvement ratio between the \ac{rtgcm} and \ac{dgcm} initially increases at the small subgroup sizes such as below 6, and converges to a stable value around at larger subgroup sizes.
-This indicates that the \ac{rtgcm} is more effective than the \ac{dgcm} in smaller rooms, due to the more dynamic occupant transitions that can be captured by the real-time model.
+In contrast, the \ac{rtgcm} maintain positive improvements at the largest tested subgroup size for each target rooms with improvement remaining approximately \qtyrange{15}{20}{\percent}.
+The positive improvement maintained by the \ac{rtgcm} indicates that updating the represented occupant group can preserve comfort benefits even when the potential member pool becomes larger.
+For \ac{dgcm} and \ac{sgcm}, \ac{dgcm} maintain positive improvements approximately \qtyrange{4}{5}{\percent} in Office 5B and Shared Office 5B, while approximately \qtyrange{1}{3}{\percent} in Office 5A and Shared Office 5A.
 
 \begin{figure}[pos=htbp!]
     \centering
@@ -61,8 +58,26 @@ This indicates that the \ac{rtgcm} is more effective than the \ac{dgcm} in small
     \caption{Occupancy density $N_{r,t}/K$ by time of day: mean and central 50\% and 90\% observation intervals.}
     \label{fig:OccuDensity}
 \end{figure}
-Figure~\ref{fig:OccuDensity} shows that mean occupancy density remained below full occupancy and varied by room and time.
+
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.9\linewidth]{\Pic{png}{daily_occupancy_density_k12_relative_frequency}}
+    \caption{Daily occupancy density histograms of four office rooms $K=12$}
+    \label{fig:DailyOccuDensity}
+\end{figure}
+To further investigate these performance difference between target rooms, \autoref{fig:OccuDensity} illustrates daily trends occupancy density, the ratio of attending occupant count $N_{r,t}$ to subgroup size $K$ in each room along time of the day.
+Additionally, \autoref{fig:DailyOccuDensity} illustrates the daily attendance ratio, the ratio of number of occupants who attended the office to subgroup size $K$.
+\autoref{fig:OccuDensity} shows that mean occupancy density remained below full occupancy and varied by room and time.
+Office 5A shows a higher attendance ratio throughout the day except at lunchtime, compared to a similar fixed-seat office, 5B, likely due to the difference of occupants' job function.
+A certain ratio of occupants in office 5A serve administrative tasks, while occupants in office 5B more frequently move to other spaces such as meeting rooms or specific experiment labs.
+For shared offices, the difference in occupancy density is not strongly distinguishable; however shared office 5B demonstrates some time steps when the density tends to drop in the afternoon, compared to the comparatively flat occupancy density curve in shared office 5A.
+
+Furthermore, \autoref{fig:DailyOccuDensity} clearly demonstrates the different trends of daily attendance between offices.
+Office 5A marks 100\% attendance over 60\% of simulated working days, followed by Shared office 5A with 50\% of 100\% attendance, shared office 5B with nearly 35\% and Office 5B marking below 20\% of 100\% attendance.
+Following this trend, the comfort performance difference between \ac{dgcm} and \ac{sgcm} is narrower in office 5A and Shared Office 5A compared to office 5B and shared office 5B.
+This difference possibly positions \ac{dgcm} in the middle of \ac{sgcm} and \ac{rtgcm} in office 5B and shared office 5B, rather than representing similar occupant composition by \ac{dgcm} and \ac{sgcm} in office 5A and shared office 5A.
 Thus, large member pools often produced partial attendance, allowing the present group to differ from regular membership and daily attendees and preserving an advantage for attendance-aware aggregation.
+Considering the difference in triggers for each \ac{gcm}-control type, it is reasonable to interpret the performance difference between the three representations as an outcome of these occupancy density and daily attendance differences.
 
 % Although both the \ac{dgcm} and \ac{rtgcm} maintain performance improvements over the baseline, the gap between them increases as room size expands.
 % This suggests that, in larger rooms, the \ac{rtgcm} benefits from more dynamic occupant transitions, whereas the \ac{dgcm} cannot fully capture time-varying group comfort as occupancy changes.
@@ -82,38 +97,38 @@ The previous subsection showed that the \ac{rtgcm} maintained a \qtyrange{15}{30
 This subsection investigates the setpoint adjustment characteristics introduced by the \ac{rtgcm}.
 Because the \ac{sgcm} and \ac{dgcm} use coarser occupant-composition representations, frequent setpoint updates are primarily required under \ac{rtgcm}-based control.
 
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=0.5\linewidth]{\Pic{png}    
-    {fig3a_setpoint_adjustment_by_occupancy_paper}}
-    \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
-    \label{fig:DynSpStepvsMeanOccu}
-\end{figure}
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=0.5\linewidth]{\Pic{png}    
-    {fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
-    \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
-    \label{fig:DynSpStepHeatmap}
-\end{figure}
 % \begin{figure}[pos=htbp!]
 %     \centering
-%     \begin{subfigure}{0.48\linewidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{\Pic{png}{fig3a_setpoint_adjustment_by_occupancy_paper}}
-%         \caption{Distribution of temperature adjustment magnitudes on daily mean occupancy}
-%         \label{fig:DynSpStepvsMeanOccu}
-%     \end{subfigure}
-%     \medskip
-%     \begin{subfigure}{0.48\linewidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{\Pic{png}{fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
-%         \caption{Distribution of temperature adjustment magnitudes on group size and daily attendance ratio}
-%         \label{fig:DynSpStepHeatmap}
-%     \end{subfigure}
-%     \caption{Distribution of temperature adjustment magnitudes}
-%     \label{fig:DynSpStep}
+%     \includegraphics[width=0.5\linewidth]{\Pic{png}    
+%     {fig3a_setpoint_adjustment_by_occupancy_paper}}
+%     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
+%     \label{fig:DynSpStepvsMeanOccu}
 % \end{figure}
+% \begin{figure}[pos=htbp!]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{\Pic{png}    
+%     {fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
+%     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
+%     \label{fig:DynSpStepHeatmap}
+% \end{figure}
+\begin{figure}[pos=htbp!]
+    \centering
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{fig3a_setpoint_adjustment_by_occupancy_paper}}
+        \caption{Distribution of temperature adjustment magnitudes on daily mean occupancy}
+        \label{fig:DynSpStepvsMeanOccu}
+    \end{subfigure}
+    \medskip
+    \begin{subfigure}{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{\Pic{png}{fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
+        \caption{Distribution of temperature adjustment magnitudes on group size and daily attendance ratio}
+        \label{fig:DynSpStepHeatmap}
+    \end{subfigure}
+    \caption{Distribution of temperature adjustment magnitudes}
+    \label{fig:DynSpStep}
+\end{figure}
 
 \autoref{fig:DynSpStepvsMeanOccu} shows the distribution of temperature adjustment magnitudes under the \ac{rtgcm} across daily mean occupancy.
 It can be observed that as daily occupancy increases, the range of temperature adjustment magnitude slowly shrinks.
@@ -143,19 +158,17 @@ Except these cases, the \ac{utr} values are generally between 0.2 to 0.5.
 
 \begin{figure}[pos=htbp!]
     \centering
-    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_final_15min_action_step_rate_by_15min_utr_member_size_readable}}
-    \caption{Relationship between 15-minute user turnover rate and action-needed window ratio. Confidence intervals are 95\% date-cluster bootstrap intervals with 1,000 resamples}
+    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_15min_action_step_rate_by_15min_utr}}
+    \caption{Relationship between 15-minute user turnover rate and action-needed window ratio.}
     \label{fig:CtrlWindowRatio}
 \end{figure}
 
 \begin{figure}[pos=htbp!]
     \centering
     \includegraphics[width=0.98\linewidth]{\Pic{png}{analysis25_utr30_rolling_representative_k_four_l5_rooms_readable}}
-    \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
+    \caption{Mean \ac{utr}(\ac{utr}) on week of day over one month for four offices}
     \label{fig:UTRexamples}
 \end{figure}
-
-
 
 % removed
 % \SetPicSubDir{ch4-Results/agentic/Result_GEARsimulation}
