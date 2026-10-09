@@ -41,6 +41,8 @@
 \usepackage{booktabs}
 % \usepackage{biblatex}
 \usepackage{enumitem}
+\usepackage{threeparttable}
+\newcommand{\TableHeaderLineBreak}{\\\bfseries}
 
 \usepackage[en-GB, showseconds=false]{datetime2}
 \DTMsetstyle{iso}
@@ -58,6 +60,20 @@
 \newcommand*{\ResetPicDir}{\renewcommand*{\PicDir}{\RootPicDir}}
 \newcommand*{\SetPicSubDir}[1]{\renewcommand*{\PicDir}{\RootPicDir /#1}}
 \newcommand*{\Pic}[2]{\PicDir /#2.#1}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Z}{>{\centering\arraybackslash}X}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{N}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+\newcommand{\TableHeader}[1]{\textbf{#1}}
+\newcommand{\TableHeaderBreak}[1]{\makecell[c]{\bfseries #1}}
+\newcommand{\SignificantP}[1]{{\bfseries\boldmath\(#1\)}}
+\newcommand{\TableSetup}[2]{%
+  \setlength{\tabcolsep}{#1}%
+  \renewcommand{\arraystretch}{#2}%
+}
+
 
 %%%Author definitions
 \def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}

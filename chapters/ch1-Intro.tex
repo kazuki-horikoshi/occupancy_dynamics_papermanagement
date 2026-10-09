@@ -18,7 +18,7 @@ In recent years, \ac{occ} has emerged as a promising \ac{hvac} strategy that use
 IEA EBC Annex 79 defines \ac{occ} as an ``occupant-in-the-loop'' approach that seeks to provide optimal and personalized conditions rather than imposing fixed settings \cite{wagner_international_2024}.
 In this context, occupant information can range from presence and count to activity and identity, and its usefulness depends on both spatial and temporal resolution \cite{nagy_ten_2023}.
 Higher information resolution can enable more individualized control, but it also increases sensing, data-management, integration, and privacy requirements.
-Typical \ac{occ} frameworks consist of three connected layers: the sensing layer collects information such as environmental conditions, comfort feedback, and occupancy; the learning layer develops preference or occupancy models from these data; and the control layer translates the model outputs into \ac{hvac} actions \cite{soleimanijavid_challenges_2024,xie_review_2020}.
+Typical \ac{occ} frameworks consist of three connected functional components: sensing collects information such as environmental conditions, comfort feedback, and occupancy; learning develops preference or occupancy models from these data; and control translates the model outputs into \ac{hvac} actions \cite{soleimanijavid_challenges_2024,xie_review_2020}.
 The performance of this chain depends not only on model accuracy but also on sensing quality, communication with the \ac{bms}, controller design, and local operating conditions \cite{zhang_impact_2023}.
 Reported barriers to broader deployment include data availability and management, interoperability with existing systems, operator capacity, scalability, privacy, and validation across buildings and climates \cite{obrien_key_2020,nagy_ten_2023,soleimanijavid_challenges_2024}.
 Among these functions, the connection between personal comfort information and the control decision is especially important because it determines how individual preferences affect the final setpoint.
@@ -26,6 +26,7 @@ Among these functions, the connection between personal comfort information and t
 In shared office spaces, however, \ac{occ} cannot rely only on isolated \acp{pcm}, because a single room-level \ac{hvac} setpoint must represent multiple occupants at the same time.
 Recent collective-comfort studies frame shared-zone control as a problem of combining heterogeneous preferences under a common environmental decision \cite{topak_collective_2023, }.
 This makes the construction of a \ac{gcm}, which aggregates individual comfort information into a room-level representation, a central design issue for shared-space \ac{occ}.
+In this study, this representation describes how the group's predicted comfort varies with temperature and provides a basis for selecting a shared setpoint.
 The key question is therefore not only how accurately individual \acp{pcm} predict comfort, but also which occupants should be represented when a room-level control decision is made.
 Despite growing recognition in the industry and active framework development in simulations, real-world \ac{occ} applications in buildings remain limited~\cite{soleimanijavid_challenges_2024}.
 
@@ -37,6 +38,7 @@ Dynamic occupancy should therefore be understood not only as a change in the num
 This distinction corresponds to different grades of occupant information: occupancy count describes how many people are present, whereas identity-level information is needed to associate the present group with person-specific comfort profiles \cite{nagy_ten_2023}.
 Count data alone therefore cannot determine whether the group comfort representation should change when one occupant replaces another.
 Even when the occupancy count is similar, the thermal preferences represented by the present group may differ.
+However, a setpoint selected for a fixed reference group is not updated to reflect such changes in occupant composition.
 This makes static temperature control less reliable, because a condition optimized for one attendance pattern may not represent another.
 
 % To incorporate occupancy information in \ac{occ} frameworks, two main approaches can be identified: prediction-based methods and real-time sensing.
@@ -56,9 +58,9 @@ At the same time, the practical value of real-time occupant-composition data dep
 
 \subsection{Shared-space GCM resolution under dynamic occupancy}
 
-For shared-space \ac{occ}, dynamic occupancy raises a second issue: the controller must decide how individual comfort information should be aggregated for a room-level setpoint.
-Existing \ac{occ} research has largely focused on developing and validating \acp{pcm} and control algorithms in single-occupant settings, while shared spaces with multiple occupants remain less explored \cite{park_critical_2019,jung_human---loop_2019,xie_review_2020}.
-In shared workspaces, multiple occupants with potentially conflicting thermal preferences must be accommodated simultaneously, and simply averaging preferences or applying a single \ac{pcm} may fail to represent the group.
+For shared-space \ac{occ}, these dynamic occupancy patterns raise an aggregation issue: the controller must decide how individual comfort information should be aggregated for a room-level setpoint.
+In shared workspaces, multiple occupants with potentially conflicting thermal preferences must be accommodated simultaneously, and simply averaging preferred temperatures or applying a single \ac{pcm} may fail to represent the group.
+In particular, individual differences in thermal sensitivity, in addition to preferred temperature, can affect collective setpoint selection and comfort probability \cite{jung_comparative_2019}.
 
 The difficulty is shaped by both group size and preference heterogeneity.
 Shared-space studies have shown that collective comfort depends on how conflicting individual preferences are represented and combined, rather than on occupancy count alone \cite{schumann_predicting_2010,topak_collective_2023}.
@@ -66,24 +68,41 @@ Simulation studies further suggest that the combined energy-and-comfort benefit 
 % \mycite{jung_energy_2020}\cite{jung_energy_2020} showed that the number of occupants in a zone can affect both comfort and energy performance, and that results depend on how individual comfort models are integrated.
 \mycite{ono_effects_2022}\cite{ono_effects_2022} further showed that mismatches between comfort-model resolution and control resolution may reduce control effectiveness and occupant satisfaction.
 These findings indicate that shared-space \ac{occ} requires attention to both comfort aggregation and room-level control resolution.
+For a given room-level control resolution, dynamic occupancy also requires deciding when to update the occupant group represented by the \ac{gcm}.
 
 \autoref{table:OccuIntegration} compares field studies that integrate multiple \acp{pcm} within the same control zone.
 Most existing multi-occupant studies assume static occupant attendance configurations and do not account for occupants arriving and leaving dynamically \cite{lee_implementation_2019,li_indoor_2019,li_personalized_2017,li_indoor_2023,aguilera_thermal_2019,li_experimental_2021}.
+Ono et al.~\cite{ono_impact_2022} compared personal- and group-level occupancy information in a field experiment on \ac{pcm}-based control, illustrating the relevance of identifying which occupants are present.
 Lei et al.~\cite{lei_practical_2022} addressed dynamic occupancy using multiple reinforcement-learning models for frequent occupant combinations, but such an approach can be data- and compute-intensive and may not cover all possible occupant combinations.
 Rather than preparing separate control models for many occupant combinations, a more deployable strategy is to vary the temporal resolution at which individual comfort information is aggregated.
 This leads to a practical question: when is static, daily, or real-time aggregation of individual comfort information sufficient for room-level control?
 
 \begin{table}[pos=!htbp]
   \centering
-  \input{pic/ch2-Review/ModelIntegration.tex}
-  \caption{Field OCC studies integrating multiple personal comfort models}
-  \label{table:OccuIntegration}
+  \small
+  \TableSetup{2.5pt}{1.10}
+  \begin{threeparttable}
+    \caption{Studies integrating multiple \acp{pcm} into \ac{occ} across control and occupancy-information resolutions.}
+    \label{table:OccuIntegration}
+    \input{pic/ch1-Intro/ModelIntegration}
+    \begin{tablenotes}[flushleft]
+      \footnotesize
+      \item[] \textit{Note:} In the Algorithm column, RL refers to reinforcement learning, MPC refers to model predictive control, and RB refers to rule-based control.
+      Personal occupancy information indicates that individual occupants can be distinguished, irrespective of whether detection is automated or manual.
+    \end{tablenotes}
+  \end{threeparttable}
 \end{table}
+
+% \begin{table}[pos=!htbp]
+%   \centering
+%   \input{pic/ch1-Intro/ModelIntegration.tex}
+%   \caption{Field OCC studies integrating multiple personal comfort models}
+%   \label{table:OccuIntegration}
+% \end{table}
 
 \subsection{Focus of the research}
 \label{subsec:Focus}
 Based on this background, this study evaluates when higher-resolution aggregation of individual comfort information improves predicted comfort in shared offices, and what operational burden is introduced by real-time occupant-composition updates.
-The analysis compares three levels of group-comfort aggregation, from fixed room-member aggregation to daily and real-time occupant-composition updates, with the operational definitions provided in the Method section.
 Building on prior work on group size and control granularity \cite{ono_effects_2022,jung_energy_2020}, the analysis introduces temporal occupancy dynamics, especially short-horizon occupant turnover, as a key dimension of shared-space \ac{occ}.
 % Using field data from real office spaces, the study relates model performance to subgroup size, mean occupancy, occupancy variability, and \ac{utr}.
 
