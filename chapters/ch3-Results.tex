@@ -96,20 +96,6 @@ The previous subsection showed that the \ac{rtgcm} maintained a \qtyrange{15}{30
 This subsection investigates the setpoint adjustment characteristics introduced by the \ac{rtgcm}.
 Because the \ac{sgcm} and \ac{dgcm} use coarser occupant-composition representations, frequent setpoint updates are primarily required under \ac{rtgcm}-based control.
 
-% \begin{figure}[pos=htbp!]
-%     \centering
-%     \includegraphics[width=0.5\linewidth]{\Pic{png}    
-%     {fig3a_setpoint_adjustment_by_occupancy_paper}}
-%     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
-%     \label{fig:DynSpStepvsMeanOccu}
-% \end{figure}
-% \begin{figure}[pos=htbp!]
-%     \centering
-%     \includegraphics[width=0.5\linewidth]{\Pic{png}    
-%     {fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
-%     \caption{Distribution of temperature adjustment magnitudes under dynamic group control}
-%     \label{fig:DynSpStepHeatmap}
-% \end{figure}
 \begin{figure}[pos=htbp!]
     \centering
     \begin{subfigure}{0.48\linewidth}
@@ -134,7 +120,7 @@ It can be observed that as daily occupancy increases, the range of temperature a
 This may because that as the number of occupants increases, the optimal temperature range for the group becomes more stable, leading to smaller adjustments.
 However, the mean value remains approximately around \qty{1.0}{\celsius} around mean occupancy(1--5) and marks around \qty{0.8}{\celsius} even at the highest occupancy levels in our analysis.
 
-Similarly, \autoref{fig:DynSpStepHeatmap} maps the temperature adjustment magnitude over subgroup size and mean occupancy ratio at the control timestep.
+Similarly, \autoref{fig:DynSpStepHeatmap} maps the temperature adjustment magnitude over subgroup size and daily attendance ratio.
 This analysis visualizes occupancy scale from two complementary perspectives: subgroup size $K$, which represents the sampled regular-member group size in each simulation condition, and the normalized mean occupancy ratio, which represents how densely that sampled group is occupied during operation.
 The magnitude of this temperature range shrinks as both subgroup size and mean occupancy ratio increase.
 At small subgroup sizes such as $K=4$, the mean adjustment magnitude is over \qty{1.0}{\celsius} in most cases.
@@ -168,39 +154,3 @@ Except these cases, the \ac{utr} values are generally between 0.2 to 0.5.
     \caption{Mean \ac{utr}(\ac{utr}) on week of day over one month for four offices}
     \label{fig:UTRexamples}
 \end{figure}
-
-% removed
-% \SetPicSubDir{ch4-Results/agentic/Result_GEARsimulation}
-% As a first part of agentic simulation, realistic one-month simulation was conducted.
-% This case is based on actual combination of occupancy logs and comfort models with survey participants.
-% An example of daily temperature control and predicted comfort performance both on \ac{sgcm} and \ac{rtgcm} is shown in \autoref{fig:OpeExampls}.
-
-% \autoref{fig:GEARComfPrf}\subref{fig:realComfPro} shows the simulated comfort probability on \ac{sgcm} and \ac{rtgcm} during one-month simulation period. \autoref{fig:GEARComfPrf}\subref{fig:realComfImp} shows the predicted comfort probability improvement from \ac{sgcm} to \ac{rtgcm} during one-month simulation period.
-
-% \begin{figure}[pos=htbp!]
-%     \centering
-%     \begin{subfigure}{0.97\linewidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbability}}
-%         \caption{Simulated comfort probability on \ac{sgcm} and \ac{rtgcm} during one-month simulation period}
-%         \label{fig:realComfPro}
-%     \end{subfigure}
-
-%     \medskip
-
-%     \begin{subfigure}{0.97\linewidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{\Pic{png}{ComfortProbabilityImprovement}}
-%         \caption{Predicted comfort probability improvement from \ac{sgcm} to \ac{rtgcm} during one-month simulation period}
-%         \label{fig:realComfImp}
-%     \end{subfigure}
-%     \caption{Simulated mean comfort probability of each experiment participant through one-month simulation}
-%     \label{fig:GEARComfPrf}
-% \end{figure}
-
-% \begin{figure}[pos=htbp!]
-%     \centering
-%     \includegraphics[width=0.97\linewidth]{\Pic{png}{ComfortAcrossRooms}}
-%     \caption{Comfort probabiity ratio across office rooms and whole building on \ac{sgcm} and \ac{rtgcm}}
-%     \label{fig:GEARComfPrfRoom}
-% \end{figure}

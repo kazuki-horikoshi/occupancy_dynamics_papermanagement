@@ -2400,3 +2400,302 @@ Ono et al.~\cite{ono_impact_2022} compared personal- and group-level occupancy i
 推奨の9.1–9.7を適用すると、現行93行のIntroductionに対し、変更する既存文は4文（9.1、9.3、9.4、9.5）、挿入は4文（9.2、9.3、9.5、9.6）、削除は1文（9.7）。9.8は任意の1文追加。既存の段落順・見出し・図表は維持する。
 
 冒頭からの文体統一や言い換えは含めない。第9節の全文案はこのアンカー付き提案へ置き換えており、旧全文案を同時に適用しない。
+
+
+## 10. 引用書式・Method Metrics・PCM確率カーブの確認（2026-10-09）
+
+### 10.1 確認対象と引用書式の見落とし
+
+現在のmain `Draft_2026-Jan.tex` が読み込むのは `ch1-Intro`、`ch2-Method`、`ch3-Results`、`ch4-Discussion`、`ch5-Conclusion` とAppendix、およびそこから読み込む表。以前の `ch3-Method.tex` ではなく、現行Methodは **`chapters/ch2-Method.tex`**。mainから参照されない旧 `ch4-Results.tex` / `ch5-Discussion.tex` / `ch6-Conclusion.tex` は、現行稿の引用修正対象に含めない。
+
+コメントを除いた現行の読み込み対象を確認したところ、78個の `\cite` コマンド中、文章との間の `~` が不足している箇所は9個、複数キーを一つの `\cite` に入れている箇所は3個。いずれも **`chapters/ch4-Discussion.tex`** に残る。Introduction、Method、現行Results/Conclusion、Appendixと読み込み対象の表には、この2条件の見落としは見つからなかった。
+
+文章に続く引用の最初のコマンドに `~` を付け、連続する引用は `~\cite{a}\cite{b}` とする。表のセルの冒頭など、先行する文章がない引用には `~` を足す必要はない。削除候補のコメントアウト済み旧稿は、本文の書式漏れとして数えていない。
+
+| 現行Discussionの行 | 残っている書式 | 修正 |
+|---|---|---|
+| 5 | `jung_energy_2020`、`wang_enhancing_2026` の各引用前が通常space | 各引用前を `~` にする |
+| 27 | `xie_review_2020,soleimanijavid_challenges_2024` | 2コマンドへ分ける |
+| 34 | 通常space＋3キーの同一コマンド | `~` と3個のコマンドにする |
+| 39 | `nagy_ten_2023` の前が通常space | `~` にする |
+| 40 | `wang_modeling_2017` の前が通常space | `~` にする |
+| 49 | `jung_energy_2020` の前が通常space | `~` にする |
+| 56 | 2か所で通常space、後半は3キーの同一コマンド | 各引用前を `~` にし、後半を3コマンドへ分ける |
+| 76 | `li_study_2022` の前が通常space | `~` にする |
+
+**各行の差し替え案**: 以下は引用書式だけを変更した英文。行番号と文頭をアンカーにする。
+
+5行目:
+
+```tex
+Simulation studies indicate that the combined energy-and-comfort benefit of integrating \acp{pcm} can diminish as more occupants share a thermal zone~\cite{jung_energy_2020}. A separate stochastic simulation likewise reported lower potential maximum satisfaction rates for larger groups~\cite{wang_enhancing_2026}.
+```
+
+27行目:
+
+```tex
+This indicates actuation-relevant potential; reviews report limited field implementation and persistent data, computation, BAS-integration, and scalability barriers field examples~\cite{xie_review_2020}\cite{soleimanijavid_challenges_2024}.
+```
+
+34行目:
+
+```tex
+Long-term and side-by-side field studies show that realised outcomes can depend on occupancy-sensor accuracy, communication with the \ac{bms}, damper or actuator cycling, outdoor conditions, controller design, and local operating constraints~\cite{jiang_occupied_2023}\cite{kong_hvac_2022}\cite{zhang_impact_2023}.
+```
+
+39行目:
+
+```tex
+Occupant-data taxonomies distinguish count from identity because the same count can correspond to different sets of people and therefore different personal comfort profiles~\cite{nagy_ten_2023}.
+```
+
+40行目:
+
+```tex
+Common count-oriented sensing approaches can estimate occupancy patterns but do not necessarily identify which profiles have been replaced~\cite{wang_modeling_2017}.
+```
+
+49行目:
+
+```tex
+\ac{utr} complements mean occupancy by indicating whether represented comfort profiles are being replaced, extending prior discussions of dynamic diversity in comfort-driven control~\cite{jung_energy_2020}.
+```
+
+56行目:
+
+```tex
+Longitudinal utilisation research shows that movement and workstation use vary by season and spatial context~\cite{gocer_overlaps_2022}, while occupant-information reviews emphasise that higher resolution brings additional infrastructure, privacy, and data-management requirements~\cite{nagy_ten_2023}\cite{obrien_key_2020}\cite{zafari_survey_2019}.
+```
+
+76行目:
+
+```tex
+Field observations of shading behaviour, although not a direct test of temperature-setpoint response, demonstrate that adaptive actions can occur with temporal delay~\cite{li_study_2022}.
+```
+
+### 10.2 Metrics: 現行の定義は残し、旧分析のコメントを整理する
+
+**現行本文の判定**
+
+現在表示されているMetricsには、明確に不要と判断できる独立した指標は少ない。結果図に直接出ない式でも、最終指標を計算するための中間定義は残す。例えばroom-day comfort probabilityを削ると、simulation期間・trial平均のmean comfort probabilityの定義が途切れる。
+
+| 定義・指標 | Method位置 | 現行Resultsでの用途 | 判定 |
+|---|---|---|---|
+| Subgroup size $K$、present group $S_{r,t}$、realized count $N_{r,t}$ | 110–112、170–179行 | comfortのgroup-size軸、occupancy density、RT group、UTRとperson-time集計 | 残す。$K$と$N$は別の量 |
+| Daily mean occupancy $\bar N_{r,d}$ | 181–189行 | `fig:DynSpStepvsMeanOccu` の横軸 | 残す |
+| Timestamp-level rolling UTR | 204–221行 | `fig:UTRexamples`、action frequencyとturnoverの関係 | 残す。ただし後述の15分/30分を確認 |
+| Policy setpoint $T_{\mathrm{set}}^{\mathrm{policy}}(t)$ | 239–244行 | 個人comfort scoreとcontrol stepの入力 | 記号定義として残す。追加のoutcomeではない |
+| 個人No change probability、room-day CP、mean CP | 243–275行 | `fig:MeanOccuConf` と本文のcomfort performance | 残す。room-day CPは最終平均の中間計算 |
+| Fixed 24°C baselineからの $\Delta\overline{\mathrm{CP}}$ | 277–286行 | 専用のimprovement図はコメントアウトされているが、Results 49–53行・Discussionで差を論じる | 現行の比較記述があるため残す。別図がないことだけでは削除しない |
+| $\delta T^{\mathrm{RT}}$、changed-step set、changed-step mean absolute adjustment | 290–323行 | `fig:DynSpStep` のcolor/vertical value | 残す。差分とvalid/changed集合は平均計算の前提 |
+| Action-needed window ratio (AWR) | 325–346行 | Resultsはこの名称を使うが、実際の図のaxisとは不一致 | 更新頻度の指標自体は必要。現行式の採否は10.3で判断 |
+
+**重複だけを削る候補**
+
+`N_{r,t}=|S_{r,t}|` はsimulation説明112行、Metrics導入171行、独立式175–179行にある。式 `eq:Nt` と$K$/$N$の説明は残し、Metrics導入の171行の次の1文だけを削るとよい。
+
+```tex
+The realized occupancy count is $N_{r,t}=|S_{r,t}|$.
+```
+
+直前アンカーは `Let $\mathcal{T}_{r,d}$ denote ...`、直後は `The subgroup size $K$ is ...`。これによりsimulation説明と式の記号対応は維持される。
+
+**コメントアウト済み部分の削除候補**
+
+以下は、現在のResultsにその分析が出ておらず、旧定義が現行式と混同される可能性もあるため、Methodから削除してよい候補。範囲は確認時点の行番号、コメントの見出しをアンカーにする。今回の確認では、これらの旧式labelへの現行本文からの参照は見つからない。
+
+| コメントのアンカー／位置 | 内容 | 削除してよい理由・残すもの |
+|---|---|---|
+| `% \paragraph{Occupancy variability}`（191–202行） | Daily count SD $\sigma_{N,r,d}$ | 現行ResultsにSDを用いた図・比較がない。人数変化の一般論まで消す必要はないが、評価したmetricとしては扱わない |
+| `% For daily summaries, timestamp-level ...`（223–233行） | 日平均UTR | 現行のtime-of-day/weekday UTR図は時刻ごとの平均であり、1日を1値に縮約する日平均UTRとは別。timestamp-level定義は残す |
+| `% From each participant’s ... individual metrics ...`（379–394行） | Preferred temperature、individual comfort range | 現行評価はNo change probabilityを直接使い、個人peak/rangeへの二値判定を使わない |
+| `% Previous version retained for checking:`（397–406行） | 個人preferred temperatureの平均によるStatic/Daily/RT setpoint | 現行の「probability curvesの平均を最大化」と異なる。旧式を残す必要はない |
+| `% Previous binary coverage version retained for checking:`（408–425行） | Binary comfort indicatorとcoverage | 現行の確率平均CPとは別の指標。再採用しない |
+| `% Previous occupancy metric version retained for checking:`（428–450行） | 旧$N_t$、rolling count SD、旧UTRの定義 | 現行$N_{r,t}$とrolling UTRへ置換済み。SDは結果に不使用 |
+| `% From the stay logs, daily occupancy metrics are defined as:`（452–479行） | 旧$N_{\mathrm{avg}}$、$V_{occ}$、OTR、DTR | OTR/DTR/variabilityの結果がなく、旧meanの「stays平均」説明も現行timestamp平均と異なる |
+| `% \item For the Daily baseline ...`（481–485行） | Plan--actual mismatchと期待deviation | 現行Resultsの分析にない |
+| `% Previous control-deviation version ...`（488–497行）と `% Metrics outcome`（617–635行） | RTとStatic/Dailyのsetpoint間差 $\Delta T$ | 現行の前時刻からのRT step $\delta T$とは別。結果はstep adjustmentでありpolicy間の温度差ではない |
+| `% \subsubsection{Occupancy-stratified summaries}`（499–517行） | Occupancy bin別binary coverageとcontrast | 現行の確率CPの比較に使わない |
+| `% \subsubsection{Statistical Comparison and Equivalence Testing}`（519–538行） | TOST、equivalence margin | 現行Resultsにequivalence testがない。0.5°Cのaction thresholdはTOSTの証拠ではない |
+| `% \subsubsection{Energy Impact Estimation under Dynamic GCM}`（540–578行） | GPによるenergy推定・saving rate | 現行はcomfort/control評価でありenergy結果がない |
+| `% \paragraph{Modeling strategy and Feature Attribution}`（581–592行） | GPで$|\Delta T|$をモデル化、SHAP | 現行ResultsにGP/SHAP分析がない |
+| `% \begin{itemize}[noitemsep]`（595–613行） | Coverage、energy、TOST、decision rulesの旧outcome一覧 | 上の旧分析計画の繰り返し。実証されていないdecision rulesを結果のように戻さない |
+
+351行の `% Removed` 以下には、上記に加えて旧PCM説明（353–377行）や旧figure（637–642行）もある。検討履歴を本文ソースに残す必要がなければ、**351行から末尾の642行までをまとめて除く**方法でもよい。旧PCMの式は現行86–94行に対応するため失われない。191–202行と223–233行はそのブロック外なので別に整理する。
+
+引用の漏れを直すためにこれらの古いコメントを更新する必要はない。旧survey/measurement説明（45–59行）はMetricsではなく、削除判断の対象を分ける。
+
+### 10.3 削除前に合わせる必要があるMetricsの説明
+
+**A. Occupancy densityとdaily attendance ratioは削る指標ではなく、定義を補う指標**
+
+現在のResultsで次を区別して使っている。
+
+- `fig:OccuDensity`: 時刻ごとのoccupancy density $N_{r,t}/K$。
+- `fig:DailyOccuDensity`: 日ごとのattendance ratio。人数はその日に一度でも来たdistinct sampled agentsの数。
+- `fig:DynSpStepHeatmap`: 実際に画像を確認すると、縦軸は **Daily attendance ratio**。本文136–138行はmean occupancy ratioと説明しており、caption/画像と一致しない。
+
+**挿入アンカー**: MethodのDaily mean occupancyの式 `\label{eq:mean_occ_daily}` と `\end{equation}` の直後。コメントアウト済みSDの前へ、次の最小限の定義を置く。
+
+```tex
+For comparison across subgroup sizes, the instantaneous occupancy density and daily attendance ratio are defined as
+\begin{equation}
+\rho_{r,t}^{\mathrm{occ}}=\frac{N_{r,t}}{K},
+\qquad
+\rho_{r,d}^{\mathrm{att}}=\frac{|A_{r,d}|}{K},
+\label{eq:occupancy_and_attendance_ratios}
+\end{equation}
+where $A_{r,d}$ is the set of sampled location-log agents who attend room $r$ at least once on day $d$.
+```
+
+$A_{r,d}$は147行のDaily GCMのgroup定義に既にあるため、新しいsampling groupを作るわけではない。$\bar N_{r,d}/K$は時間平均のoccupancy densityであり、$|A_{r,d}|/K$とは一般に異なる。現行図の生成処理を確認するまでは、両者を同じ名称へ機械的に置換しない。
+
+画像のDaily attendance ratioに本文を合わせる場合、Resultsの次のアンカー文（136行）だけを修正する。
+
+```tex
+Similarly, \autoref{fig:DynSpStepHeatmap} maps the temperature adjustment magnitude over subgroup size and mean occupancy ratio at the control timestep.
+```
+
+差し替え案:
+
+```tex
+Similarly, \autoref{fig:DynSpStepHeatmap} maps the temperature adjustment magnitude over subgroup size and daily attendance ratio.
+```
+
+続く137行の `the normalized mean occupancy ratio, which represents how densely that sampled group is occupied during operation` も、`the daily attendance ratio, which represents the fraction of sampled members who attend the room at least once that day` へ修正し、138行の `mean occupancy ratio` を `daily attendance ratio` に合わせる。
+
+**B. UTRとaction frequencyの15分/30分が不一致**
+
+Method 206–221行は30分lagのrolling UTR、115行/300行は30分control timestep、325–346行は30分window内に少なくとも1回actionがあるAWRを定義している。一方、現在 `fig:CtrlWindowRatio` が読み込む画像は:
+
+```tex
+\includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_15min_action_step_rate_by_15min_utr}}
+```
+
+実際の画像の横軸は **15-minute user turnover rate (UTR)**、縦軸は **Actionable-step rate (%)**。captionも15-minute UTRである。これはResults 146行の「30-minute action-needed window ratio」の説明と整合していない。`fig:UTRexamples` は別の `analysis25_utr30_rolling` を参照している。
+
+現行の図を保持するなら、15分lag UTRとstep-levelのaction frequencyの定義が必要になる可能性が高い。ただし図のaxisだけでは丸め・分母・bin内の重み付けまで確定できないため、window式をstep式へ置き換える判断は生成処理の確認後にする。30分window分析を採用するなら、それに対応する図へ更新する。**画像の文字やcaptionだけを30分へ変更して済ませない。**
+
+したがって、旧コメントのdaily UTR/OTR/DTRは削除候補にできるが、timestamp UTRとaction frequencyの定義自体は削れない。現在のAWR式も、図との整合を確定するまでは「不要だから削る」とは判断しない。
+
+**C. Occupancy variabilityが評価metricとして本文に残る箇所**
+
+- Discussion 38行: `Mean occupancy and occupancy variability describe ...` は一般的な指標の対比としては成立するが、本研究でvariabilityまで解析したようにも読める。限定する場合は次の1文に差し替える。
+
+```tex
+Mean occupancy describes how many people are present on average, whereas \ac{utr} captures changes in who is present over short time intervals.
+```
+
+- Conclusion 12行: `based on occupancy metrics such as mean occupancy, subgroup size, occupancy variability, and \ac{utr}` から **`occupancy variability,` だけを削除**する。解析していないmetricを導入判断の実証根拠として列挙しない。
+
+Introduction 105行の旧列挙はコメントアウト済みであり表示されない。SD/variabilityの式を復活させて列挙へ合わせる必要はない。
+
+**D. Daily UTRを削除しても残す説明**
+
+Results 151行は時刻別UTRをweekdayごとに平均した図を紹介している。これは日平均UTRの式では説明できない。Methodのrolling UTR説明の末尾、次のアンカーの直後へ必要なら1文だけ挿入する。
+
+```tex
+Higher $\mathrm{UTR}_{r,t}^{30}$ indicates stronger short-horizon replacement of attendees.
+```
+
+```tex
+For the time-of-day profiles, timestamp-level \ac{utr} values are summarized by room, weekday, and time of day.
+```
+
+平均に使うtrial/dayの重み付けと有効timestampの扱いは図の生成処理に合わせる。現段階で日平均UTRのコメントをそのまま復活させない。
+
+### 10.4 PCMのNo change確率カーブを数式で明示する局所修正案
+
+**判断**
+
+現行120行は既に $p_i(T)=P_i(S_{th}=0\mid T)$ と定義し、117–118行も「No change probability curvesを平均し、その最大点を選ぶ」と説明している。計算の主旨は記載されている。ただしPCM subsectionの式92行は $P(S_{th}=s\mid t_i)$ だけでNo change curveを特定せず、GCMの式126行も $p_i(T)$ を合計する記号だけなので、数式を見たときに対応が分かりにくい。
+
+全面的に記号を変えず、既存の$p_i(T)$、$\bar p_G(T)$、$T_G^*$とlabelを保つ。以下の2か所の修正で、**個人No change curve → 同じ温度で曲線を平均 → 集約curveの最大点**を式で追えるようにする。
+
+**A. PCM subsectionの汎用確率式をNo change curveの定義にする**
+
+アンカー（現行90行）はそのまま残す:
+
+```tex
+The model predicts the probability distribution over three thermal preference classes: $S_{th} \in \{+1 (\text{Warmer}), 0 (\text{No change}), -1 (\text{Cooler})\}$, using \ac{ti} as the primary feature.
+```
+
+その直後に1文を挿入し、続く式 `eq:pcm_probability`（91–94行）を差し替える。
+
+```tex
+The temperature-dependent ``No change'' probability curve of an individual \ac{pcm} $i$ is defined as
+\begin{equation}
+p_i(T)
+\equiv
+P_i\!\left(
+\underbrace{S_{th}=0}_{\text{No change}}
+\,\middle|\, T
+\right).
+\label{eq:pcm_probability}
+\end{equation}
+Here, $T$ denotes indoor air temperature and $i$ identifies the individual \ac{pcm}.
+```
+
+モデルの出力3クラスは直前の現行文に残る。$T$は120行以下と統一し、$t_i$が温度なのかoccupant $i$の時刻なのかという曖昧さを減らす。simulationでは個人modelがlocation-log agentへ再割当てされるため、120行の「assigned to selected location-log agent $i$」という対応説明は残す。モデルの学習時のparticipantと割当て先のagentが常に同一人物である、という意味にはしない。
+
+**B. GCM式にクラス0の条件付き確率を展開する**
+
+アンカー／置換対象（121–128行）:
+
+```tex
+For a group of \ac{gcm} $G$, the merged group comfort probability is defined as
+\begin{equation}
+\bar{p}_{G}(T)
+=
+\frac{1}{|G|}
+\sum_{i\in G} p_i(T).
+\label{eq:gcm_probability_curve}
+\end{equation}
+```
+
+差し替え案:
+
+```tex
+For an occupant group $G$, the merged ``No change'' probability curve is defined by averaging the individual curves at each candidate temperature:
+\begin{equation}
+\bar{p}_{G}(T)
+=
+\frac{1}{|G|}\sum_{i\in G} p_i(T)
+=
+\frac{1}{|G|}\sum_{i\in G}
+P_i\!\left(S_{th}=0\,\middle|\,T\right).
+\label{eq:gcm_probability_curve}
+\end{equation}
+```
+
+この修正は同じ平均を展開するだけで、policy・最適化・評価指標を変えない。後続の $T_G^*=\operatorname*{arg\,max}_{T\in\mathcal T_{\mathrm{set}}}\bar p_G(T)$（129–137行）はそのままでよい。
+
+直後に解釈を1文だけ加える場合:
+
+```tex
+Thus, the common setpoint is selected from the aggregated probability curve, rather than by averaging the individual preferred temperatures.
+```
+
+挿入位置は式 `eq:gcm_optimal_setpoint` 後の `where $\mathcal{T}_{\mathrm{set}}$ is ...` の直後、`The policy-specific groups are` の前。旧preferred-temperature平均式を削除する場合、上の比較文は必須ではない。
+
+**確率の意味**: この平均は、group内の個人No change probabilityの平均を表す。「全員が同時にNo changeとなる確率」ではない。joint probabilityや積 $\prod_i p_i(T)$ は今回の式に追加しない。また、curveをpeakで割るなどの追加normalizationは、現行式からは導かれないので提案に含めない。
+
+**より少ない変更にする場合**: PCMの現行汎用式は残し、120行の$p_i(T)$の説明とBのGCM式の展開だけを採用しても、集約対象がNo change probabilityであることは数式内で明示できる。
+
+### 10.5 Appendix参照に残る1か所
+
+Method 168行の現行アンカー:
+
+```tex
+\autoref{table:OccuMetrics} in Appendix~\autoref{app:OccupancyStudy} summarizes occupancy-related literature and metrics after COVID-19.
+```
+
+`Appendix`を直接書く場合は、その後は `\autoref` ではなく `\ref` にする。`Appendix subsection A.3` などの重複表示を避けるため、次の1行へ修正する。
+
+```tex
+\autoref{table:OccuMetrics} in Appendix~\ref{app:OccupancyStudy} summarizes occupancy-related literature and metrics after COVID-19.
+```
+
+### 確認範囲と本文反映
+
+本節は引用書式の指摘、Metricsの整理判断、PCM数式の修正案のみ。`.tex`、図、解析コードは変更していない。現行Resultsの図2枚（action frequency、setpoint heatmap）は実際のaxis表示を確認した。repository内のnotebookは旧metric名と参照先の確認に用いたが、現在の図を生成する全処理はここに揃っていないため、図と式の15分/30分・集計単位の一致まで検証済みとはしていない。
