@@ -1,7 +1,7 @@
 # OccupancyDynamics chapter update memo
 
 作成日: 2026-06-17  
-更新日: 2026-06-22
+更新日: 2026-10-14
 
 ## 前提
 
@@ -2699,3 +2699,84 @@ Method 168行の現行アンカー:
 ### 確認範囲と本文反映
 
 本節は引用書式の指摘、Metricsの整理判断、PCM数式の修正案のみ。`.tex`、図、解析コードは変更していない。現行Resultsの図2枚（action frequency、setpoint heatmap）は実際のaxis表示を確認した。repository内のnotebookは旧metric名と参照先の確認に用いたが、現在の図を生成する全処理はここに揃っていないため、図と式の15分/30分・集計単位の一致まで検証済みとはしていない。
+
+
+## 11. Method・Resultsの用語・記号・時間幅の修正（2026-10-14、本文反映済み）
+
+今回の依頼に基づき、`chapters/ch2-Method.tex` と `chapters/ch3-Results.tex` を直接修正した。以下の「修正案」はすべて反映済みの最終文言・式を示す。アンカーは行番号の変動に影響されない見出し・label・検索文字列を用いる。依頼文の `COVID-10` は `COVID-19` として表記した。
+
+本節は、第10節に残した案のうち、GCM式の二段階表示、Figure 6bをdaily attendance ratioとして説明する案、30分を固定したUTR/AWRの記法を更新する。Figure 6bは今回の指定に従い **normalized daily mean occupancy** とする。
+
+### 11.1 Method：アンカーと修正案
+
+対象：`chapters/ch2-Method.tex`
+
+| アンカー | 修正案・反映内容 |
+|---|---|
+| `\label{eq:gcm_probability_curve}` | 中間の `\frac{1}{\lvert G\rvert}\sum_{i\in G} p_i(T)` とその後の等号を削除し、`S_{th}=0\mid T` を明記する条件付き確率の平均だけを残した。個人確率の定義 `p_i(T)` は前段に残す。最終式は下記参照。 |
+| `\label{eq:gcm_optimal_setpoint}` 直後の `where` | `where $\mathcal{T}_{\mathrm{set}}$ is the set of candidate setpoints.` に変更し、`temperature grid of` を削除。 |
+| `\label{sec:OccuMetrics}` 直後のAppendix参照文 | `\autoref{table:OccuMetrics} in Appendix~\ref{app:OccupancyStudy} summarizes literature focusing on office usage after the COVID-19 pandemic and the occupancy-related metrics used in those studies.` に変更。文献の焦点をCOVID-19後のoffice usageとして明示。 |
+| `\paragraph{Daily mean occupancy}`、`\label{eq:mean_occ_daily}` | 式の後に `For comparison across subgroup sizes, the normalized daily mean occupancy is $\bar{N}_{r,d}/K$.` を追加し、Figure 6bで使う指標を定義。 |
+| 従来の `For comparison across subgroup sizes, the instantaneous occupancy density and daily attendance ratio are defined as` | まとめていた説明・式を二つのparagraphへ分割。`\paragraph{Instantaneous occupancy density}` を追加し、導入文を `The instantaneous occupancy density $\rho_{r,t}^{\mathrm{occ}}$ is the ratio of the realized occupancy count $N_{r,t}$ to subgroup size $K$:` とした。式に `eq:instantaneous_occupancy_density` を追加。 |
+| `\paragraph{Daily attendance ratio}`（新設） | 導入文を `The daily attendance ratio $\rho_{r,d}^{\mathrm{att}}$ is the fraction of the sampled subgroup that attends room $r$ at least once on day $d$:` とした。式は `\rho_{r,d}^{\mathrm{att}}=\lvert A_{r,d}\rvert/K`。既存label `eq:occupancy_and_attendance_ratios` はこの式に保持。 |
+| 上記二つのparagraph見出し | Daily mean occupancyと同じ `\paragraph{...}` を使用。`cas-common.sty` のparagraph書式に `\itshape` があるため、両見出しも斜体で表示される。 |
+| `\paragraph{User turnover rate}`、`\label{eq:rolling_turnover}` | `30 minutes earlier` を `at the previous timestep` へ変更。`t-30` を `t-\Delta t`、`\mathrm{UTR}_{r,t}^{30}` を `\mathrm{UTR}_{r,t}` とし、`\Delta t` を連続するanalysis timesteps間の間隔として説明。コメントアウト済み日平均UTR式と説明の旧30分表記も合わせた。 |
+| `At each 30-minute control timestep`（Monte Carlo節） | `At each control timestep` に変更。前段のsimulation説明にも30分固定の記載を残さない。 |
+| 旧 `\paragraph{Comfort probability improvement}`、旧 `eq:comfort_probability_improvement` | 見出し、導入文、差分の定義式を一括削除。末尾のmetrics総括文も `mean comfort probability under each policy and the fixed ... baseline` とし、improvementを独立metricとして列挙しない。 |
+| `\paragraph{Setpoint adjustment magnitude}`、`eq:rt_setpoint_step`、`eq:changed_step_set`、`eq:rt_mean_abs_step_when_changed_daily` | 現行定義・平均式・説明を `\delta T` から `\Delta T` に統一。`\Delta t=\qty{30}{\minute}` を削除し、`\Delta t` を連続するcontrol timesteps間の間隔とした。`The adjustment magnitude is evaluated as $\lvert\Delta T_{r,t}^{\mathrm{RT}}\rvert$, abbreviated as $\lvert\Delta T\rvert$ in the Results.` としてResultsの略記との対応を明記。 |
+| `\paragraph{Action-needed window ratio}`、`\label{eq:action_needed_window_ratio}` | 導入文・windowの定義・式後の説明から30分固定を削除。`A decision window is counted as requiring action when ...` とし、`\mathrm{AWR}_{r,d}^{30}` と `\mathcal{W}_{r,d}^{30}` をそれぞれ `\mathrm{AWR}_{r,d}` と `\mathcal{W}_{r,d}` に変更。0.5°Cへの丸めとaction閾値は従来どおり。 |
+| `The defined metrics are used for three comparisons:` | 最後の比較を `the relationship between \ac{utr} and the action-needed window ratio` とし、総括文にも30分表記を残さない。 |
+
+主要な式の反映後形：
+
+```tex
+\bar{p}_{G}(T)
+=
+\frac{1}{|G|}\sum_{i\in G}
+P_i\!\left(S_{th}=0\,\middle|\,T\right).
+```
+
+```tex
+\mathrm{UTR}_{r,t}
+=
+1-\frac{|S_{r,t}\cap S_{r,t-\Delta t}|}
+{|S_{r,t}\cup S_{r,t-\Delta t}|}.
+```
+
+```tex
+\Delta T_{r,t}^{\mathrm{RT}}
+=
+T_{\mathrm{set}}^{\mathrm{RT}}(t)
+-
+T_{\mathrm{set}}^{\mathrm{RT}}(t-\Delta t).
+```
+
+### 11.2 Results：アンカーと修正案
+
+対象：`chapters/ch3-Results.tex`。Figure番号に加え、既存のfigure labelをアンカーとして記録する。
+
+| 図・アンカー | 修正案・反映内容 |
+|---|---|
+| Figure 4、`fig:OccuDensity`、`To further investigate these performance` | captionを `Instantaneous occupancy density $\rho_{r,t}^{\mathrm{occ}}$ by time of day: ...` とした。導入文にも `instantaneous occupancy density $\rho_{r,t}^{\mathrm{occ}}=N_{r,t}/K$` を記載。直後の時刻別比較で使っていた `attendance ratio` と `occupancy density` もinstantaneous occupancy densityへ合わせた。 |
+| Figure 5、`fig:DailyOccuDensity`、`Additionally,` | captionを `Daily attendance ratio $\rho_{r,d}^{\mathrm{att}}$ histograms of four office rooms` に変更。導入文に `daily attendance ratio $\rho_{r,d}^{\mathrm{att}}=\lvert A_{r,d}\rvert/K$` を記載し、その日に一度でも来たsampled membersの割合と説明。 |
+| `Furthermore, \autoref{fig:DailyOccuDensity} clearly` | `Furthermore, \autoref{fig:DailyOccuDensity} clearly demonstrates differences in daily attendance ratio $\rho_{r,d}^{\mathrm{att}}$ between Office 5A, Shared Office 5A, Shared Office 5B, and Office 5B.` に変更。 |
+| `Office 5A marks 100\% attendance`（旧文） | full attendanceを達成した「日数の割合」と分かるように修正。Office 5Aは60%超、Shared Office 5Aは約50%、Shared Office 5Bは約35%、Office 5Bは20%未満という元の値を維持。最終文は下記参照。 |
+| `This difference possibly positions`（旧文） | `The comparatively lower daily attendance ratio in Office 5B and Shared Office 5B possibly positions ...` で開始。何が低いのかと対象officeを明示し、DGCMのperformanceがSGCMとRT-GCMの間に位置するという説明へ整理。 |
+| `Considering the difference in triggers` | 段落末尾も `these instantaneous occupancy density and daily attendance ratio differences` とし、二指標の名称を統一。 |
+| Figure 6a、`fig:DynSpStepvsMeanOccu` | captionを `Distribution of temperature adjustment magnitudes $\lvert\Delta T\rvert$ by daily mean occupancy $\bar{N}_{r,d}$` とした。図を説明する本文にも両記号を追加。 |
+| Figure 6b、`fig:DynSpStepHeatmap` | captionを `Distribution of temperature adjustment magnitudes $\lvert\Delta T\rvert$ by subgroup size $K$ and normalized daily mean occupancy $\bar{N}_{r,d}/K$` とした。daily attendance ratioをnormalized daily mean occupancyへ変更。全体caption（`fig:DynSpStep`）にも `\lvert\Delta T\rvert` を追加。 |
+| `Similarly, \autoref{fig:DynSpStepHeatmap}` とその後の二文 | 本文も `temperature adjustment magnitude $\lvert\Delta T\rvert$ over subgroup size $K$ and normalized daily mean occupancy $\bar{N}_{r,d}/K$` に変更。続く説明と増加傾向の記述も同じ指標名へ統一。 |
+| `It can be observed that as daily occupancy increases`（旧文） | `It can be observed that as daily mean occupancy increases, the range of temperature adjustment magnitude slowly shrinks.` に変更。 |
+| Section 3.3、Figure 7、`fig:CtrlWindowRatio` を説明する文 | `\autoref{fig:CtrlWindowRatio} shows the 15-minute action-needed window ratio ...` とし、30-minuteを15-minuteに変更。 |
+
+full attendanceの最終文：
+
+```tex
+Office 5A reaches full attendance ($\rho_{r,d}^{\mathrm{att}}=1$) on over 60\% of simulated working days, followed by Shared Office 5A with full attendance on approximately 50\% of days, Shared Office 5B on nearly 35\%, and Office 5B on fewer than 20\%.
+```
+
+### 11.3 確認範囲
+
+- 変更対象はMethod、Results、今回のUpdate.md。図の画像ファイル・解析コードは変更していない。Figure 6bの名称は今回の指定に従って本文・captionを修正したものであり、画像内の軸ラベルや生成処理の検証・修正まで行ったものではない。
+- 差分、TeXの環境・波括弧の対応、変更に関係するlabel/ref、旧30分固定表記と旧metric名の残存をソース上で確認。
+- この環境には `latexmk`、`pdflatex`、`xelatex`、`lualatex`、`tectonic` がないため、PDFコンパイル・組版確認は未実施。

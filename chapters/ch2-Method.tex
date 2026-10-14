@@ -117,7 +117,7 @@ Within a trial, the sampled subgroup size $K$ is fixed for the full simulation p
 However, only a subset of those sampled agents is present at any control timestep, so the realized occupancy count varies according to the observed stay logs and is denoted by $N_{r,t}=|S_{r,t}|$.
 The selected location-log agents retained their observed stay logs in their original rooms, while \acp{pcm} were randomly assigned to those selected location-log agents in each trial.
 This procedure preserved observed room usage patterns while varying the association between occupancy patterns and comfort-response characteristics.
-At each 30-minute control timestep $t$, the subset of sampled location-log agents who are present in room $r$ defined the active set $S_{r,t}$, and each policy selected the corresponding temperature setpoint from its \ac{gcm}.
+At each control timestep $t$, the subset of sampled location-log agents who are present in room $r$ defined the active set $S_{r,t}$, and each policy selected the corresponding temperature setpoint from its \ac{gcm}.
 
 For each Monte Carlo trial, the three \acp{gcm} described above were formed by averaging the assigned individual ``No change'' probability curves at different temporal resolutions.
 For each policy, the selected setpoint was the temperature that maximized the corresponding aggregated ``No change'' probability.
@@ -126,8 +126,6 @@ Let $p_i(T)=P_i(S_{th}=0\mid T)$ denote the ``No change'' probability predicted 
 For an occupant group $G$, the merged ``No change'' probability curve is defined by averaging the individual curves at each candidate temperature:
 \begin{equation}
 \bar{p}_{G}(T)
-=
-\frac{1}{|G|}\sum_{i\in G} p_i(T)
 =
 \frac{1}{|G|}\sum_{i\in G}
 P_i\!\left(S_{th}=0\,\middle|\,T\right).
@@ -142,7 +140,7 @@ T_G^{*}
 \bar{p}_{G}(T),
 \label{eq:gcm_optimal_setpoint}
 \end{equation}
-where $\mathcal{T}_{\mathrm{set}}$ is the temperature grid of candidate setpoints.
+where $\mathcal{T}_{\mathrm{set}}$ is the set of candidate setpoints.
 Thus, the common setpoint is selected from the aggregated probability curve, rather than by averaging the individual preferred temperatures.
 The policy-specific groups are
 \begin{equation}
@@ -175,7 +173,7 @@ For each room and subgroup size, \qty{1000} Monte Carlo trials were formed by co
 
 \subsubsection{Occupancy-related evaluation parameters}
 \label{sec:OccuMetrics}
-\autoref{table:OccuMetrics} in Appendix~\ref{app:OccupancyStudy} summarizes occupancy-related literature and metrics after COVID-19.
+\autoref{table:OccuMetrics} in Appendix~\ref{app:OccupancyStudy} summarizes literature focusing on office usage after the COVID-19 pandemic and the occupancy-related metrics used in those studies.
 While many studies emphasize occupancy count and related parameters, this study also considers occupant-composition turnover.
 Let $\mathcal{T}_{r,d}$ denote the ordered set of analysis timestamps for room $r$ on day $d$, and let $S_{r,t}$ denote the set of sampled location-log agents present in room $r$ at timestamp $t$.
 The realized occupancy count is $N_{r,t}=|S_{r,t}|$.
@@ -197,11 +195,18 @@ The daily mean occupancy is
 \sum_{t\in\mathcal{T}_{r,d}} N_{r,t}.
 \label{eq:mean_occ_daily}
 \end{equation}
+For comparison across subgroup sizes, the normalized daily mean occupancy is $\bar{N}_{r,d}/K$.
 
-For comparison across subgroup sizes, the instantaneous occupancy density and daily attendance ratio are defined as
+\paragraph{Instantaneous occupancy density}
+The instantaneous occupancy density $\rho_{r,t}^{\mathrm{occ}}$ is the ratio of the realized occupancy count $N_{r,t}$ to subgroup size $K$:
 \begin{equation}
-\rho_{r,t}^{\mathrm{occ}}=\frac{N_{r,t}}{K},
-\qquad
+\rho_{r,t}^{\mathrm{occ}}=\frac{N_{r,t}}{K}.
+\label{eq:instantaneous_occupancy_density}
+\end{equation}
+
+\paragraph{Daily attendance ratio}
+The daily attendance ratio $\rho_{r,d}^{\mathrm{att}}$ is the fraction of the sampled subgroup that attends room $r$ at least once on day $d$:
+\begin{equation}
 \rho_{r,d}^{\mathrm{att}}=\frac{|A_{r,d}|}{K},
 \label{eq:occupancy_and_attendance_ratios}
 \end{equation}
@@ -222,22 +227,22 @@ where $A_{r,d}$ is the set of sampled location-log agents who attend room $r$ at
 
 \paragraph{User turnover rate}
 The short-horizon replacement of attendees is quantified using a rolling Jaccard turnover, denoted as \ac{utr}.
-For timestamp-level analysis, \ac{utr} is computed by comparing the current occupant set with the set observed 30 minutes earlier:
+For timestamp-level analysis, \ac{utr} is computed by comparing the current occupant set with the set observed at the previous timestep:
 \begin{equation}
-\mathrm{UTR}_{r,t}^{30}
+\mathrm{UTR}_{r,t}
 =
 1
 -
 \frac{
-|S_{r,t}\cap S_{r,t-30}|
+|S_{r,t}\cap S_{r,t-\Delta t}|
 }{
-|S_{r,t}\cup S_{r,t-30}|
+|S_{r,t}\cup S_{r,t-\Delta t}|
 }.
 \label{eq:rolling_turnover}
 \end{equation}
-Here, $S_{r,t-30}$ denotes the occupant set in the same room 30 minutes before timestamp $t$.
+Here, $\Delta t$ is the interval between consecutive analysis timesteps, and $S_{r,t-\Delta t}$ denotes the occupant set in the same room at the previous timestep.
 When both the current and lagged sets are empty, the timestamp-level turnover is treated as undefined.
-Higher $\mathrm{UTR}_{r,t}^{30}$ indicates stronger short-horizon replacement of attendees.
+Higher $\mathrm{UTR}_{r,t}$ indicates stronger short-horizon replacement of attendees.
 For the time-of-day profiles, timestamp-level \ac{utr} values are summarized by room, weekday, and time of day.
 
 % For daily summaries, timestamp-level \ac{utr} values are averaged within each room-day:
@@ -246,10 +251,10 @@ For the time-of-day profiles, timestamp-level \ac{utr} values are summarized by 
 % =
 % \frac{1}{|\mathcal{V}_{r,d}|}
 % \sum_{t\in\mathcal{V}_{r,d}}
-% \mathrm{UTR}_{r,t}^{30},
+% \mathrm{UTR}_{r,t},
 % \label{eq:utr_daily}
 % \end{equation}
-% where $\mathcal{V}_{r,d}$ is the set of timestamps on day $d$ for which the 30-minute turnover is defined.
+% where $\mathcal{V}_{r,d}$ is the set of timestamps on day $d$ for which the timestep-level turnover is defined.
 % The daily \ac{utr} captures how much the present group composition changes over short horizons, even when the occupancy count is similar.
 
 
@@ -294,31 +299,20 @@ For comparison across the simulation period, daily room-level comfort probabilit
 \end{equation}
 where $m$ is the Monte Carlo trial index, $\mathcal{M}_{r,K}$ is the set of Monte Carlo trials for room $r$ and subgroup size $K$, $\mathcal{D}_{r,m}$ is the set of valid analysis days for room $r$ in trial $m$, and $\mathrm{policy}\in\{\mathrm{Static},\mathrm{Daily},\mathrm{RT},24\,^\circ\mathrm{C}\}$ denotes the evaluated control policy.
 
-\paragraph{Comfort probability improvement}
-The improvement relative to the fixed \qty{24}{\celsius} baseline is computed as
-\begin{equation}
-\Delta \overline{\mathrm{CP}}_{r,K}^{\mathrm{policy}}
-=
-\overline{\mathrm{CP}}_{r,K}^{\mathrm{policy}}
--
-\overline{\mathrm{CP}}_{r,K}^{24\,^\circ\mathrm{C}} .
-\label{eq:comfort_probability_improvement}
-\end{equation}
-
 \subsubsection{Control-related outcomes}
 
 \paragraph{Setpoint adjustment magnitude}
 To quantify setpoint adjustment requirements under the real-time policy, the setpoint adjustment from the previous control timestep is defined as
 \begin{equation}
-\delta T_{r,t}^{\mathrm{RT}}
+\Delta T_{r,t}^{\mathrm{RT}}
 =
 T_{\mathrm{set}}^{\mathrm{RT}}(t)
 -
 T_{\mathrm{set}}^{\mathrm{RT}}(t-\Delta t),
 \label{eq:rt_setpoint_step}
 \end{equation}
-where $\Delta t=\qty{30}{\minute}$ is the control timestep, and $\delta T_{r,t}^{\mathrm{RT}}$ is the setpoint change required by the real-time policy from the previous control timestep.
-The adjustment magnitude is evaluated as $|\delta T_{r,t}^{\mathrm{RT}}|$.
+where $\Delta t$ is the interval between consecutive control timesteps, and $\Delta T_{r,t}^{\mathrm{RT}}$ is the setpoint change required by the real-time policy from the previous control timestep.
+The adjustment magnitude is evaluated as $|\Delta T_{r,t}^{\mathrm{RT}}|$, abbreviated as $|\Delta T|$ in the Results.
 Because this analysis focuses on actual setpoint adjustments, the daily mean adjustment magnitude is computed only over timesteps with a non-negligible setpoint change.
 \begin{equation}
 \mathcal{C}_{r,d}^{+}
@@ -326,31 +320,31 @@ Because this analysis focuses on actual setpoint adjustments, the daily mean adj
 \left\{
 t\in\mathcal{C}_{r,d}
 \;:\;
-\left|\delta T_{r,t}^{\mathrm{RT}}\right| \geq \varepsilon
+\left|\Delta T_{r,t}^{\mathrm{RT}}\right| \geq \varepsilon
 \right\},
 \qquad
 \varepsilon=\qty{0.05}{\celsius}.
 \label{eq:changed_step_set}
 \end{equation}
 \begin{equation}
-\overline{|\delta T|}_{r,d,+}^{\mathrm{RT}}
+\overline{|\Delta T|}_{r,d,+}^{\mathrm{RT}}
 =
 \frac{1}{|\mathcal{C}_{r,d}^{+}|}
 \sum_{t\in\mathcal{C}_{r,d}^{+}}
-\left|\delta T_{r,t}^{\mathrm{RT}}\right|,
+\left|\Delta T_{r,t}^{\mathrm{RT}}\right|,
 \label{eq:rt_mean_abs_step_when_changed_daily}
 \end{equation}
-where $\mathcal{C}_{r,d}$ is the set of timestamps on day $d$ in room $r$ for which both $T_{\mathrm{set}}^{\mathrm{RT}}(t)$ and $T_{\mathrm{set}}^{\mathrm{RT}}(t-\Delta t)$ are defined, $\mathcal{C}_{r,d}^{+}$ is the subset of valid control timesteps with a non-negligible setpoint change, and $\overline{|\delta T|}_{r,d,+}^{\mathrm{RT}}$ is the mean absolute adjustment magnitude when the setpoint changes.
+where $\mathcal{C}_{r,d}$ is the set of timestamps on day $d$ in room $r$ for which both $T_{\mathrm{set}}^{\mathrm{RT}}(t)$ and $T_{\mathrm{set}}^{\mathrm{RT}}(t-\Delta t)$ are defined, $\mathcal{C}_{r,d}^{+}$ is the subset of valid control timesteps with a non-negligible setpoint change, and $\overline{|\Delta T|}_{r,d,+}^{\mathrm{RT}}$ is the mean absolute adjustment magnitude when the setpoint changes.
 
 \paragraph{Action-needed window ratio}
-For the Results analysis of control action frequency, the main actionable metric is the 30-minute action-needed window ratio.
-For the 30-minute decision-window analysis, the real-time setpoint is first rounded to the nearest \qty{0.5}{\celsius}, denoted by $T_{\mathrm{set},0.5}^{\mathrm{RT}}(t)$.
-A 30-minute window is counted as requiring action when at least one rounded real-time setpoint update within the window is \qty{0.5}{\celsius} or larger:
+For the Results analysis of control action frequency, the main actionable metric is the action-needed window ratio.
+For the decision-window analysis, the real-time setpoint is first rounded to the nearest \qty{0.5}{\celsius}, denoted by $T_{\mathrm{set},0.5}^{\mathrm{RT}}(t)$.
+A decision window is counted as requiring action when at least one rounded real-time setpoint update within the window is \qty{0.5}{\celsius} or larger:
 \begin{equation}
-\mathrm{AWR}_{r,d}^{30}
+\mathrm{AWR}_{r,d}
 =
-\frac{1}{|\mathcal{W}_{r,d}^{30}|}
-\sum_{w\in\mathcal{W}_{r,d}^{30}}
+\frac{1}{|\mathcal{W}_{r,d}|}
+\sum_{w\in\mathcal{W}_{r,d}}
 \mathbb{1}
 \left(
 \max_{t\in\mathcal{C}_{r,d,w}}
@@ -363,9 +357,9 @@ T_{\mathrm{set},0.5}^{\mathrm{RT}}(t-\Delta t)
 \right),
 \label{eq:action_needed_window_ratio}
 \end{equation}
-where $\mathbb{1}(\cdot)$ is the indicator function, $\mathcal{W}_{r,d}^{30}$ is the set of 30-minute decision windows for room $r$ on day $d$, $\mathcal{C}_{r,d,w}$ is the set of valid within-window consecutive setpoint-update timestamps in window $w$, and $\mathrm{AWR}_{r,d}^{30}$ is the share of 30-minute windows requiring at least one actionable real-time setpoint update.
+where $\mathbb{1}(\cdot)$ is the indicator function, $\mathcal{W}_{r,d}$ is the set of decision windows for room $r$ on day $d$, $\mathcal{C}_{r,d,w}$ is the set of valid within-window consecutive setpoint-update timestamps in window $w$, and $\mathrm{AWR}_{r,d}$ is the share of decision windows requiring at least one actionable real-time setpoint update.
 
-The defined metrics are used for three comparisons: mean comfort probability and improvement relative to the fixed \qty{24}{\celsius} baseline across subgroup sizes and \ac{gcm} resolutions; real-time setpoint adjustment requirements through mean absolute setpoint adjustment; and the relationship between \ac{utr} and the 30-minute action-needed window ratio.
+The defined metrics are used for three comparisons: mean comfort probability under each policy and the fixed \qty{24}{\celsius} baseline across subgroup sizes and \ac{gcm} resolutions; real-time setpoint adjustment requirements through mean absolute setpoint adjustment; and the relationship between \ac{utr} and the action-needed window ratio.
 Representative \ac{utr} transitions by room and weekday are then used to interpret the occupancy-dynamics patterns associated with higher action-needed ratios.
 
 % Removed
