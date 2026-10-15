@@ -2784,45 +2784,54 @@ Office 5A reaches full attendance ($\rho_{r,d}^{\mathrm{att}}=1$) on over 60\% o
 
 ## 12. Abstractの構成改善・英文改稿案（2026-10-15、TeX未反映）
 
-### 12.1 対象と判断
+### 12.1 対象と判断（300語上限に合わせて再調整）
 
-今回の依頼は**改稿案の検討と本メモへの追記のみ**。`Draft_2026-Jan.tex`、`chapters/abstract.tex`、Introduction・Method・Resultsを含むすべてのTeXファイルは変更しない。
+今回の依頼は**改稿案の検討と本メモの更新のみ**。TeXファイルへは反映しない。前回の224語案は圧縮が強すぎたため、300語の上限を使い、結果の追加に必要な重複整理を優先する**約294語案**へ改める。
 
-現行の有効なAbstractは `Draft_2026-Jan.tex` の `\begin{abstract}` から `\end{abstract}`。`% \input{chapters/abstract.tex}` はコメントアウトされており、`chapters/abstract.tex` は現在読み込まれていない。両ファイルに同内容があるため、将来の反映では有効なAbstractを対象とし、未使用ファイルだけを直して済ませない。
+現行の有効なAbstractは `Draft_2026-Jan.tex` の `\begin{abstract}` から `\end{abstract}`。`% \input{chapters/abstract.tex}` はコメントアウトされており、`chapters/abstract.tex` は現在読み込まれていない。将来の反映対象は有効なAbstractとする。
 
-現行Abstractは12文・約293語。このうち背景・目的が3文・65語、Methodが6文・143語、Resultsが2文・59語、結論が1文・26語で、Methodだけで約49%を占める。以下では、まず**Abstract内のIntroduction相当部分とMethod説明**を圧縮し、Resultsへdaily attendance ratioとUTRの知見を加える。章本文にも適用できる圧縮候補は12.6に別途記録する。語数は空白区切りの概算で、投稿システムの集計とは多少異なる。
+前回確認時の293語から、現在は `This increases the need for higher-resolution group comfort models supported by real-time occupancy data.` が既にコメントアウトされ、表示対象は11文・約279語。背景・目的2文・51語、Method 6文・143語、Results 2文・59語、結論1文・26語である。この既存のTeX編集はそのまま保持し、今回こちらからは変更しない。
 
-### 12.2 先に圧縮する箇所：現行アンカーと修正方針
+現在稿にResultsだけを59語分増やすと約338語になるため、300語以内には少なくとも約38語の整理が必要。推奨案は背景を5語、Methodを41語圧縮し、Resultsを59語、結論を2語増やして約294語とする。**Methodの核心を残し、同じ内容を説明する文を統合して結果のための余地を作る**方針とする。語数は空白区切りの概算で、投稿システムの集計とは多少異なる。
 
-対象：`Draft_2026-Jan.tex` のAbstract内。以下はまだ置換していない。
+### 12.2 圧縮の優先順位：残す内容と統合する内容
 
-| 現行アンカー | 圧縮・差し替え案と理由 |
-|---|---|
-| `Occupant-centric HVAC control often assumes fixed room-level comfort` | 背景を `Occupant-centric HVAC control in shared offices must aggregate individual comfort preferences while occupant numbers and composition change.` の1文へ。shared-spaceでの集約と人数・構成の変化に絞る。 |
-| `This increases the need for higher-resolution group comfort models` | 独立文は削除。冒頭で高解像度化が必要と結論づけず、その適用条件を次の目的文で問う。 |
-| `This study investigates how the benefit ... changes with group size` | `This study examines how occupancy patterns affect the comfort benefits and control requirements of different group comfort model resolutions.` へ。group sizeだけでなく、attendance・mean occupancy・turnoverとcontrol requirementsを扱う現行Resultsに合わせる。 |
-| `To examine this, an agent-based simulation was conducted` | agentがobserved movement recordを持つという実装説明を省き、field dataの期間・参加者・場所と、occupancy-log-based Monte Carlo比較の2文へ統合。 |
-| `Three group comfort models were compared` | static、daily、real-timeの対象集団をそれぞれ短い括弧書きにし、比較方法の文に統合。 |
-| `Personal comfort models (PCM) were developed for 39 participants` | field-data文へ統合。以後PCM略語を使わない案なので、略語の導入自体を省く。 |
-| `To generate multiple cases, occupancy patterns were created` | subgroup resamplingとPCMのランダム割当ての詳説はMethod本文へ。Abstractでは `occupancy-log-based Monte Carlo simulation` として要約する。観測ログから新たな行動パターンを生成したかのような表現も避ける。 |
-| `Their “no change” thermal preference probability curves were then merged` | Abstractから独立した説明を削除。集約手順と曲線の定義はMethod本文の `eq:pcm_probability` と `eq:gcm_probability_curve` に残す。 |
-| `Setpoints were selected to maximize the probability of “no change,”` | 最適化規則の詳説はMethod本文の `eq:gcm_optimal_setpoint` に委ね、固定24°C baselineだけを比較方法の文に残す。Resultsでは評価量を `mean comfort probability` と明記する。 |
-| `the static model’s improvement falls to nearly zero as room size approaches six occupants` | 「6人」を削除し、sampled subgroup sizeの増加に伴いstaticがbaselineへ近づく傾向へ。現行Resultsはsubgroup size $K$と実在室人数 $N_{r,t}$を明確に区別しており、room sizeやoccupantsで代用しない。 |
-| `Further analysis shows ... becomes limited as mean occupancy approaches four to five occupants` | 削除して現行のcontrol-adjustment結果へ置換。このcomfort-improvement分析は現行 `ch3-Results.tex` ではコメントアウト済みで、表示される結果の主張としては採用しない。 |
-| `These findings indicate ... identify when high-resolution occupancy tracking is justified` | attendanceとturnoverを含めたモデル選択への示唆へ更新。予測確率と制御要求を比較したsimulationの範囲に合わせ、導入費用・実機性能を含めてtrackingの正当性まで確定したような結論は避ける。 |
+対象：`Draft_2026-Jan.tex` のAbstract内。以下は検討案であり、TeXには反映していない。「修正案の文章」は12.5の294語案と同じ英文を示す。統合する文は、対応する複数の現行アンカーをまとめて置換する。
 
-圧縮後も、field-data-based simulationであること、39 participants、four weeks、三つの対象集団、固定baselineは残す。背景から一般的なPMV説明やセンサー方式を追加する必要はない。
+| 優先順位 | 現行アンカー | 方針と理由 | 修正案の文章 |
+|---|---|---|---|
+| 1：重複する背景文 | `This increases the need for higher-resolution group comfort models` | 独立文を省く。直前の背景と直後の研究目的から高解像度化の問題意識は伝わる。現在のTeXでは既にコメントアウトされているため、今回の279語を基準にすると追加の削減量には数えない。 | 削除（代替文なし。背景・目的の2文へ内容を統合）。 |
+| 2：curve集約とsetpoint選択を統合 | `Their “no change” thermal preference probability curves were then merged` と `Setpoints were selected to maximize` | 2文を `For each model, individual ``No change'' probability curves were averaged to select the setpoint maximizing group comfort probability, with a fixed ... baseline.` の1文へ統合。224語案で省いた確率曲線の平均化と最大化規則を今回は残す。 | ```For each model, individual ``No change'' probability curves were averaged to select the setpoint maximizing group comfort probability, with a fixed $24\,^\circ\mathrm{C}$ baseline.``` |
+| 3：field dataとPCM開発説明を統合 | `To examine this, an agent-based simulation was conducted` と `Personal comfort models (PCM) were developed for 39 participants` | 四週間、location logs、thermal-preference data、39 participants、Singaporeを同じ文に整理。各agentが観測ログを持つことは次のresampling文で述べ、同じ説明を繰り返さない。以降の略語PCMも不要。 | `An occupancy-log-based Monte Carlo simulation used four weeks of anonymized location logs and thermal-preference data from 39 participants in a Singapore office building.` |
+| 4：三モデルの定義を短い並列表現に | `Three group comfort models were compared` | static＝regular members、daily＝daily attendees、real-time＝currently present occupantsを一度ずつ明記し、`based on`の繰り返しを省く。三モデルの違い自体は省略しない。 | `Static, daily, and real-time group models represented regular members, daily attendees, and occupants currently present, respectively.` |
+| 5：導入の語句を整理 | `Occupant-centric HVAC control often assumes fixed room-level comfort` と `This study investigates how the benefit` | 共有室での集約、post-COVIDの人数・構成変化、group sizeとoccupancy dynamicsという目的を2文に残す。背景・目的は現在の51語から46語への小幅な整理にとどめる。 | `Occupant-centric HVAC control in shared offices requires aggregating individual comfort predictions into a room-level setpoint, yet post-COVID work patterns change both occupant numbers and composition.`<br>`This study investigates how group size and occupancy dynamics affect the comfort benefits and control requirements of higher-resolution group comfort models.` |
+| 保持：resamplingと人数の区別 | `To generate multiple cases, occupancy patterns were created`（resampling文の置換＋続けて人数の区別を追加） | 観測occupancy patternの保持、subgroup sampling、PCMの割当てを残す。sampled membershipと実在室人数の違いも明示。 | `Observed occupancy patterns were retained while subgroups were sampled from each room's member pool and personal comfort models were randomly assigned to sampled occupants.`<br>`Subgroup size described sampled membership, whereas the actual number present varied with the observed stay logs.` |
+
+**圧縮対象から外して残す情報**：occupancy-log-based Monte Carlo simulation、観測occupancy patternの保持、room member poolからのsubgroup sampling、personal comfort modelのランダム割当て、三モデルの対象集団、No change確率曲線の平均化と最大化、固定24°C baseline。224語案からはこれらの方法説明を復元し、Methodを42語から102語へ戻す。subgroup sizeと実在室人数の区別も1文で明記する。
+
+語数削減とは別に、現行Resultsと一致させるため、次の二つの旧結果表現は置換する。
+
+| 現行アンカー | 必要な修正 | 修正案の文章 |
+|---|---|---|
+| `the static model’s improvement falls to nearly zero as room size approaches six occupants` | 「6人」を削除し、sampled subgroup sizeの増加に伴いstaticがbaselineへ近づく傾向へ。subgroup sizeと実在室人数を混同しない。 | `Across four rooms, real-time aggregation achieved the highest mean comfort probability at every tested subgroup size, while static aggregation approached baseline performance as subgroup size increased.` |
+| `Further analysis shows ... becomes limited as mean occupancy approaches four to five occupants` | このcomfort-improvement分析は現行Resultsではコメントアウト済みのため、表示中のsetpoint-adjustment結果へ差し替える。 | `The range of real-time setpoint adjustment magnitudes narrowed as daily mean occupancy increased, although the mean magnitude when setpoints changed remained approximately $0.8\,^\circ\mathrm{C}$ at the highest observed occupancy levels.` |
+| `These findings indicate`（現行Abstractの結論） | attendanceとturnoverを含むモデル選択への示唆へ更新。 | `These findings link subgroup size, daily attendance, mean occupancy, and occupant turnover to the comfort benefits and control requirements of higher-resolution aggregation, informing model selection in shared offices.` |
+
+結論はattendanceとturnoverも含むモデル選択への示唆へ更新する。費用や実機運転まで評価したように `tracking is justified` と断定する表現は採用しない。
+
 
 ### 12.3 増やすResultsと本文の対応
 
-| 加える／残す知見 | 現行本文のアンカー | Abstractでの表現案・範囲 |
-|---|---|---|
-| comfort performanceの順位とsubgroup sizeの影響 | `ch3-Results.tex` の `The ... produced the highest mean comfort probability for every room and subgroup size`、`The decline of the ... improvement indicates` | real-timeが四室・すべてのtested subgroup sizesで最も高いmean comfort probability。staticはsubgroup sizeの増加とともにbaselineに近づく。 |
-| **daily attendanceとDaily–Static間の差** | `fig:DailyOccuDensity`、`Following this trend, the comfort performance difference ... is narrower` | `The comfort performance gap between daily and static aggregation was narrower in offices with higher daily attendance ratios ...` とする。日別attendeesがregular membershipに近いofficeではdaily更新の便益が小さい、という解釈を続ける。office間の観察であり、全room-dayで単調な関数や因果効果を推定したとは書かない。 |
-| setpoint adjustment magnitudeとdaily mean occupancy | `fig:DynSpStepvsMeanOccu`、`It can be observed that as daily mean occupancy increases`、`marks around ... 0.8` | occupancy増加に伴い調整幅の分布が狭くなることと、高いoccupancyでも平均調整幅が約0.8°Cであることを残す。Methodの `eq:rt_mean_abs_step_when_changed_daily` に合わせ、平均は `when setpoints changed` と限定する。 |
-| **UTRとcontrol adjustment frequency** | `fig:CtrlWindowRatio`、`when ... reaches approximately 0.7--0.8 ... reaches ... 90` | 高いUTRほどactionable changesが頻繁になるという関連を記載。現行Resultsに合わせ、UTR 0.7–0.8で15-minute action-needed windowsが約90%とする。actionの定義は丸めたsetpointの0.5°C以上の変更。 |
+| 加える／残す知見 | 現行本文のアンカー | Abstractでの表現案・範囲 | 修正案の文章 |
+|---|---|---|---|
+| comfort performanceの順位とsubgroup sizeの影響 | `ch3-Results.tex` の `The ... produced the highest mean comfort probability for every room and subgroup size`、`The decline of the ... improvement indicates` | real-timeが四室・すべてのtested subgroup sizesで最も高いmean comfort probability。staticはsubgroup sizeの増加とともにbaselineに近づく。 | `Across four rooms, real-time aggregation achieved the highest mean comfort probability at every tested subgroup size, while static aggregation approached baseline performance as subgroup size increased.` |
+| **daily attendanceとDaily–Static間の差** | `fig:DailyOccuDensity`、`Following this trend, the comfort performance difference ... is narrower` | `The comfort performance gap between daily and static aggregation was narrower in offices with higher daily attendance ratios ...` とする。日別attendeesがregular membershipに近いofficeではdaily更新の便益が小さい、という解釈を続ける。office間の観察であり、全room-dayで単調な関数や因果効果を推定したとは書かない。 | `The comfort performance gap between daily and static aggregation was narrower in offices with higher daily attendance ratios, indicating less benefit from daily updates when attendees closely resembled regular membership.` |
+| setpoint adjustment magnitudeとdaily mean occupancy | `fig:DynSpStepvsMeanOccu`、`It can be observed that as daily mean occupancy increases`、`marks around ... 0.8` | occupancy増加に伴い調整幅の分布が狭くなることと、高いoccupancyでも平均調整幅が約0.8°Cであることを残す。Methodの `eq:rt_mean_abs_step_when_changed_daily` に合わせ、平均は `when setpoints changed` と限定する。 | `The range of real-time setpoint adjustment magnitudes narrowed as daily mean occupancy increased, although the mean magnitude when setpoints changed remained approximately $0.8\,^\circ\mathrm{C}$ at the highest observed occupancy levels.` |
+| **UTRとcontrol adjustment frequency** | `fig:CtrlWindowRatio`、`when ... reaches approximately 0.7--0.8 ... reaches ... 90` | 高いUTRほどactionable changesが頻繁になるという関連を記載。現行Resultsに合わせ、UTR 0.7–0.8で15-minute action-needed windowsが約90%とする。actionの定義は丸めたsetpointの0.5°C以上の変更。 | `Higher user turnover rate (UTR) was associated with more frequent actionable setpoint changes, with approximately $90\%$ of 15-minute windows requiring a rounded setpoint change of at least $0.5\,^\circ\mathrm{C}$ at a UTR of $0.7$--$0.8$.` |
 
 用語はMethodで定義した **user turnover rate (UTR)** を使用し、`User Turnover Ratio` とはしない。ここでのturnoverは在室人数の増減だけでなく、前timestepからの**在室者構成の入れ替わり**を意味する。UTRと頻度の文は `was associated with` とし、因果関係や有意性検定の結果は追加しない。daily attendance ratioは $|A_{r,d}|/K$、daily mean occupancyは $\bar N_{r,d}$ であり、両指標を同義にしない。Abstractでは数式を列挙せず、名称で区別する。
+
+
 
 ### 12.4 ASIM Abstractから取り入れる内容と転用しない数値
 
@@ -2833,17 +2842,20 @@ Office 5A reaches full attendance ($\rho_{r,d}^{\mathrm{att}}=1$) on over 60\% o
 - ASIMのbaseline比12–15 percentage points、daily比6–8 percentage pointsは、そのまま転用しない。現行Resultsはbaseline比を約15–20%と記す一方、Conclusionには異なる範囲が残り、%とpercentage pointsの解釈も含めて未統一。推奨案ではcomfort差の数値を使わず、結果の順位とgroup-size傾向を記載する。
 - ASIMの低turnover時の約37%は現行Conclusionにはあるが、現行Resultsの説明文にはないため推奨案には入れない。約90%の位置も、ASIMの `near complete turnover` を転用せず現行ResultsのUTR 0.7–0.8を使う。
 - 0.8°Cは現行Resultsにもあるため採用する。全timestep平均ではなく、変更があったtimestepの平均という定義を保つ。
-- ASIMの `over 2,000 ... responses` は推奨案では省略。今回の目的はMethodの圧縮であり、39 participantsとfour weeksでfield-data scaleを示せる。2,608件の記載は現行Methodではコメントアウトされているため、使う場合は最終採用データの件数との対応を確認する。
+- ASIMの `over 2,000 ... responses` は推奨案では省略。39 participantsとfour weeksでfield-data scaleを示し、300語の中ではsimulationの構成と追加するResultsを優先する。2,608件の記載は現行Methodではコメントアウトされているため、使う場合は最終採用データの件数との対応を確認する。
 
-### 12.5 推奨Abstract全文（TeX未反映）
+### 12.5 推奨Abstract全文（約294語、TeX未反映）
 
-以下は将来差し替える場合の案。背景・目的2文、Method 2文、Results 4文、結論1文とし、現行より結果に比重を移す。
+300語枠を使い、背景・目的2文、Method 5文、Results 4文、結論1文とする。前回の224語案は以下へ置き換える。Methodは比較を理解するための手順を残し、結果の4文を維持する。
 
 ```tex
-Occupant-centric HVAC control in shared offices must aggregate individual comfort preferences while occupant numbers and composition change.
-This study examines how occupancy patterns affect the comfort benefits and control requirements of different group comfort model resolutions.
-Personal comfort models were developed for 39 participants using four weeks of thermal-preference data from a Singapore office building.
-An occupancy-log-based Monte Carlo simulation compared static (regular members), daily (daily attendees), and real-time (currently present occupants) aggregation with a fixed $24\,^\circ\mathrm{C}$ baseline.
+Occupant-centric HVAC control in shared offices requires aggregating individual comfort predictions into a room-level setpoint, yet post-COVID work patterns change both occupant numbers and composition.
+This study investigates how group size and occupancy dynamics affect the comfort benefits and control requirements of higher-resolution group comfort models.
+An occupancy-log-based Monte Carlo simulation used four weeks of anonymized location logs and thermal-preference data from 39 participants in a Singapore office building.
+Observed occupancy patterns were retained while subgroups were sampled from each room's member pool and personal comfort models were randomly assigned to sampled occupants.
+Subgroup size described sampled membership, whereas the actual number present varied with the observed stay logs.
+Static, daily, and real-time group models represented regular members, daily attendees, and occupants currently present, respectively.
+For each model, individual ``No change'' probability curves were averaged to select the setpoint maximizing group comfort probability, with a fixed $24\,^\circ\mathrm{C}$ baseline.
 Across four rooms, real-time aggregation achieved the highest mean comfort probability at every tested subgroup size, while static aggregation approached baseline performance as subgroup size increased.
 The comfort performance gap between daily and static aggregation was narrower in offices with higher daily attendance ratios, indicating less benefit from daily updates when attendees closely resembled regular membership.
 The range of real-time setpoint adjustment magnitudes narrowed as daily mean occupancy increased, although the mean magnitude when setpoints changed remained approximately $0.8\,^\circ\mathrm{C}$ at the highest observed occupancy levels.
@@ -2851,15 +2863,15 @@ Higher user turnover rate (UTR) was associated with more frequent actionable set
 These findings link subgroup size, daily attendance, mean occupancy, and occupant turnover to the comfort benefits and control requirements of higher-resolution aggregation, informing model selection in shared offices.
 ```
 
-| 構成 | 現行 | 推奨案 |
-|---|---:|---:|
-| 背景・目的 | 65語 | 36語 |
-| Method | 143語 | 42語 |
-| Results | 59語 | 118語 |
-| 結論 | 26語 | 28語 |
-| 合計 | 293語 | 224語 |
+| 構成 | 現在の表示対象 | 前回案 | 今回の推奨案 |
+|---|---:|---:|---:|
+| 背景・目的 | 51語 | 36語 | 46語 |
+| Method | 143語 | 42語 | 102語 |
+| Results | 59語 | 118語 | 118語 |
+| 結論 | 26語 | 28語 | 28語 |
+| 合計 | 279語 | 224語 | 294語 |
 
-現行ではMethod 6文に対しResults 2文だった構成を、Method 2文・Results 4文へ変更する。結果の4文は「comfort順位・subgroup size → daily attendance → 調整幅 → UTRと頻度」という順序で、Results章の流れに対応する。これは検討用の全文案であり、まだAbstract環境には貼り付けていない。
+Resultsは「comfort順位・subgroup size → daily attendanceによるDaily–Static差 → 調整幅 → UTRと制御変更頻度」の順序とする。方法の要点を保持しつつ、結果の分量を現行の約2倍に増やせる。語数の上限確認では、最終投稿先の数え方に合わせ、必要なら導入や並列表現の語句から微調整する。
 
 ### 12.6 Introduction・Method章本文にも適用できる圧縮候補（検討のみ）
 
@@ -2877,4 +2889,4 @@ These findings link subgroup size, daily attendance, mean occupancy, and occupan
 
 ### 12.7 今回の反映範囲
 
-今回変更したのは `Update.md` の更新日と本節の追記のみ。Abstract、Introduction、Method、Results、ConclusionのTeXファイル、図、解析コードは変更していない。改稿案の根拠は現行稿とユーザー提示のASIM Abstractであり、外部文献や新しい実験結果は追加していない。
+本節の初回作成と今回の300語枠への再調整では、こちらから変更したのは `Update.md` のみ。Abstract、Introduction、Method、Results、ConclusionのTeXファイル、図、解析コードは変更していない。今回の作業開始時点で `Draft_2026-Jan.tex` にあった編集もそのまま保持した。改稿案の根拠は現行稿とユーザー提示のASIM Abstractであり、外部文献や新しい実験結果は追加していない。
