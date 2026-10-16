@@ -97,7 +97,7 @@ Because the \ac{sgcm} and \ac{dgcm} use coarser occupant-composition representat
     \begin{subfigure}{0.48\linewidth}
         \centering
         \includegraphics[width=\linewidth]{\Pic{png}{fig3b_setpoint_adjustment_by_group_size_and_occupancy_density_paper}}
-        \caption{Distribution of temperature adjustment magnitudes $|\Delta T|$ by subgroup size $K$ and normalized daily mean occupancy $\bar{N}_{r,d}/K$}
+        \caption{Distribution of temperature adjustment magnitudes $|\Delta T|$ by subgroup size $K$ and daily normalized mean occupancy $\bar{N}_{r,d}/K$}
         \label{fig:DynSpStepHeatmap}
     \end{subfigure}
     \caption{Distribution of temperature adjustment magnitudes $|\Delta T|$}
@@ -123,6 +123,13 @@ Here, \ac{utr} indicates how much occupancy composition present in the room shif
 It can be seen that as \ac{utr} increases, the action-needed window ratio also increases; when \ac{utr} reaches approximately 0.7--0.8, the action-needed window ratio reaches \qty{90}{\percent}.
 This indicates that large occupant-composition shifts, as captured by \ac{utr}, are associated with more frequent actionable setpoint changes.
 
+\begin{figure}[pos=htbp!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_15min_action_step_rate_by_15min_utr}}
+    \caption{Relationship between 15-minute user turnover rate and action-needed window ratio.}
+    \label{fig:CtrlWindowRatio}
+\end{figure}
+
 \autoref{fig:UTRexamples} shows the mean \ac{utr} transition by time of day, calculated as the weekday mean in four offices.
 Generally, \ac{utr} marks the highest values around \DTMtime{08:00:00} to \DTMtime{08:30:00} and around \DTMtime{17:30:00} to \DTMtime{18:00:00}, which are typical occupant arrival and departure times, respectively.
 Also, \ac{utr} marks higher values at lunchtime around \DTMtime{12:00:00} to \DTMtime{13:00:00}.
@@ -130,13 +137,6 @@ During office hours, the \ac{utr} values of Shared Office 5A and Shared Office 5
 \ac{utr} marks a higher value around 1.0 on Mondays in Office 5B, and in Shared Office 5B \ac{utr} marks approximately 0.8 on Mondays.
 This exceptional hight \ac{utr} values relates to internal team meeting held in other meeting rooms.
 Thus, this \ac{utr} transition figures can indicate the dynamic office usage transition and capture the specific office usage types.
-
-\begin{figure}[pos=htbp!]
-    \centering
-    \includegraphics[width=0.7\linewidth]{\Pic{png}{analysis25_15min_action_step_rate_by_15min_utr}}
-    \caption{Relationship between 15-minute user turnover rate and action-needed window ratio.}
-    \label{fig:CtrlWindowRatio}
-\end{figure}
 
 \begin{figure}[pos=htbp!]
     \centering

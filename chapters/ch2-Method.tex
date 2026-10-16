@@ -162,11 +162,8 @@ T_{\mathrm{set}}^{\mathrm{RT}}(t)=T_{G_{r,t}^{\mathrm{RT}}}^{*},
 \label{eq:policy_setpoints}
 \end{equation}
 where $d(t)$ is the calendar day containing timestamp $t$.
-
-
 In addition to these three group-model-based policies, a fixed \qty{24}{\celsius} setpoint is used as an additional baseline.
 For each room and subgroup size, \qty{1000} Monte Carlo trials were formed by combining sampled location-log agents and assigned \acp{pcm}, and one-month \ac{occ} simulations based on the three \acp{gcm} were conducted.
-
 
 \subsection{Evaluation Metrics}
 \label{sec:EvalMet}
@@ -177,7 +174,6 @@ For each room and subgroup size, \qty{1000} Monte Carlo trials were formed by co
 While many studies emphasize occupancy count and related parameters, this study also considers occupant-composition turnover.
 Let $\mathcal{T}_{r,d}$ denote the ordered set of analysis timestamps for room $r$ on day $d$, and let $S_{r,t}$ denote the set of sampled location-log agents present in room $r$ at timestamp $t$.
 The realized occupancy count is $N_{r,t}=|S_{r,t}|$.
-
 The subgroup size $K$ is the number of sampled location-log agents in a simulation condition, whereas $N_{r,t}$ is the number of those location-log agents actually present at timestamp $t$.
 
 \paragraph{Realized occupancy count}

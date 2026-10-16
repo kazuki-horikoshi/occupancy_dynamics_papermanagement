@@ -45,7 +45,6 @@ This distinction is important for \ac{gcm}-based control because the preferred g
 Shared offices show more dynamic \ac{utr} transitions during office hours, while assigned offices generally show lower values such as \qtyrange{0.2}{0.4}{}.
 Some offices also show weekly turnover patterns; for example, Admin Office C and Shared Office 2 are affected by group meetings outside the target office rooms on Monday afternoon.
 \ac{utr} can capture such office-use patterns, indicating its usefulness for identifying when \ac{rtgcm}-based control is likely to be operationally relevant.
-
 \ac{utr} complements mean occupancy by indicating whether represented comfort profiles are being replaced, extending prior discussions of dynamic diversity in comfort-driven control~\cite{jung_energy_2020}.
 The near-overlap across $K$ in Figure~\ref{fig:CtrlWindowRatio} shows that turnover is a better guide to update frequency than $K$ alone.
 
@@ -55,14 +54,12 @@ The three aggregation levels suggest a deployment hypothesis.
 A static representation may be adequate in zones with stable membership, daily updating may offer a lower-complexity response to attendance variation, and real-time updating may be most useful when within-day composition changes frequently.
 Longitudinal utilization research shows that movement and workstation use vary by season and spatial context~\cite{gocer_overlaps_2022}, while occupant-information reviews emphasize that higher resolution brings additional infrastructure, privacy, and data-management requirements \cite{nagy_ten_2023}\cite{obrien_key_2020}\cite{zafari_survey_2019}.
 The observed \ac{utr} ranges should therefore be validated locally.
-
 \ac{utr} can gate real-time updates to high-turnover periods, with deadbands or minimum hold times limiting excessive cycling.
 Such gating does not remove sensing trade-offs in accuracy, latency, energy use, cost, scalability, and privacy~\cite{zafari_survey_2019}.
 
 These findings suggest that \ac{rtgcm}-level control should not be adopted solely because real-time tracking is available.
 It is most valuable in sparse or highly variable shared-office conditions where occupant composition changes frequently.
 In contrast, a \ac{dgcm} may provide a practical compromise when daily attendance differs from regular membership but within-day turnover is moderate, while a \ac{sgcm} may be sufficient when occupancy is stable or group size is large enough for individual differences to average out.
-
 Because activity-based working outcomes depend on implementation and occupant use~\cite{marzban_review_2023}, these policy thresholds should be calibrated to each workplace.
 
 \subsection{Limitations}
