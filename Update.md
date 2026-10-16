@@ -2846,7 +2846,7 @@ Office 5A reaches full attendance ($\rho_{r,d}^{\mathrm{att}}=1$) on over 60\% o
 
 ### 12.5 推奨Abstract全文（約294語、TeX未反映）
 
-※ Metricsの初出説明を補った更新案は第13節に記載。この294語案は検討履歴として残す。
+※ ユーザー更新版を確認し、Metricsの初出説明と長い最終文を保持した300語案を第13節に記載。この294語案は検討履歴として残す。
 
 300語枠を使い、背景・目的2文、Method 5文、Results 4文、結論1文とする。前回の224語案は以下へ置き換える。Methodは比較を理解するための手順を残し、結果の4文を維持する。
 
@@ -2894,58 +2894,66 @@ Resultsは「comfort順位・subgroup size → daily attendanceによるDaily–
 本節の初回作成と今回の300語枠への再調整では、こちらから変更したのは `Update.md` のみ。Abstract、Introduction、Method、Results、ConclusionのTeXファイル、図、解析コードは変更していない。今回の作業開始時点で `Draft_2026-Jan.tex` にあった編集もそのまま保持した。改稿案の根拠は現行稿とユーザー提示のASIM Abstractであり、外部文献や新しい実験結果は追加していない。
 
 
-## 13. 結果追記後のAbstract圧縮とMetrics初出説明の確認（2026-10-15、TeX未反映）
+## 13. 更新済みAbstractの確認・300語案とMetricsの説明（2026-10-15、提案はTeX未反映）
 
-### 13.1 確認できた版と方針
+### 13.1 確認できた最新版と方針
 
-ユーザーから「Results追記後に約330語」との連絡を受け、300語以内への圧縮とMetricsの説明を再検討した。ただし、今回ローカルで確認できた有効Abstract（`Draft_2026-Jan.tex`）は結果追記前の約279語、未使用の `chapters/abstract.tex` は約293語のままであり、約330語版の実際の文面はまだ確認できていない。保存先または本文を確認中。そのため、以下は第12節の294語案を基に、初出指標の定義を補いながら再構成した案であり、未確認の330語版の個々の表現を削除したという記録ではない。
+ユーザーによる保存後、`Draft_2026-Jan.tex` の有効Abstractを確認できた。今回確認した版は12文・約296語で、Resultsの追記と各指標の説明が入っている。先に記録した「約330語版が未確認」という状態は解消した。未使用の `chapters/abstract.tex` ではなく、mainファイル内のAbstractを基準とする。
 
-指標名だけを置くことで語数を削らず、**定義を守り、重複する解釈・結論の列挙を先に短くする**。daily attendance ratioとdaily mean occupancy、人数と在室者構成の変化を区別する。約330語版が確認できた場合も、以下の定義は保護して重複箇所から圧縮する。第12節の案は検討履歴として残し、Metricsの説明を含む更新案は本節を参照する。
+最後の一文は、論文の価値を残すというユーザーの意図に従い、**文言も長さもそのまま保持**する。最新版は空白区切りで既に300語以内のため、大幅な圧縮は不要。現在の296語を基に、baselineの定義を復元し、mean comfort probabilityの文を整えて約300語とする。前の暫定287語案で短くした結論は採用しない。
 
-### 13.2 初出Metricsの確認と残す説明
+### 13.2 最新版でのMetrics初出説明の確認
 
-| 指標・用語 | 第12節案の確認結果 | 今回の初出説明・補足 | Methodの根拠 |
+| 指標・用語 | 最新版の説明 | 判断・調整方針 | Methodの根拠 |
 |---|---|---|---|
-| group/subgroup size | sampled membershipという説明はある。 | `Group size denoted sampled membership` を三モデルの定義文へ統合。実在室人数と混同しない。 | `eq:policy_groups`、`eq:Nt`前のsubgroup size説明 |
-| mean comfort probability | No change曲線の説明はあるが、comfort probabilityが何の予測確率かを明示していない。 | `the predicted probability of requesting no temperature change averaged over occupants present and time`。予測値であること、誰について集計するかを明示する。日・trial間平均などの詳細な集計手順はMethodに委ねる。 | `eq:comfort_probability_daily` と `Mean comfort probability` |
-| daily attendance ratio | 名称のみで分子・分母がAbstract内にない。 | `the fraction of sampled members attending at least once per day`。その日のdistinct attendeesをsampled membershipで割った割合であり、時刻別人数や時間平均人数ではない。 | `eq:occupancy_and_attendance_ratios` |
-| daily mean occupancy | 名称のみ。 | `the time-averaged number present`。一度でも来た人数やその比率と区別する。 | `eq:mean_occ_daily` |
-| setpoint adjustment magnitude | 数値はあるが、何との差の絶対値かが明示されていない。 | `absolute real-time setpoint changes from the previous timestep`。平均値の0.8°Cには `when changes occurred` を残し、変更なしの時刻を含む平均と混同しない。 | `eq:rt_setpoint_step`、`eq:rt_mean_abs_step_when_changed_daily` |
-| user turnover rate (UTR) | 略語展開のみで、人数変化か構成変化か不明瞭。 | `measuring changes in occupant composition between consecutive timesteps`。AbstractではJaccard式を省略しても、比較対象と意味は示す。 | `eq:rolling_turnover` |
-| action-needed window ratio / control adjustment frequency | window内の閾値超過という定義は第12節案にもある。 | `15-minute windows contained at least one rounded setpoint change of ... or more` を保持。名称を増やさず、割合が数える事象を直接述べる。 | `eq:action_needed_window_ratio`、Resultsの `fig:CtrlWindowRatio` |
+| group size | `Group size denoted sampled membership` | 説明あり。実在室人数と区別できる。結果文の `tested subgroup size` は `tested group size` に統一する。 | `eq:policy_groups` とEvaluation Metrics導入の人数説明 |
+| mean comfort probability | `the predicted probability of requesting no temperature change averaged over occupants present and time` | 確率の意味と評価対象の説明はある。ただし挿入句を閉じるcommaが欠け、`was compared` の比較対象もない。初出説明を保ち、固定24°C baselineとの比較まで1文に整理する。 | `eq:comfort_probability_daily`、`Mean comfort probability` |
+| daily attendance ratio | `the fraction of sampled members attending at least once per day` | 説明あり。distinct daily attendeesの割合であり、瞬間人数や時間平均人数と区別できる。維持する。 | `eq:occupancy_and_attendance_ratios` |
+| daily mean occupancy | `the time-averaged number present` | 説明あり。daily attendance ratioとの区別が明確。維持する。 | `eq:mean_occ_daily` |
+| setpoint adjustment magnitude | `absolute real-time setpoint changes from the previous timestep` | 説明あり。0.8°Cの平均には `when changes occurred` もあり、変更なしを含む平均と混同しない。維持する。 | `eq:rt_setpoint_step`、`eq:rt_mean_abs_step_when_changed_daily` |
+| user turnover rate (UTR) | `measuring changes in occupant composition between consecutive timesteps` | 略語と指標の意味の両方がある。人数変化ではなく構成変化を捉える説明として維持する。 | `eq:rolling_turnover` |
+| control adjustment frequency / action-needed window ratio | `15-minute windows contained at least one rounded setpoint change of ... or more` | 数える事象・時間幅・閾値の説明がある。割合が何を意味するか読めるため、別の略語AWRを増やす必要はない。維持する。 | `eq:action_needed_window_ratio`、Results `fig:CtrlWindowRatio` |
+| baseline | 結果文に `baseline performance` があるが、固定24°Cの記載がなくなっている。 | mean comfort probabilityの文で、初めてbaselineに触れる時点に固定24°Cを明記する。 | Monte Carlo節の固定24°C policy、Results `fig:MeanOccuConf` |
 
-### 13.3 圧縮の優先順位・アンカー・修正案
+個人のNo change確率曲線を平均してsetpointを選択する説明と、実際にその時刻にいるoccupantsについてcomfortを評価する説明は両方を残す。前者のgroupと後者の評価対象を同じものと読ませない。各day・trial間の平均手順などはMethodへ委ね、Abstractでは指標の意味を示す。
 
-以下のアンカーは、確認できる第12節案および現行Method/Resultsに対応する。約330語版への実適用時には、その版の文面へ対応づける。
+### 13.3 最小限の調整：アンカー・方針・修正案
 
-| 優先順位・アンカー | 方針 | 修正案の文章 |
+| 現行アンカー | 方針 | 修正案の文章 |
 |---|---|---|
-| 1：`Subgroup size described sampled membership` ＋ `Static, daily, and real-time group models represented` | 人数の区別を三モデルの定義文に統合し、別の1文として繰り返さない。 | `Group size denoted sampled membership; static, daily, and real-time models represented regular members, daily attendees, and current occupants, respectively.` |
-| 2：`indicating less benefit from daily updates when attendees closely resembled regular membership` | daily attendanceの結果に続く解釈を省き、そのスペースをratio自体の定義に使う。結果と指標の説明は残す。 | `The daily--static performance gap was narrower in offices with higher daily attendance ratios, defined as the fraction of sampled members attending at least once per day.` |
-| 3：`These findings link subgroup size, daily attendance, mean occupancy, and occupant turnover` | 結果で列挙した項目とcomfort/controlの二軸を結論で繰り返す量を減らす。 | `These findings inform group comfort model selection according to attendance, occupancy levels, and occupant turnover.` |
-| 説明を保護：`For each model, individual` とmean comfort probabilityの初出 | 設定温度選択と評価指標の説明を2文に分ける。予測確率と評価対象が読めることを優先する。 | ```Individual ``No change'' probability curves were averaged to select comfort-maximizing setpoints.```<br>`Mean comfort probability, the predicted probability of requesting no temperature change averaged over occupants present and time, was compared against a fixed $24\,^\circ\mathrm{C}$ baseline.` |
-| 説明を保護：`The range of real-time setpoint adjustment magnitudes` | daily mean occupancyと調整幅を初出時に説明。値が小さくなるという一般化にせず、分布の広がりと変更時の平均を区別する。 | `As daily mean occupancy (the time-averaged number present) increased, absolute real-time setpoint changes from the previous timestep became less variable, but their mean when changes occurred remained approximately $0.8\,^\circ\mathrm{C}$ at the highest occupancy levels.` |
-| 説明を保護：`Higher user turnover rate (UTR)` | 構成変化の定義とaction判定を残す。UTRと頻度の関連を示し、因果や検定結果は追加しない。 | `Higher user turnover rate (UTR), measuring changes in occupant composition between consecutive timesteps, was associated with more frequent control adjustments: approximately $90\%$ of 15-minute windows contained at least one rounded setpoint change of $0.5\,^\circ\mathrm{C}$ or more at UTR $0.7$--$0.8$.` |
+| `Mean comfort probability, the predicted probability ... time was compared.` | 初出説明を維持し、比較対象の固定24°C baselineを復元。挿入句のcomma不足も解消する。現行19語から23語へ4語増。 | `Mean comfort probability was compared with a fixed $24\,^\circ\mathrm{C}$ baseline by averaging present occupants' predicted probabilities of requesting no temperature change over time.` |
+| `Across four rooms` の `every tested subgroup size` | 定義済みのgroup sizeと同じ用語へ統一。語数は変わらない。 | `Across four rooms, real-time aggregation achieved the highest mean comfort probability at every tested group size, while static aggregation approached baseline performance as subgroup size increased.` |
+| `These findings link group size, daily attendance`（最終文） | ユーザー指定に従い変更しない。研究の価値とモデル選択への示唆を残す。28語を維持。 | `These findings link group size, daily attendance, mean occupancy, and occupant turnover to the comfort benefits and control requirements of higher-resolution aggregation, informing model selection in shared offices.` |
 
-### 13.4 Metricsの初出説明を含む全文案（約287語、TeX未反映）
+圧縮がさらに必要になった場合も、最後の一文とMetricsの定義を先に削らない。優先候補は目的文中の `the benefit of` 等の語句、Monte Carlo説明での `observed ... retained` とagent説明の重複、三モデル定義の繰り返しである。今回確認した296語版では、これらを追加で削る必要はない。
+
+### 13.4 最終文を保持した全文案（約300語、TeX未反映）
 
 ```tex
 Occupant-centric HVAC control in shared offices requires aggregating individual comfort predictions into a room-level setpoint, yet post-COVID work patterns change both occupant numbers and composition.
 This study investigates how group size and occupancy dynamics affect the comfort benefits and control requirements of higher-resolution group comfort models.
 An occupancy-log-based Monte Carlo simulation used four weeks of anonymized location logs and thermal-preference data from 39 participants in a Singapore office building.
 Observed occupancy patterns were retained while subgroups were sampled from each room's member pool and personal comfort models were randomly assigned to sampled occupants.
-Group size denoted sampled membership; static, daily, and real-time models represented regular members, daily attendees, and current occupants, respectively.
+Group size denoted sampled membership; static, daily, and real-time group models represented regular members, daily attendees, and current occupants, respectively.
 Individual ``No change'' probability curves were averaged to select comfort-maximizing setpoints.
-Mean comfort probability, the predicted probability of requesting no temperature change averaged over occupants present and time, was compared against a fixed $24\,^\circ\mathrm{C}$ baseline.
-Across four rooms, real-time aggregation achieved the highest mean comfort probability at every tested subgroup size, while static aggregation approached baseline performance as subgroup size increased.
+Mean comfort probability was compared with a fixed $24\,^\circ\mathrm{C}$ baseline by averaging present occupants' predicted probabilities of requesting no temperature change over time.
+Across four rooms, real-time aggregation achieved the highest mean comfort probability at every tested group size, while static aggregation approached baseline performance as subgroup size increased.
 The daily--static performance gap was narrower in offices with higher daily attendance ratios, defined as the fraction of sampled members attending at least once per day.
 As daily mean occupancy (the time-averaged number present) increased, absolute real-time setpoint changes from the previous timestep became less variable, but their mean when changes occurred remained approximately $0.8\,^\circ\mathrm{C}$ at the highest occupancy levels.
 Higher user turnover rate (UTR), measuring changes in occupant composition between consecutive timesteps, was associated with more frequent control adjustments: approximately $90\%$ of 15-minute windows contained at least one rounded setpoint change of $0.5\,^\circ\mathrm{C}$ or more at UTR $0.7$--$0.8$.
-These findings inform group comfort model selection according to attendance, occupancy levels, and occupant turnover.
+These findings link group size, daily attendance, mean occupancy, and occupant turnover to the comfort benefits and control requirements of higher-resolution aggregation, informing model selection in shared offices.
 ```
 
-Methodのデータ期間・参加者、観測ログを保つMonte Carlo、subgroup samplingとPCM割当て、三モデルの対象集団、確率曲線によるsetpoint選択、固定baselineは残した。Resultsもcomfort順位、daily attendance、調整幅、UTRと頻度の4点を残している。省略したのは主に説明の重複と結果直後の長い解釈であり、指標の定義ではない。
+| 構成 | 確認した最新版 | 今回の案 |
+|---|---:|---:|
+| 背景・目的 | 46語 | 46語 |
+| Method・指標とbaselineの説明 | 97語 | 101語 |
+| Results | 125語 | 125語 |
+| 結論 | 28語 | 28語 |
+| 合計 | 296語 | 300語 |
+
+語数は空白区切りによる概算。hyphenや数式の扱いは投稿先のカウンターにより変動するため、最終的な上限判定は投稿先の数え方に合わせる。
 
 ### 13.5 反映範囲と確認
 
-今回の変更はUpdate.mdへの本節追記と、第12節から本節への参照追加のみ。TeX・図・解析コードは変更していない。語数は英文の空白区切りによる概算で、投稿先の数え方ではhyphen・数式の扱いにより変動し得る。約330語版をまだ読めていない点と、現行Method/Resultsの指標定義を照合済みである点を区別する。
+今回こちらから変更したのはUpdate.mdの第13節と、第12節から更新案への参照のみ。ユーザーが更新したAbstractの本文は読み取りのみとし、TeX・図・解析コードは変更していない。最後の一文は最新版からそのまま転記し、全文案との完全一致を確認した。Metricsは現行Methodの定義と照合済み。固定baselineの説明と用語統一を含めて約300語であることを確認した。
