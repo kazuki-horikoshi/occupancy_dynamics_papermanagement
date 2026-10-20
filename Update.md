@@ -1,7 +1,7 @@
 # OccupancyDynamics chapter update memo
 
 作成日: 2026-06-17  
-更新日: 2026-10-15
+更新日: 2026-10-20
 
 ## 前提
 
@@ -2957,3 +2957,135 @@ These findings link group size, daily attendance, mean occupancy, and occupant t
 ### 13.5 反映範囲と確認
 
 今回こちらから変更したのはUpdate.mdの第13節と、第12節から更新案への参照のみ。ユーザーが更新したAbstractの本文は読み取りのみとし、TeX・図・解析コードは変更していない。最後の一文は最新版からそのまま転記し、全文案との完全一致を確認した。Metricsは現行Methodの定義と照合済み。固定baselineの説明と用語統一を含めて約300語であることを確認した。
+
+
+## 14. Introductionの文の流れ・重複を整理する再配置案（2026-10-20、TeX未反映）
+
+### 14.1 判断と今回の範囲
+
+対象は `chapters/ch1-Intro.tex`。見出しは維持し、**既存文の移動を中心に、同じ主張が戻ってくる箇所だけ統合する**。新しい論点・文献を加える全面改稿にはしない。冒頭のthermal comfort／PMV／PCM説明（現行3–14行）と `Focus of the research` は今回の再配置対象外とし、TeXは変更しない。
+
+一番の問題は、最初の二つのsubsectionの重複に加え、**第3 subsectionがshared-space aggregationの一般論へ戻る**ことである。第1で「共通setpointとGCMの必要性」、第2で「人数・構成変化と固定groupの限界」まで進んだ後、第3の `For shared-space ... raise an aggregation issue` から再び「好みの相違・集約・group size」を説明している。第3の61–67行を第1へまとめると、論点を戻さずにtemporal resolutionへ進める。
+
+また、異なる好みはもともと存在しており、「comfortを平均することがconflictを発生させる」とは書かない。現行61行の論点は**preferred temperaturesを単純平均しても集団を適切に代表できるとは限らない**ことである。Methodで使用するNo change確率曲線の平均化まで否定する書き方は避け、元のpreferred temperaturesとthermal sensitivityの説明を維持する。
+
+### 14.2 推奨する論点の順序
+
+| subsection（現行見出しを維持） | 担当する内容 | 段落順と移動の要点 |
+|---|---|---|
+| Occupant-centric control and shared-space comfort aggregation | OCCの全体像、共通setpointで個人差を集約する必要性、GCMの役割 | OCCの定義と導入上の課題 → sensing／learning／control → PCMとcontrolの接続 → shared-spaceの好みの相違・thermal sensitivity → GCMの定義 → group sizeの知見。第3の61–67行をここへ移す。 |
+| Dynamic occupancy and real-time tracking in activity-based working environments | 構成が変化するため、どのoccupantsを代表させるべきか／そのために何の情報が必要か | flexible work → 人数と構成の変化 → 同人数でも好みが変わる → controlに視点を移し、仮定した構成に固定したsetpointの限界 → 誰をGCMに含めるか → countとidentityの違い → sensing・privacy → 実装機会と便益・負担。 |
+| Shared-space GCM resolution under dynamic occupancy | GCMの対象集団をいつ更新するか、既往研究と研究課題 | `For a given room-level control resolution ... deciding when to update` で開始 → 既往研究の静的attendance前提 → Ono／Lei → 多数の組合せ別modelを用意する代わりにtemporal aggregationを変える → static／daily／real-timeの問い。好みの相違の一般論へ戻らない。 |
+
+「GCMは何をするか」は第1、「構成が変わると誰を代表すべきか」は第2、「その集団をいつ更新するか」は第3に置く。関連する三つの話題を消すのではなく、同じ問いを繰り返さず、次の問いへ進める。
+
+### 14.3 指摘された3箇所の局所修正案
+
+| 現行アンカー | 判断・方針 | 修正案の文章 |
+|---|---|---|
+| `In this context, occupant information can range from presence and count to activity and identity` | 元文の構文自体は成立しているが、range from ... to ...が単一の序列のように見え、後半のitsが何の有用性を指すかも読み取りにくい。情報の種類を並列に示し、有用性とresolutionを次の文へ分ける。この2文は第2のcount／identity説明の直前へ移す。 | `For \ac{occ}, occupant information includes presence, occupant count, activity, and identity.`<br>`The usefulness of this information depends on the spatial and temporal resolution at which it is available~\cite{nagy_ten_2023}.` |
+| `Typical OCC frameworks consist of three connected functional components:`（TeXでは `\ac{occ}`） | 最初にsensing, learning, and controlを明示し、その後に元の三つの説明節を、それぞれ独立した文として置く。機能の内容と引用は残す。 | `Typical \ac{occ} frameworks consist of three connected functional components: sensing, learning, and control~\cite{soleimanijavid_challenges_2024}\cite{xie_review_2020}.`<br>`Sensing collects information such as environmental conditions, comfort feedback, and occupancy.`<br>`Learning develops preference or occupancy models from these data.`<br>`Control translates the model outputs into \ac{hvac} actions.` |
+| `Even when the occupancy count is similar` の直後、`However, a setpoint selected for a fixed reference group` | 逆接Howeverではなく、controlへの視点の移動を明示する。assumed occupant compositionに基づき固定されたsetpointと具体化する。 | `From a control perspective, a fixed setpoint selected for an assumed occupant composition does not adapt to subsequent changes in who is present.`<br>`A condition optimized for one attendance pattern may not represent another.` |
+
+固定setpointについては、全てのstatic controlが一般に「less reliable」と断定するのではなく、「あるattendance pattern向けの条件は別のpatternを代表しない場合がある」という元の説明を残す。これにより、固定setpointとoccupant-compositionの関係が具体的になる。
+
+### 14.4 文単位の移動・統合表
+
+行番号は確認時点の補助情報。適用時には左列の検索アンカーを使う。
+
+| 現行アンカー／位置 | 操作・移動先 | 理由・残すもの |
+|---|---|---|
+| `Despite growing recognition in the industry`（31行）＋ `Reported barriers to broader deployment`（23行） | 第1のOCC定義（17–18行）の直後へ、31 → 23の順にまとめる。 | 31行だけをGCMの問いの後に置くと、specificな集約問題から一般的な導入課題へ話題が戻る。導入の現状とbarriersを一箇所に集める。 |
+| `Typical ... frameworks`（21行）→ `The performance of this chain`（22行）→ `Among these functions`（24行） | 第1でこの順に続ける。21行だけ14.3の4文に分割。 | componentsの説明から性能要因、learningとcontrolの接続へ進む。`Among these functions` の前に別の話題を挟まない。 |
+| `In shared office spaces, however`（26行） | `Among these functions` の直後。 | 個人comfortとcontrolの接続から、共通setpointで複数occupantsを代表する問題へつなぐ。元文は保持。 |
+| `Recent collective-comfort studies frame shared-zone control`（27行）＋ `Shared-space studies have shown that collective comfort depends`（65行） | 第1の26行の後で統合。27行の本文を残し、65行の `schumann_predicting_2010` を同じ一般論の引用へ合わせる。 | heterogeneous preferencesの表現・集約が重要という主張が重複している。両方の引用を残し、同じ一般論を二度説明しない。最終文は14.5に明記。 |
+| `In shared workspaces, multiple occupants with potentially conflicting thermal preferences`（61行）＋ `In particular, individual differences in thermal sensitivity`（62行） | 第3から第1へ移し、27行の一般的なframingの直後に配置。61行は前半のmultiple occupantsを同時に扱う説明を省き、`Simply averaging preferred temperatures ...` で開始する。62行は保持。 | 61行前半は26行と重複するため省く。preferred temperaturesの単純平均の限界 → thermal sensitivityの違い、という新しい内容はそのまま残す。 |
+| `This makes the construction of a GCM`（28行）＋ `In this study, this representation describes`（29行） | 上記のconflicting preferences／thermal sensitivity説明の直後。 | 課題を説明した後にGCMの役割を定義する。元文のThis makesとthis representationの対応が明確になる。 |
+| `The difficulty is shaped by both group size`（64行）→ `Simulation studies further suggest`（66行）→ `These findings indicate`（67行） | 第3から第1へ移し、GCMの定義の次の段落へ。この3文はそのまま保持。 | group sizeとheterogeneityを第1の集約問題の中でまとめる。room-level control resolutionの話もこの既往知見の総括として残す。 |
+| `The key question is therefore not only how accurately`（30行） | 第1から第2へ移し、固定setpointの限界を説明した段落の最後へ。 | 「誰を代表させるか」という問いを、構成が変わる具体的な理由の後に一度だけ示す。元文は保持。 |
+| `Meanwhile, the rise of remote and hybrid work`（35行）→ 36 → 37 → `Even when the occupancy count is similar`（40行） | 第2の最初の段落をこの順にする。 | work style → 人数・構成変化 → 同人数でも好みが異なる、をまとめる。40行の前にcount／identityの情報分類を挟まない。 |
+| `However, a setpoint selected`（41行）＋ `This makes static temperature control less reliable`（42行） | 40行のすぐ後の段落へ。14.3の2文へ置換し、続けて30行のkey question。 | 「現象」から「制御への影響」、その結果として「代表すべきoccupantsの問い」へ進む。 |
+| `In this context, occupant information can range`（19行） | 第1から第2へ。上記key questionの後、count／identityを説明する段落の先頭へ移し、14.3の2文を使う。 | 情報の種類、resolution、countとidentityの違いを同じ箇所へ集める。 |
+| `This distinction corresponds to different grades of occupant information:`（38行）＋ `Count data alone therefore cannot determine`（39行） | 新しい19行相当の2文の後へ。38行の冒頭だけ `For comfort aggregation,` に置き換え、後半と引用、39行は保持。 | 移動によりThis distinctionの直前の対応が曖昧になるため、接続語だけを修正する。情報の分類からGCMに必要なidentityへ具体化。 |
+| `Higher information resolution can enable more individualized control`（20行） | 独立文は省く。 | 一般的な高resolutionの便益・負担は、50行のtrade-offs、52行のidentity tracking負担、56行の実用価値に既に具体的に含まれる。詳細な説明と引用のある後段を残す。 |
+| `Recent IoT and building-management technologies`（48行）→ 49 → 50 → 52 | 第2のcount／identity説明の後。元の順と文を保持。 | 必要な情報の種類を先に説明し、その情報を取得できるsensingとtrade-offsへつなぐ。全センサーがidentityを取得できるという意味にはしない。 |
+| `autoref{table:OccuTrack} provides examples`（54行）→ 55 → 56 | 第2の末尾に保持。 | sensingの可能性 → 実装例 → 便益と負担を比較する必要性。これは具体的なtracking価値の問題であり、第1のshared-setpointの必要性とは役割が異なる。 |
+| `For shared-space OCC, these dynamic occupancy patterns raise an aggregation issue`（60行） | 第3冒頭から省く。 | aggregationが必要という説明は第1にまとまっている。ここで再導入せず、更新時点の問いへ直接進む。 |
+| `For a given room-level control resolution, dynamic occupancy also requires deciding when to update`（68行） | 第3の最初の文へ移す。本文は保持。 | 第2の便益・負担の問題を受け、occupant groupを「いつ更新するか」という未解決点を明示する。 |
+| `autoref{table:OccuIntegration} compares field studies`（70行）→ 71 → Ono（73行）→ Lei（74行）→ 75 → 76 | 第3の68行に続ける。元の順と文を保持。 | 更新時点の問い → 既往研究 → limitations → temporal resolutionという比較方針 → static／daily／real-timeの研究課題。 |
+
+`table:OccuIntegration` のtable環境は、第3の最後の問い（76行）の後に現在のまま保持する。`Focus of the research` と既存labelは変更しない。コメントアウト済みの旧段落は、以下の通読案には含めないが、今回削除する提案の対象でもない。
+
+### 14.5 通読用の再配置案（3 subsectionの本文、TeX未反映）
+
+以下は14.4を適用したときの連続した読み方を確認するための案。語句を整えたのは14.3、38行の接続語、27／65行の統合、61行の重複する前半の省略に限る。それ以外は既存文をそのまま使い、配置を変えている。
+
+```tex
+\subsection{Occupant-centric control and shared-space comfort aggregation}
+
+In recent years, \ac{occ} has emerged as a promising \ac{hvac} strategy that uses occupant information to support more individualized building operation~\cite{soleimanijavid_challenges_2024}.
+IEA EBC Annex 79 defines \ac{occ} as an ``occupant-in-the-loop'' approach that seeks to provide optimal and personalized conditions rather than imposing fixed settings~\cite{wagner_international_2024}.
+Despite growing recognition in the industry and active framework development in simulations, real-world \ac{occ} applications in buildings remain limited~\cite{soleimanijavid_challenges_2024}.
+Reported barriers to broader deployment include data availability and management, interoperability with existing systems, operator capacity, scalability, privacy, and validation across buildings and climates~\cite{obrien_key_2020}\cite{nagy_ten_2023}\cite{soleimanijavid_challenges_2024}.
+
+Typical \ac{occ} frameworks consist of three connected functional components: sensing, learning, and control~\cite{soleimanijavid_challenges_2024}\cite{xie_review_2020}.
+Sensing collects information such as environmental conditions, comfort feedback, and occupancy.
+Learning develops preference or occupancy models from these data.
+Control translates the model outputs into \ac{hvac} actions.
+The performance of this chain depends not only on model accuracy but also on sensing quality, communication with the \ac{bms}, controller design, and local operating conditions~\cite{zhang_impact_2023}.
+Among these functions, the connection between personal comfort information and the control decision is especially important because it determines how individual preferences affect the final setpoint.
+
+In shared office spaces, however, \ac{occ} cannot rely only on isolated \acp{pcm}, because a single room-level \ac{hvac} setpoint must represent multiple occupants at the same time.
+Recent collective-comfort studies frame shared-zone control as a problem of combining heterogeneous preferences under a common environmental decision~\cite{schumann_predicting_2010}\cite{topak_collective_2023}.
+Simply averaging preferred temperatures or applying a single \ac{pcm} may fail to represent the group.
+In particular, individual differences in thermal sensitivity, in addition to preferred temperature, can affect collective setpoint selection and comfort probability~\cite{jung_comparative_2019}.
+This makes the construction of a \ac{gcm}, which aggregates individual comfort information into a room-level representation, a central design issue for shared-space \ac{occ}.
+In this study, this representation describes how the group's predicted comfort varies with temperature and provides a basis for selecting a shared setpoint.
+
+The difficulty is shaped by both group size and preference heterogeneity.
+Simulation studies further suggest that the combined energy-and-comfort benefit of integrating \acp{pcm} can diminish as more occupants share a thermal zone~\cite{jung_energy_2020}\cite{jung_comparative_2019}, while the potential maximum satisfaction rate may also decrease for larger groups~\cite{wang_enhancing_2026}.
+These findings indicate that shared-space \ac{occ} requires attention to both comfort aggregation and room-level control resolution.
+
+\subsection{Dynamic occupancy and real-time tracking in activity-based working environments}
+
+Meanwhile, the rise of remote and hybrid work has increased the use of flexible office arrangements~\cite{marzban_review_2023}.
+In such workplaces, occupants arrive, leave, and move between different spaces throughout the day, causing fluctuations in both occupancy density and occupant composition within a zone~\cite{motuziene_office_2022}\cite{pan_environmental_2025}\cite{huang_space-matching_2025}.
+Dynamic occupancy should therefore be understood not only as a change in the number of people in a room, but also as a change in who is present.
+Even when the occupancy count is similar, the thermal preferences represented by the present group may differ.
+
+From a control perspective, a fixed setpoint selected for an assumed occupant composition does not adapt to subsequent changes in who is present.
+A condition optimized for one attendance pattern may not represent another.
+The key question is therefore not only how accurately individual \acp{pcm} predict comfort, but also which occupants should be represented when a room-level control decision is made.
+
+For \ac{occ}, occupant information includes presence, occupant count, activity, and identity.
+The usefulness of this information depends on the spatial and temporal resolution at which it is available~\cite{nagy_ten_2023}.
+For comfort aggregation, occupancy count describes how many people are present, whereas identity-level information is needed to associate the present group with person-specific comfort profiles~\cite{nagy_ten_2023}.
+Count data alone therefore cannot determine whether the group comfort representation should change when one occupant replaces another.
+
+Recent IoT and building-management technologies have made room- or occupant-level occupancy data more accessible through sources such as PIR, CO$_2$, and Wi-Fi-based sensing~\cite{soleimanijavid_challenges_2024}\cite{zafari_survey_2019}\cite{brambilla_potential_2021}.
+These modalities do not provide equivalent information.
+Reviews identify trade-offs among counting capability, spatial resolution, latency, cost, and privacy for PIR, CO$_2$, camera, WLAN, and related approaches~\cite{yang_review_2016}\cite{zafari_survey_2019}\cite{brambilla_potential_2021}.
+Identity-level tracking introduces an additional privacy and data-governance burden~\cite{obrien_key_2020}\cite{nagy_ten_2023}.
+
+\autoref{table:OccuTrack} provides examples of office projects by Japanese companies that use IoT data for individual-level real-time occupancy tracking.
+Therefore, opportunities are emerging to use such data in \ac{occ} systems that respond to changes in the occupants currently present.
+At the same time, the practical value of real-time occupant-composition data depends on whether the comfort benefit justifies the sensing, integration, privacy, and control burden.
+
+\subsection{Shared-space GCM resolution under dynamic occupancy}
+
+For a given room-level control resolution, dynamic occupancy also requires deciding when to update the occupant group represented by the \ac{gcm}.
+
+\autoref{table:OccuIntegration} compares field studies that integrate multiple \acp{pcm} within the same control zone.
+Most existing multi-occupant studies assume static occupant attendance configurations and do not account for occupants arriving and leaving dynamically.
+\mycite{ono_impact_2022}~\cite{ono_impact_2022} compared personal- and group-level occupancy information in a field experiment on \ac{pcm}-based control, illustrating the relevance of identifying which occupants are present.
+\mycite{lei_practical_2022}~\cite{lei_practical_2022} addressed dynamic occupancy using multiple reinforcement-learning models for frequent occupant combinations, but such an approach can be data- and compute-intensive and may not cover all possible occupant combinations.
+
+Rather than preparing separate control models for many occupant combinations, a more deployable strategy is to vary the temporal resolution at which individual comfort information is aggregated.
+This leads to a practical question: when is static, daily, or real-time aggregation of individual comfort information sufficient for room-level control?
+```
+
+上のコードブロックの直後には、現在の `table:OccuIntegration` のtable環境をそのまま置き、その後に現在の `Focus of the research` を続ける。table本体を本文の再配置に合わせて書き換える必要はない。
+
+### 14.6 確認範囲
+
+今回変更するのはUpdate.mdの更新日と本節の追記のみ。Introductionを含むTeX、図、bibliographyは変更していない。既存のcitation keysと `table:OccuTrack`／`table:OccuIntegration` の参照を保持し、新規文献は加えていない。引用元の内容を新たに検証したレビューではなく、既存本文内の論理構成・配置を整理する提案である。
