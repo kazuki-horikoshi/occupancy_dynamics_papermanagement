@@ -9,25 +9,6 @@ Figure~\ref{fig:MeanOccuConf} shows the mean comfort probability under the \ac{s
 Here, subgroup size $K$ represents the sampled regular-member group size, not the number of occupants present at every timestep.
 Therefore, the trend across $K$ indicates how the tested policies behave as the potential room-member pool expands.
 
-% \begin{figure}[pos=htbp!]
-%     \centering
-%     \begin{subfigure}{0.98\linewidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{\Pic{png}{analysis21_a6_style_comfort_rates_expanded_pool_selected_k_adopted_20260630_083849}}
-%         \caption{Mean comfort probability probability under different comfort-representation controls}
-%         \label{fig:ComfAchi}
-%     \end{subfigure}
-%     \medskip
-%     \begin{subfigure}{0.98\linewidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{\Pic{png}{analysis21_a6_style_improvement_vs24_expanded_pool_selected_k_adopted_20260630_083849}}
-%         \caption{Comfort probability improvement relative to the baseline control}
-%         \label{fig:ComfImp}
-%     \end{subfigure}
-%     \caption{Comfort probability for different subgroup sizes}
-%     \label{fig:ComfAgentic}
-% \end{figure}
-
 \begin{figure}[pos=htbp!]
     \centering
     \includegraphics[width=0.97\linewidth]{\Pic{png}{fig1_gcm_consistent_comfort_rates_room}}
@@ -44,10 +25,10 @@ Therefore, the trend across $K$ indicates how the tested policies behave as the 
 
 Across all rooms, the baseline control remained nearly constant at approximately \qtyrange{65}{70}{\percent} across subgroup sizes.
 The \ac{rtgcm} produced the highest mean comfort probability for every room and subgroup size, followed by the \ac{dgcm} and then the \ac{sgcm}.
-The performance of the \ac{rtgcm} and \ac{dgcm} decreases at similar rates as subgroup size increases, while the performance of the \ac{sgcm} shows a more modest decrease.
-The mean comfort probability across rooms ranged approximately \qtyrange{80}{98}{\percent} for the \ac{rtgcm}, \qtyrange{75}{95}{\percent} for the \ac{dgcm}, and \qtyrange{70}{85}{\percent} for the \ac{sgcm}.
+The performance of three \ac{gcm}, \ac{rtgcm}, \ac{dgcm} and \ac{sgcm} decrease subgroup size increases.
+The mean comfort probability across rooms ranged approximately \qtyrange{78}{93}{\percent} for the \ac{rtgcm}, \qtyrange{73}{95}{\percent} for the \ac{dgcm}, and \qtyrange{71}{86}{\percent} for the \ac{sgcm}.
 The improvement relative to the 24 \si{\celsius} baseline decreased as subgroup size increased.
-The decline of the \ac{sgcm} improvement indicates that a fixed room-member aggregation becomes less distinct from the fixed-temperature baseline as more heterogeneous comfort profiles are averaged into a single representation.
+The decline of the \ac{sgcm} performance indicates that a fixed room-member aggregation becomes less distinct from the fixed-temperature baseline as more heterogeneous comfort profiles are averaged into a single representation.
 In contrast, the \ac{rtgcm} maintain positive improvements at the largest tested subgroup size for each target rooms with improvement remaining approximately \qtyrange{15}{20}{\percent}.
 The positive improvement maintained by the \ac{rtgcm} indicates that updating the represented occupant group can preserve comfort benefits even when the potential member pool becomes larger.
 For \ac{dgcm} and \ac{sgcm}, \ac{dgcm} maintain positive improvements approximately \qtyrange{4}{5}{\percent} in Office 5B and Shared Office 5B, while approximately \qtyrange{1}{3}{\percent} in Office 5A and Shared Office 5A.
@@ -67,21 +48,21 @@ For \ac{dgcm} and \ac{sgcm}, \ac{dgcm} maintain positive improvements approximat
 To further investigate these performance differences between target rooms, \autoref{fig:OccuDensity} illustrates time-of-day trends in instantaneous occupancy density $\rho_{r,t}^{\mathrm{occ}}=N_{r,t}/K$ in each room.
 Additionally, \autoref{fig:DailyOccuDensity} illustrates the daily attendance ratio $\rho_{r,d}^{\mathrm{att}}=|A_{r,d}|/K$, the fraction of sampled members who attended the room at least once that day.
 \autoref{fig:OccuDensity} shows that mean instantaneous occupancy density remained below full occupancy and varied by room and time.
-Office 5A shows a higher instantaneous occupancy density throughout the day except at lunchtime, compared to a similar fixed-seat office, 5B, likely due to the difference of occupants' job function.
+For fixed seat offices, office 5A shows a higher instantaneous occupancy density throughout the day except at lunchtime, compared to a similar fixed-seat office, 5B, likely due to the difference of occupants' job function.
 A certain ratio of occupants in office 5A serve administrative tasks, while occupants in office 5B more frequently move to other spaces such as meeting rooms or specific experiment labs.
 For shared offices, the difference in instantaneous occupancy density is not strongly distinguishable; however shared office 5B demonstrates some time steps when the density tends to drop in the afternoon, compared to the comparatively flat instantaneous occupancy density curve in shared office 5A.
 
-Furthermore, \autoref{fig:DailyOccuDensity} clearly demonstrates differences in daily attendance ratio $\rho_{r,d}^{\mathrm{att}}$ between Office 5A, Shared Office 5A, Shared Office 5B, and Office 5B.
+Furthermore, \autoref{fig:DailyOccuDensity} clearly demonstrates differences in daily attendance ratio $\rho_{r,d}^{\mathrm{att}}$ between offices.
 Office 5A reaches full attendance ($\rho_{r,d}^{\mathrm{att}}=1$) on over 60\% of simulated working days, followed by Shared Office 5A with full attendance on approximately 50\% of days, Shared Office 5B on nearly 35\%, and Office 5B on fewer than 20\%.
 Following this trend, the comfort performance difference between \ac{dgcm} and \ac{sgcm} is narrower in office 5A and Shared Office 5A compared to office 5B and shared office 5B.
 The comparatively lower daily attendance ratio in Office 5B and Shared Office 5B possibly positions \ac{dgcm} performance between \ac{sgcm} and \ac{rtgcm}, whereas \ac{dgcm} and \ac{sgcm} represent more similar occupant compositions in Office 5A and Shared Office 5A.
+
 Thus, large member pools often produced partial attendance, allowing the present group to differ from regular membership and daily attendees and preserving an advantage for attendance-aware aggregation.
 Considering the difference in triggers for each \ac{gcm}-control type, it is reasonable to interpret the performance difference between the three representations as an outcome of these instantaneous occupancy density and daily attendance ratio differences.
 
-
 \subsection{Setpoint adjustment characteristics under the \ac{rtgcm}}
 \label{subsec:controleffect}
-The previous subsection showed that the \ac{rtgcm} maintained a \qtyrange{15}{30}{\percent} higher mean comfort probability than the \ac{sgcm} across room member sizes.
+The previous subsection showed that the \ac{rtgcm} maintained a \qtyrange{10}{15}{\percent} higher mean comfort probability than the \ac{sgcm} across room member sizes.
 This subsection investigates the setpoint adjustment characteristics introduced by the \ac{rtgcm}.
 Because the \ac{sgcm} and \ac{dgcm} use coarser occupant-composition representations, frequent setpoint updates are primarily required under \ac{rtgcm}-based control.
 
@@ -104,21 +85,21 @@ Because the \ac{sgcm} and \ac{dgcm} use coarser occupant-composition representat
     \label{fig:DynSpStep}
 \end{figure}
 
-\autoref{fig:DynSpStepvsMeanOccu} shows the distribution of temperature adjustment magnitudes $|\Delta T|$ under the \ac{rtgcm} across daily mean occupancy $\bar{N}_{r,d}$.
+\autoref{fig:DynSpStepvsMeanOccu} shows the distribution of daily mean of temperature adjustment magnitudes $|\Delta T|$ under the \ac{rtgcm} across daily mean occupancy $\bar{N}_{r,d}$.
 It can be observed that as daily mean occupancy increases, the range of temperature adjustment magnitude slowly shrinks.
 This may because that as the number of occupants increases, the optimal temperature range for the group becomes more stable, leading to smaller adjustments.
-However, the mean value remains approximately around \qty{1.0}{\celsius} around mean occupancy(1--5) and marks around \qty{0.8}{\celsius} even at the highest occupancy levels in our analysis.
+However, the mean value remains approximately around \qty{1.0}{\celsius} around daily mean occupancy(1--4) and marks around \qty{0.8}{\celsius} even at the highest occupancy levels in our analysis.
 
 Similarly, \autoref{fig:DynSpStepHeatmap} maps the temperature adjustment magnitude $|\Delta T|$ over subgroup size $K$ and normalized daily mean occupancy $\bar{N}_{r,d}/K$.
 This analysis visualizes occupancy scale from two complementary perspectives: subgroup size $K$, which represents the sampled regular-member group size in each simulation condition, and normalized daily mean occupancy $\bar{N}_{r,d}/K$, which represents how densely that sampled group is occupied on average during the day.
 The magnitude of this temperature range shrinks as both subgroup size and normalized daily mean occupancy increase.
 At small subgroup sizes such as $K=4$, the mean adjustment magnitude is over \qty{1.0}{\celsius} in most cases.
-For most cases, the temperature adjustment magnitude remains around \qty{0.5}{\celsius}, which is common \ac{hvac} setpoint adjustment range.
+For most cases, the daily mean temperature adjustment magnitude remains around \qty{0.5}{\celsius}, which is common \ac{hvac} setpoint adjustment range.
 This can be interpreted that in general building \ac{hvac} operation, these adjustment range can be wider than controllable range, thus this adjustment magnitude can be practical in actual \ac{hvac} operation.
 
 \subsection{Effect of occupancy dynamics on control action frequency}
 After investigating the magnitude of temperature adjustment in the previous subsection, this subsection investigates the effect of occupancy dynamics on the frequency of actionable setpoint changes under \ac{rtgcm}-based control.
-\autoref{fig:CtrlWindowRatio} shows the 15-minute action-needed window ratio across different \ac{utr} levels, where an action-needed window is defined as a window containing at least one rounded \ac{rtgcm} setpoint change of \qty{0.5}{\celsius} or larger.
+\autoref{fig:CtrlWindowRatio} shows the action-needed window ratio across different \ac{utr} levels, where an action-needed window is defined as a window containing at least one rounded \ac{rtgcm} setpoint change of \qty{0.5}{\celsius} or larger.
 Here, \ac{utr} indicates how much occupancy composition present in the room shift between two control timesteps.
 It can be seen that as \ac{utr} increases, the action-needed window ratio also increases; when \ac{utr} reaches approximately 0.7--0.8, the action-needed window ratio reaches \qty{90}{\percent}.
 This indicates that large occupant-composition shifts, as captured by \ac{utr}, are associated with more frequent actionable setpoint changes.
@@ -130,11 +111,11 @@ This indicates that large occupant-composition shifts, as captured by \ac{utr}, 
     \label{fig:CtrlWindowRatio}
 \end{figure}
 
-\autoref{fig:UTRexamples} shows the mean \ac{utr} transition by time of day, calculated as the weekday mean in four offices.
+\autoref{fig:UTRexamples} shows the mean \ac{utr} transition by time of day, calculated as the weekday mean in four offices over four weeks.
 Generally, \ac{utr} marks the highest values around \DTMtime{08:00:00} to \DTMtime{08:30:00} and around \DTMtime{17:30:00} to \DTMtime{18:00:00}, which are typical occupant arrival and departure times, respectively.
 Also, \ac{utr} marks higher values at lunchtime around \DTMtime{12:00:00} to \DTMtime{13:00:00}.
-During office hours, the \ac{utr} values of Shared Office 5A and Shared Office 5A change more dynamically than in Office 5A, where occupant's majority job function is administrative tasks.
-\ac{utr} marks a higher value around 1.0 on Mondays in Office 5B, and in Shared Office 5B \ac{utr} marks approximately 0.8 on Mondays.
+During office hours, the \ac{utr} values of Shared Office 5A and Shared Office 5B change more dynamically than in Office 5A, where occupant's majority job function is administrative tasks.
+As a notable points, \ac{utr} marks a higher value around 1.0 on Mondays 16:00 in Office 5B , and in Shared Office 5B \ac{utr} marks approximately 0.8 on Mondays 15:00.
 This exceptional hight \ac{utr} values relates to internal team meeting held in other meeting rooms.
 Thus, this \ac{utr} transition figures can indicate the dynamic office usage transition and capture the specific office usage types.
 

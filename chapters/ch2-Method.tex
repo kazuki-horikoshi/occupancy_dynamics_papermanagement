@@ -20,6 +20,7 @@ The overall procedural flow of the study is illustrated in \autoref{fig:ex_flow}
 \label{subsec:DataCollect}
 For the simulation, three primary types of field data were collected in the target building: real-time occupancy logs, subjective \ac{tcs} and environmental measurement logs.
 For \ac{tcs} and indoor environment measurement, data collected and described in~\cite{horikoshi_double_2026} are used.
+The contents of \ac{tcs} are briefly descrived in \autoref{app:ThermalSurvey}.
 This subsection therefore describes the analysis target building and the procedure for location data tracking.
 
 \subsubsection{Target Building, Participant Recruitment and Ethical Considerations}
@@ -28,7 +29,6 @@ The data collection was conducted at The GEAR, an R\&D and administrative office
 The 3rd to 6th floors, which accommodate a mix of shared-office and static seating work styles depending on departmental roles, were the target areas for data collection.
 The target zones are served by a central air-conditioning system consisting of air-handling units and dedicated outdoor air-handling units, using variable air volume units capable of individual zone temperature and ventilation control.
 \qty{45} office workers who regularly work in the designated target rooms were invited to participate.
-Considering the completeness of the collected survey answers and location tracking records, data from \qty{39} participants were used in the analysis.
 This study has been approved by the National University of Singapore Institutional Review Board (NUS-IRB Reference Code: NUS-IRB-2025-498).
 Informed consent was obtained from all participants prior to the study.
 All location and survey data were anonymized by the building administrator before being accessed by the research team to protect privacy. 
@@ -73,7 +73,8 @@ A Monte Carlo-style resampling simulation was then conducted by combining sample
 % At each control timestep, the location-log agents determined the simulated room occupant composition.
 % Based on the simulated occupant compositions, three \ac{gcm}-based \ac{occ} policies were evaluated from comfort and control perspectives.
 
-For agentic simulations, 
+For agentic simulations, four office rooms are selected as shown in \autoref{tab:SimuTarget}.
+These rooms are selected to represent comparably large seating capacities, both seating types, and various types of job functions.
 \begin{table*}[pos=htbp!]
     \centering
     \small
@@ -112,11 +113,11 @@ As introduced in \autoref{subsec:Focus}, the simulation evaluates three temporal
 
 Using the prepared location-log agents and \acp{pcm}, Monte Carlo trials were generated to represent different combinations of observed occupancy compositions and assigned thermal-preference profiles for each target room.
 To preserve room-specific usage patterns while varying the simulated occupant mix, each Monte Carlo trial sampled a subgroup of location-log agents from the regular member pool of room $r$ and randomly assigned \acp{pcm} to the selected location-log agents.
-The subgroup size $K$ denotes the number of location-log agents sampled from the regular member pool of room $r$ in a simulation condition.
-Within a trial, the sampled subgroup size $K$ is fixed for the full simulation period.
-However, only a subset of those sampled agents is present at any control timestep, so the realized occupancy count varies according to the observed stay logs and is denoted by $N_{r,t}=|S_{r,t}|$.
 The selected location-log agents retained their observed stay logs in their original rooms, while \acp{pcm} were randomly assigned to those selected location-log agents in each trial.
 This procedure preserved observed room usage patterns while varying the association between occupancy patterns and comfort-response characteristics.
+The sampled subgroup size $K$ denotes the number of location-log agents sampled from the regular member pool of room $r$ in a simulation condition.
+Within a trial, the sampled subgroup size $K$ is fixed for the full simulation period.
+Since only a subset of those sampled agents is present at any control timestep, so the realized occupancy count at each control steps varies according to the observed stay logs and is denoted by $N_{r,t}=|S_{r,t}|$.
 At each control timestep $t$, the subset of sampled location-log agents who are present in room $r$ defined the active set $S_{r,t}$, and each policy selected the corresponding temperature setpoint from its \ac{gcm}.
 
 For each Monte Carlo trial, the three \acp{gcm} described above were formed by averaging the assigned individual ``No change'' probability curves at different temporal resolutions.
@@ -163,6 +164,7 @@ T_{\mathrm{set}}^{\mathrm{RT}}(t)=T_{G_{r,t}^{\mathrm{RT}}}^{*},
 \end{equation}
 where $d(t)$ is the calendar day containing timestamp $t$.
 In addition to these three group-model-based policies, a fixed \qty{24}{\celsius} setpoint is used as an additional baseline.
+qty{24}{\celsius} baseline is selected by comparing the comfort performance (Mean comfort probability, as explained in \autoref{subsec:comfMetrics}) among candidate baseline temperature points, \qtyrange{23}{26}{\celsius} by \qty{0.5}{\celsius} steps.
 For each room and subgroup size, \qty{1000} Monte Carlo trials were formed by combining sampled location-log agents and assigned \acp{pcm}, and one-month \ac{occ} simulations based on the three \acp{gcm} were conducted.
 
 \subsection{Evaluation Metrics}
@@ -208,19 +210,6 @@ The daily attendance ratio $\rho_{r,d}^{\mathrm{att}}$ is the fraction of the sa
 \end{equation}
 where $A_{r,d}$ is the set of sampled location-log agents who attend room $r$ at least once on day $d$.
 
-% \paragraph{Occupancy variability}
-% To capture within-day fluctuations in room load, the daily standard deviation of realized occupancy count is used:
-% \begin{equation}
-% \sigma_{N,r,d}
-% =
-% \sqrt{
-% \frac{1}{|\mathcal{T}_{r,d}|-1}
-% \sum_{t\in\mathcal{T}_{r,d}}
-% \left(N_{r,t}-\bar{N}_{r,d}\right)^2
-% }.
-% \label{eq:occ_var}
-% \end{equation}
-
 \paragraph{User turnover rate}
 The short-horizon replacement of attendees is quantified using a rolling Jaccard turnover, denoted as \ac{utr}.
 For timestamp-level analysis, \ac{utr} is computed by comparing the current occupant set with the set observed at the previous timestep:
@@ -240,19 +229,6 @@ Here, $\Delta t$ is the interval between consecutive analysis timesteps, and $S_
 When both the current and lagged sets are empty, the timestamp-level turnover is treated as undefined.
 Higher $\mathrm{UTR}_{r,t}$ indicates stronger short-horizon replacement of attendees.
 For the time-of-day profiles, timestamp-level \ac{utr} values are summarized by room, weekday, and time of day.
-
-% For daily summaries, timestamp-level \ac{utr} values are averaged within each room-day:
-% \begin{equation}
-% \mathrm{UTR}_{r,d}
-% =
-% \frac{1}{|\mathcal{V}_{r,d}|}
-% \sum_{t\in\mathcal{V}_{r,d}}
-% \mathrm{UTR}_{r,t},
-% \label{eq:utr_daily}
-% \end{equation}
-% where $\mathcal{V}_{r,d}$ is the set of timestamps on day $d$ for which the timestep-level turnover is defined.
-% The daily \ac{utr} captures how much the present group composition changes over short horizons, even when the occupancy count is similar.
-
 
 \subsubsection{Comfort-related outcomes}
 \label{subsec:comfMetrics}
@@ -385,4 +361,31 @@ Representative \ac{utr} transitions by room and weekday are then used to interpr
 %     \caption{Individual comfort models from comfort surveys}
 %     \label{fig:ComChara}
 % \end{figure}
+
+% Removed metrics
+
+% \paragraph{Occupancy variability}
+% To capture within-day fluctuations in room load, the daily standard deviation of realized occupancy count is used:
+% \begin{equation}
+% \sigma_{N,r,d}
+% =
+% \sqrt{
+% \frac{1}{|\mathcal{T}_{r,d}|-1}
+% \sum_{t\in\mathcal{T}_{r,d}}
+% \left(N_{r,t}-\bar{N}_{r,d}\right)^2
+% }.
+% \label{eq:occ_var}
+% \end{equation}
+
+% For daily summaries, timestamp-level \ac{utr} values are averaged within each room-day:
+% \begin{equation}
+% \mathrm{UTR}_{r,d}
+% =
+% \frac{1}{|\mathcal{V}_{r,d}|}
+% \sum_{t\in\mathcal{V}_{r,d}}
+% \mathrm{UTR}_{r,t},
+% \label{eq:utr_daily}
+% \end{equation}
+% where $\mathcal{V}_{r,d}$ is the set of timestamps on day $d$ for which the timestep-level turnover is defined.
+% The daily \ac{utr} captures how much the present group composition changes over short horizons, even when the occupancy count is similar.
 
