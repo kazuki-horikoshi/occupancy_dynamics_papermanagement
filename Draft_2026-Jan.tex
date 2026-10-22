@@ -225,7 +225,7 @@ Mean comfort probability was compared with a fixed $24\,^\circ\mathrm{C}$ baseli
 Across four rooms, real-time aggregation achieved the highest mean comfort probability at every tested subgroup size, while static aggregation approached baseline performance as subgroup size increased.
 The daily--static performance gap was narrower in offices with higher daily attendance ratios, defined as the fraction of sampled members attending at least once per day.
 As daily mean occupancy (the time-averaged number present) increased, absolute real-time setpoint changes from the previous timestep became less variable, but their mean when changes occurred remained approximately $0.8\,^\circ\mathrm{C}$ at the highest occupancy levels.
-Higher user turnover rate (UTR), measuring changes in occupant composition between consecutive timesteps, was associated with more frequent control adjustments: approximately $90\%$ of 15-minute windows contained at least one rounded setpoint change of $0.5\,^\circ\mathrm{C}$ or more at UTR $0.7$--$0.8$.
+Higher user turnover rate (UTR), measuring changes in occupant composition between consecutive timesteps, was associated with more frequent control adjustments, with the rate approaching $90\%$ at the highest turnover levels.
 These findings link group size, daily attendance, mean occupancy, and occupant turnover to the comfort benefits and control requirements of higher-resolution aggregation, informing model selection in shared offices.
 \end{abstract}
 
@@ -237,11 +237,19 @@ These findings link group size, daily attendance, mean occupancy, and occupant t
 % Research highlights
 \begin{highlights}
 \item Agentic HVAC simulation using location-logs and personal comfort models
-\item Three group comfort models uses static, daily and real-time occupancy compositions
-\item Real-time control shows 15--25\% improvement in "No change" probability in large group
-\item Temperature adjustment using real-time occupancy composition mostly exceeds 0.5 $^{\circ}$C
-\item User turn over ratio relates to actionable control frequency
+\item Three group comfort models use static, daily and real-time occupancy compositions
+\item Realtime control raises No-change probability by 15--25\% over 24°C across group sizes
+\item Composition-based setpoint changes average about 0.8°C at high occupancy
+\item Daily attendance and turnover can guide group comfort model update timescales
+
 \end{highlights}
+
+% \item Real-time control shows 15--25\% improvement in "No change" probability in large group
+% \item Temperature adjustment using real-time occupancy composition mostly exceeds 0.5 $^{\circ}$C
+% \item Mean setpoint changes remain near 0.8°C at high occupancy when changes occur
+
+% \item Higher user turnover is associated with more frequent actionable setpoint changes
+
 
 % Keywords Each keyword is seperated by \sep
 \begin{keywords}

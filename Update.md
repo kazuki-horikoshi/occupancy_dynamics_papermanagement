@@ -3306,3 +3306,120 @@ By relating predicted comfort benefits and control requirements to office occupa
 ### 16.7 レビューの限界と変更範囲
 
 今回変更したのはUpdate.mdの更新日と本節の追記のみ。TeX、図、解析コード、bibliographyは変更していない。本文・式・table・主要PNGの整合を確認したテキストレビューであり、元データからの差分再計算、図の生成処理の再実行、PDFの組版確認、外部文献の主張の再検証は行っていない。
+
+## 17. 更新後の再レビューとHighlightsの3方針（2026-10-22、TeX未反映）
+
+### 17.1 今回の判断と反映済みの改善
+
+`7ed2f3b` 時点の有効Abstract・Highlights、Introduction、Method、Results、Discussion、Conclusion、Appendixを再読した。前回レビューの全項目を一律に適用するのではなく、現在残る問題を以下に絞る。
+
+- Abstractのcomfort評価に固定24°C baselineが明記された。
+- Introductionの目的にdaily attendance ratioが入り、Resultsとの対応が明確になった。
+- ResultsのRT-GCM–SGCM比較から未確定の10–15%が外れ、調整幅から調整頻度へ進む接続も自然になった。
+- Discussion 4.1の旧3文の重複・DGCMの自己比較が解消された。情報のresolution、setpointの刻み、HVACの物理応答も区別された。
+- Conclusionにdaily attendanceの結果、attendanceとUTRの相補的なscreening、研究全体へ戻る締めが入った。
+
+章の大規模な再編は不要である。残る優先事項は、**Abstract・図・本文の数値整合、指標の集計条件、結果とモデル選択の示唆の強さ**である。Highlightsは方法紹介2項目を圧縮し、daily attendance・調整幅・UTRというResultsの後半を配分し直すと改善できる。
+
+### 17.2 優先度の高い残存事項と局所修正案
+
+行番号は今回確認時点の補助情報。適用時は英文アンカーを使う。以下の差し替え文はTeX未反映であり、図からの目視概数を確定した再集計値としては扱わない。
+
+| 優先度・対象 | 現在のアンカー | 問題・確認事項 | 修正方針・候補 |
+|---|---|---|---|
+| 高：UTRの数値がAbstractに旧値のまま残る | `Draft_2026-Jan.tex:228`、`at UTR $0.7$--$0.8$` | Resultsは「最大UTR域で約90%」へ修正されたが、Abstractは0.7–0.8で約90%のまま。有効PNGではこの域は概ね80%前後であり、Conclusionは0.9–1.0で89–93%。 | 当該Abstract文の置換候補：`Higher user turnover rate (UTR), measuring changes in occupant composition between consecutive timesteps, was associated with more frequent actionable setpoint changes, with the rate approaching $90\%$ at the highest turnover levels.` window/stepの確定後、その集計単位を必要に応じて戻す。 |
+| 高：comfort確率の上限と差分単位 | `chapters/ch3-Results.tex:29`、`\qtyrange{73}{95}{\percent} for the \ac{dgcm}`；同34行、`with approximately \qtyrange{4}{5}` | 図のDGCM平均曲線の上限は約90–91%に見え、95%はRT-GCMが全条件で最高という記述と整合しない。4–5%／1–3%には相対%かpercentage pointsか、どのKにおける差かがない。 | 95を推測値に置き換えず元集計で確認する。差分について確認までの置換候補：`The difference in mean comfort probability between the \ac{dgcm} and \ac{sgcm} was larger in Office 5B and Shared Office 5B than in Office 5A and Shared Office 5A.` 数値を残す場合はroom・Kとabsolute/relative differenceを揃える。 |
+| 高：調整幅の要約が図と噛み合わない | `chapters/ch3-Results.tex:96`、`For most cases ... around \qty{0.5}{\celsius}` | heatmapの有効セルは目視上おおむね0.8°C以上で、0.5°Cを中心とする図ではない。Fig.3(a)の黒線も低occupancyで約1.5°Cから高occupancyで約0.8°Cへ低下している。 | 96行の置換候補：`The mean adjustment magnitude remained above \qty{0.5}{\celsius} across the displayed subgroup-size and occupancy-density conditions.` 87–90行も「rangeが縮む」だけでなく中心値も低下することを明記する。凡例がない黒線・二つの帯がmean/median/quantileの何を表すか、生成処理で確認してcaptionに記す。 |
+| 高：15分のstepとwindow、UTRの時間幅が未確定 | `chapters/ch2-Method.tex:228,311`、`interval between consecutive analysis timesteps`／`Action-needed window ratio` | Methodはwindow内maxの式、図は`Actionable-step rate (%)`。Abstract・captionは15分、weekday図のファイル名はutr30。1window=1valid stepか、複数stepを集約するかで分母が異なる。 | 実際のcontrol timestep、UTR lag、window長、UTR binへの割当て、valid step/windowの除外条件を確認する。1window=1stepなら同値性を明記し、違うなら式または図を実装へ合わせる。ファイル名だけで30分lagとは断定しない。 |
+| 中〜高：モデル選択への含意が一部で強すぎる | `chapters/ch4-Discussion.tex:56,59,65`、`UTR can gate`／`It is most valuable in sparse`／`numerical thresholds`；`chapters/ch5-Conclusion.tex:14`、`these results support static aggregation` | 観察したのはattendanceとpolicy間のcomfort差、UTRとaction頻度。sparse/high-UTR層でcomfort増分が最大という比較、UTR gateの性能、採用閾値の最適化は示していない。 | 56行は`A turnover-based update gate could be evaluated in future work, together with deadbands or minimum hold times.`へ置換する。59行の最上級は削除または仮説へ限定。Limitationsの`numerical thresholds`は`observed relationships and numerical ranges`へ。Conclusion 14行は下記17.4の候補へ置換する。 |
+
+追加で揃えたい数値は、Discussion 4.1のSGCM「3–5%」とRT-GCM–DGCM「6–8 percentage points」、Conclusionの同じ「6–8% gains」、Highlightsの「15–25%」である。百分率で表示したcomfort probabilityの直接差ならpercentage pointsを用いる。相対改善なら基準値で割る定義が必要である。現状の複数の値を同じ種類の差として扱わない。
+
+### 17.3 Methodと図の解釈で補いたい情報
+
+| 対象 | 必要な補足と理由 |
+|---|---|
+| Method 31行とAbstract 220行 | Methodの45 invitedから、Abstractの39 participantsへつながる最終分析対象の説明を追加する。採用人数と除外条件は実データで確認する。 |
+| Method 118、144、167、177行 | tested Kとmember poolの大きさ、候補setpoint範囲・0.1°C刻み、勤務日・分析時刻帯、24°C baseline選択時のroom/day/trialの集約を明記する。167行の`qty{24}`は先頭backslashも欠けている。baseline比較の0.5°C刻みと制御候補の0.1°C刻みは区別する。 |
+| Results 56行とdaily attendance histogram | 図の縦軸は`Share of all trial × weekday cases (%)`。本文の`simulated working days`はtrial-day casesとすると分母が明確になる。また右端のhistogram binが「正確にrho=1」だけか、1に近い値を含むかはPNGから確定できない。full attendanceの割合として引用する前にbin定義を確認する。 |
+| Occupancy densityの図 | ファイル名にはk12がある一方、comfort図のtested K上限はshared roomsで10。これ自体で誤りとはいえないが、attendance/densityの図がどのKを用い、comfort結果とどう対応するかをcaption/Methodで説明する。 |
+| UTR式と空室遷移 | Jaccard turnoverは「全員の入れ替わり」だけでなく、既存メンバーの退出や空室からの入室でも大きくなる。UTR=1は集合が交わらないことを示し、人数一定の全員入替とは限らない。comfortとsetpoint-changeの対象から空室を除外しているなら、UTR–action解析にも同じ条件が適用されるかを明記する。 |
+| DGCMのdaily attendee集合 | MethodのAはその日に一度でも来た人の集合である。日初に使うには当日のattendeesを事前に知る必要があるため、observed daily attendanceを事後的に用いた比較なのか、実運用で何の情報を想定するかを区別する。deployableなdaily policyを検証済みとは書かない。 |
+
+文体上の局所修正も残る。Results 28行は`Mean comfort probability under all three GCM policies decreased as subgroup size increased.`、89行は`This may reflect greater stability in the group-level comfort representation as mean occupancy increases.`が候補。Introduction 58行のCOVID後のtracking利用増加は直後にFor exampleを足しても根拠の問題が残るため、増加を示す根拠を確認するか、この文を削除して既存の事例紹介へつなぐ。Appendix 21行はoccupancy studiesのコピー文なので、`The thermal comfort survey items are summarised in \autoref{table:comfsurvey}.`へ置換する。
+
+### 17.4 Highlightsで選択指標を述べる際の論拠と範囲
+
+**daily attendance ratioとUTRを「相補的な候補指標」とする方向は適切である。** ただし二つの指標は別の結果に対応する。
+
+| 指標 | 今回示した対応 | 支えられる選択上の示唆 | 今回は示していないこと |
+|---|---|---|---|
+| Daily attendance ratio | 高いofficeほどDGCM–SGCMのcomfort差が小さい | regular membershipからdaily attendeesへ更新する追加便益を検討する材料 | 全room/day共通の採用閾値、attendanceが低いほど必ず便益が大きいという因果則 |
+| Daily mean occupancy / normalized daily mean occupancy | RT-GCMの変更時調整幅とその分布の変化 | 必要となるsetpoint変更量を評価する材料 | sparse条件でcomfort便益が最大という結論 |
+| UTR | 高いほどactionable setpoint-change頻度が高い | real-time表現に伴う更新要求や運用負担を評価する材料 | 高UTRなら必ずcomfort便益が大きい、低UTRならstaticで十分という判定 |
+
+したがって、`determine the optimal OCC resolution`ではなく、`may guide`、`may inform`、`may help screen`が今回の根拠に合う。ここでいうresolutionは、空間的なHVAC zoningや温度刻みを含むOCC全体ではなく、**group comfort aggregationのtemporal resolution（static/daily/real-time）**である。
+
+また、RT-GCMはその時点の在室者の平均No-change確率を最大化し、同じPCMで評価するため、同一の候補setpoint・制約の下では時点ごとの予測スコアが他policy以上になる構造を持つ。これは比較を無意味にするものではないが、Highlightsの中心を「RTが最高」だけに置くより、**粗い表現との差の大きさ、その差とattendanceの対応、調整幅・頻度の要求**へ置いた方が研究固有の結果が伝わる。現場で観測されたcomfort改善とは区別して`predicted comfort`を維持する。
+
+Conclusion 14行の局所置換候補（次のscreening文とつなぐ）：
+
+```tex
+Within this comfort-only simulation scope, the observed relationships suggest evaluating daily attendance when considering daily aggregation and within-day turnover when assessing the update requirements of real-time aggregation.
+```
+
+続く既存の`Daily attendance ratio and \ac{utr} could therefore serve as complementary screening metrics ...`は保持できる。これにより、選択指標としての価値を残しながら、未検証の運用条件を採用ルールとして確定しない。
+
+### 17.5 現行Highlightsの問題と配分方針
+
+現在の`Draft_2026-Jan.tex:239–243`は、方法紹介2項目、comfort数値1項目、調整幅1項目、UTR1項目である。
+
+- 1・2項目は同じsimulationの紹介としてまとめられる。`Three group comfort models uses`には文法修正も必要。
+- 3項目の15–25%は比較対象、relative%/percentage points、large groupのKが不明。確定までは予測comfortの順位または便益が残るという定性的結果が安全。
+- 4項目の`mostly exceeds 0.5`は、全stepか変更時stepかを区別していない。Methodの調整幅は変更時のみの平均なので、`when changes occur`を残す。
+- 5項目は`user turnover rate`に統一し、どちら向きに何と対応したかまで書く。
+- daily attendanceを1項目に入れると、Results 3.1後半が独立した知見として伝わる。
+
+以下は三つの完成形候補である。英語の表示文は各85文字以内を目安に作成したもので、投稿先の規定を今回確認したという意味ではない。数値0.8°Cは現行本文と図の対応がある概数だが、最終採用時には元集計で確認する。
+
+### 17.6 案A：Resultsを広く伝える
+
+方法を1項目にまとめ、comfort、daily attendance、調整幅、調整頻度を1項目ずつ配分する。選択指標という解釈は本文・Conclusionに残す。
+
+1. Location-log simulations compare static, daily and real-time comfort aggregation.
+2. Real-time aggregation yields the highest predicted comfort across tested groups.
+3. The daily-static comfort gap is smaller in offices with higher daily attendance.
+4. Mean setpoint changes remain near 0.8°C at high occupancy when changes occur.
+5. Higher user turnover is associated with more frequent actionable setpoint changes.
+
+利点は、直接の結果と方法のバランスがよいこと。モデル選択に使えるという研究の到達点は前面に出にくい。
+
+### 17.7 案B：Resultsと選択指標を両立する（推奨）
+
+方法はAbstractに委ね、4つの結果と1つの慎重な設計示唆にする。ユーザーの希望するUTR・daily attendanceによるresolution選択を含み、調整幅の結果も残せる。
+
+1. Real-time aggregation yields the highest predicted comfort across tested groups.
+2. The daily-static comfort gap is smaller in offices with higher daily attendance.
+3. Mean setpoint changes remain near 0.8°C at high occupancy when changes occur.
+4. Higher user turnover is associated with more frequent actionable setpoint changes.
+5. Daily attendance and turnover may guide group comfort model update timescales.
+
+5項目目は二つの指標を単一の決定則にせず、更新時間尺度を選ぶ材料として示す。よりscreeningを強調する代替文は、`Attendance and turnover may help screen the need for finer comfort aggregation.`である。
+
+### 17.8 案C：temporal resolutionの選択という論文の主題を強調する
+
+数値よりも、各occupancy指標が何の判断材料になるかを前面に出す。定量値が未確定の段階でも構成を検討しやすい。
+
+1. Location-log simulations compare three temporal resolutions of comfort aggregation.
+2. Daily attendance reveals when daily and static comfort outcomes differ.
+3. Mean occupancy is associated with the magnitude of real-time setpoint changes.
+4. User turnover indicates the frequency of actionable real-time setpoint changes.
+5. Attendance and turnover may help screen the need for finer comfort aggregation.
+
+利点は論文の主題との対応が明確なこと。案Bに比べて具体的なcomfort結果が見えにくく、2・5項目が概念的に近くなる。このため現段階では案Bを第一候補とする。
+
+### 17.9 確認範囲と変更範囲
+
+今回変更したのは本節のUpdate.mdへの追記のみであり、TeXは変更していない。上記の有効各章とtarget-room tableを読み、Resultsから実際に読み込む7枚のPNG（comfort、instantaneous occupancy density、daily attendance、調整幅2枚、UTR–action、weekday UTR）を目視確認した。
+
+解析コード・元集計からの再計算、UTRの時間幅やhistogram bin定義の実装確認、外部文献・投稿規定の再検証、PDF組版確認は実施していない。現在の環境ではlatexmk、pdflatex、tectonicも検出されなかった。図からの概数と、元集計で確定すべき数値・設定を区別したレビューである。

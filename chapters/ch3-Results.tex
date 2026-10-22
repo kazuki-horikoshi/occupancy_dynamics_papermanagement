@@ -26,7 +26,7 @@ Therefore, the trend across $K$ indicates how the tested policies behave as the 
 Across all rooms, the baseline control remained nearly constant at approximately \qtyrange{65}{70}{\percent} across subgroup sizes.
 The \ac{rtgcm} produced the highest mean comfort probability for every room and subgroup size, followed by the \ac{dgcm} and then the \ac{sgcm}.
 The performance of three \ac{gcm}, \ac{rtgcm}, \ac{dgcm} and \ac{sgcm} decrease subgroup size increases.
-The mean comfort probability across rooms ranged approximately \qtyrange{78}{93}{\percent} for the \ac{rtgcm}, \qtyrange{73}{95}{\percent} for the \ac{dgcm}, and \qtyrange{71}{86}{\percent} for the \ac{sgcm}.
+The mean comfort probability across rooms ranged approximately \qtyrange{78}{93}{\percent} for the \ac{rtgcm}, \qtyrange{73}{90}{\percent} for the \ac{dgcm}, and \qtyrange{71}{86}{\percent} for the \ac{sgcm}.
 The difference in mean comfort probability between each \ac{gcm} policy and the fixed \qty{24}{\celsius} baseline generally narrowed as subgroup size increased.
 The \ac{sgcm} produced comfort probabilities closer to the baseline at larger subgroup sizes, consistent with more heterogeneous comfort profiles being combined in a fixed room-member representation.
 At the largest tested subgroup size in each room, however, the \ac{rtgcm} still yielded a higher mean comfort probability than the fixed \qty{24}{\celsius} baseline.
@@ -93,7 +93,7 @@ Similarly, \autoref{fig:DynSpStepHeatmap} maps the temperature adjustment magnit
 This analysis visualizes occupancy scale from two complementary perspectives: subgroup size $K$, which represents the sampled regular-member group size in each simulation condition, and normalized daily mean occupancy $\bar{N}_{r,d}/K$, which represents how densely that sampled group is occupied on average during the day.
 The magnitude of this temperature range shrinks as both subgroup size and normalized daily mean occupancy increase.
 At small subgroup sizes such as $K=4$, the mean adjustment magnitude is over \qty{1.0}{\celsius} in most cases.
-For most cases, the daily mean temperature adjustment magnitude remains around \qty{0.5}{\celsius}, which is common \ac{hvac} setpoint adjustment range.
+The mean adjustment magnitude remained above \qty{0.5}{\celsius} across the displayed subgroup-size and occupancy-density conditions.
 These adjustment magnitudes are comparable to or larger than the \qty{0.5}{\celsius} increment used to define actionable changes in this study, motivating the following analysis of control-action frequency.
 
 \subsection{Effect of occupancy dynamics on control action frequency}
