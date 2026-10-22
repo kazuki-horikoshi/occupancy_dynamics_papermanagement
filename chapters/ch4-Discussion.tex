@@ -5,15 +5,13 @@ Simulation studies reported that the combined energy-and-comfort benefit of inte
 A separate stochastic simulation likewise reported lower potential maximum satisfaction rates for larger groups \cite{wang_enhancing_2026}.
 These studies provide context for the group-size trend observed here, although their numerical results are not directly comparable with the present analysis because the control strategies, populations, and outcome definitions differ.
 
+The \ac{sgcm} here follows the same directional pattern, showing limited improvement from baseline with larger sampled group size $K$.
 As shown in \autoref{fig:MeanOccuConf}, the improvement of the \ac{sgcm} relative to the fixed \qty{24}{\celsius} baseline decreases as subgroup size increases and approaches only \qtyrange{3}{5}{\percent} over subgroup sizes of nine.
 The \ac{dgcm}, by contrast, represented daily attendees rather than all sampled regular members.
 Its comfort advantage over the \ac{sgcm} was smaller in offices with higher daily attendance ratios, consistent with daily attendees more closely matching regular membership (\autoref{fig:DailyOccuDensity}).
 The \ac{rtgcm} represented only the occupants present at each timestep, excluding members who were absent at that time.
 Its higher mean comfort probability than the \ac{dgcm} by \qtyrange{6}{8}{\percent} points reflects the benefit of representing the current occupants rather than everyone who attended that day.
 
-The \ac{sgcm} here follows the same directional pattern, showing limited improvement from baseline $K\approx6$--8.
-\ac{dgcm} showed distinguishable improvements from baseline and \ac{dgcm}, depending on daily attendance.
-\ac{rtgcm} retained positive improvement at the same $K$ by excluding absent members.
 These findings extend prior group-size results by showing that comfort-aggregation outcomes depend on daily attendance and within-day occupant composition as well as sampled membership size.
 These predicted gains assume immediate setpoint selection and remain conditional on sensing reliability, HVAC response, and occupant adaptation.
 
@@ -35,7 +33,7 @@ An actionable setpoint difference in simulation does not by itself establish fie
 Long-term and side-by-side field studies show that realised outcomes can depend on occupancy-sensor accuracy, communication with the \ac{bms}, damper or actuator cycling, outdoor conditions, controller design, and local operating constraints~\cite{jiang_occupied_2023}\cite{kong_hvac_2022}\cite{zhang_impact_2023}.
 Closed-loop evaluation is therefore required to determine whether the predicted comfort advantage persists after sensing delay and \ac{hvac} dynamics are introduced.
 
-As examined in \autoref{fig:CtrlWindowRatio}, \ac{utr} has a strong effect on the probability of required temperature adjustment.
+As shown in \autoref{fig:CtrlWindowRatio}, higher \ac{utr} was associated with more frequent actionable setpoint changes.
 Daily mean occupancy describes how many people are present on average, whereas \ac{utr} captures changes in who is present over short time intervals.
 Occupant-data taxonomies distinguish count from identity because the same count can correspond to different sets of people and therefore different personal comfort profiles~\cite{nagy_ten_2023}.
 Common count-oriented sensing approaches can estimate occupancy patterns but do not necessarily identify which profiles have been replaced~\cite{wang_modeling_2017}.
@@ -59,8 +57,8 @@ The observed \ac{utr} ranges should therefore be validated locally.
 
 These findings suggest that \ac{rtgcm}-level control should not be adopted solely because real-time tracking is available.
 It is most valuable in sparse or highly variable shared-office conditions where occupant composition changes frequently.
-In contrast, a \ac{dgcm} may provide a practical compromise when daily attendance differs from regular membership but within-day turnover is moderate, while a \ac{sgcm} may be sufficient when occupancy is stable or group size is not large enough for individual differences to average out.
-Because activity-based working outcomes depend on implementation and occupant use~\cite{marzban_review_2023}, these policy thresholds should be calibrated to each workplace.
+A \ac{dgcm} may provide a practical compromise when daily attendance differs from regular membership but within-day turnover is moderate, whereas a \ac{sgcm} may be adequate when daily attendees closely match regular membership and within-day composition is stable. 
+Because activity-based working outcomes depend on implementation and occupant use~\cite{marzban_review_2023}, the conditions for selecting each aggregation policy should be evaluated in the local workplace context. 
 
 \subsection{Limitations}
 Several limitations should be noted.

@@ -53,12 +53,11 @@ A certain ratio of occupants in office 5A serve administrative tasks, while occu
 For shared offices, the difference in instantaneous occupancy density is not strongly distinguishable; however shared office 5B demonstrates some time steps when the density tends to drop in the afternoon, compared to the comparatively flat instantaneous occupancy density curve in shared office 5A.
 
 Furthermore, \autoref{fig:DailyOccuDensity} clearly demonstrates differences in daily attendance ratio $\rho_{r,d}^{\mathrm{att}}$ between offices.
-Office 5A reaches full attendance ($\rho_{r,d}^{\mathrm{att}}=1$) on over 60\% of simulated working days, followed by Shared Office 5A with full attendance on approximately 50\% of days, Shared Office 5B on nearly 35\%, and Office 5B on fewer than 20\%.
+Office 5A reaches full attendance ($\rho_{r,d}^{\mathrm{att}}=1$) on over \qty{60}{\percent} of simulated working days, followed by Shared Office 5A with full attendance on approximately \qty{50}{\percent} of days, Shared Office 5B on nearly \qty{35}{\percent}, and Office 5B on fewer than \qty{20}{\percent}.
 Following this trend, the comfort performance difference between \ac{dgcm} and \ac{sgcm} is narrower in office 5A and Shared Office 5A compared to office 5B and shared office 5B.
 The comparatively lower daily attendance ratio in Office 5B and Shared Office 5B possibly positions \ac{dgcm} performance between \ac{sgcm} and \ac{rtgcm}, whereas \ac{dgcm} and \ac{sgcm} represent more similar occupant compositions in Office 5A and Shared Office 5A.
 
-Thus, large member pools often produced partial attendance, allowing the present group to differ from regular membership and daily attendees and preserving an advantage for attendance-aware aggregation.
-Considering the difference in triggers for each \ac{gcm}-control type, it is reasonable to interpret the performance difference between the three representations as an outcome of these instantaneous occupancy density and daily attendance ratio differences.
+The room-level differences in instantaneous occupancy density and daily attendance ratio are consistent with the observed performance differences among the three aggregation policies.
 
 \subsection{Setpoint adjustment characteristics under the \ac{rtgcm}}
 \label{subsec:controleffect}
@@ -95,13 +94,14 @@ This analysis visualizes occupancy scale from two complementary perspectives: su
 The magnitude of this temperature range shrinks as both subgroup size and normalized daily mean occupancy increase.
 At small subgroup sizes such as $K=4$, the mean adjustment magnitude is over \qty{1.0}{\celsius} in most cases.
 For most cases, the daily mean temperature adjustment magnitude remains around \qty{0.5}{\celsius}, which is common \ac{hvac} setpoint adjustment range.
-This can be interpreted that in general building \ac{hvac} operation, these adjustment range can be wider than controllable range, thus this adjustment magnitude can be practical in actual \ac{hvac} operation.
+These adjustment magnitudes are comparable to or larger than the \qty{0.5}{\celsius} increment used to define actionable changes in this study, motivating the following analysis of control-action frequency.
 
 \subsection{Effect of occupancy dynamics on control action frequency}
 After investigating the magnitude of temperature adjustment in the previous subsection, this subsection investigates the effect of occupancy dynamics on the frequency of actionable setpoint changes under \ac{rtgcm}-based control.
 \autoref{fig:CtrlWindowRatio} shows the action-needed window ratio across different \ac{utr} levels, where an action-needed window is defined as a window containing at least one rounded \ac{rtgcm} setpoint change of \qty{0.5}{\celsius} or larger.
 Here, \ac{utr} indicates how much occupancy composition present in the room shift between two control timesteps.
-It can be seen that as \ac{utr} increases, the action-needed window ratio also increases; when \ac{utr} reaches approximately 0.7--0.8, the action-needed window ratio reaches \qty{90}{\percent}.
+It can be seen that as \ac{utr} increases, the action-needed window ratio also increases.
+The action-needed window ratio reaches \qty{70}{\percent} when \ac{utr} reaches approximately 0.4--0.6, and reaches \qty{90}{\percent} at the largest observed \ac{utr} range.
 This indicates that large occupant-composition shifts, as captured by \ac{utr}, are associated with more frequent actionable setpoint changes.
 
 \begin{figure}[pos=htbp!]
