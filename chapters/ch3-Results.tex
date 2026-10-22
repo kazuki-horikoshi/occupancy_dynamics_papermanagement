@@ -27,11 +27,11 @@ Across all rooms, the baseline control remained nearly constant at approximately
 The \ac{rtgcm} produced the highest mean comfort probability for every room and subgroup size, followed by the \ac{dgcm} and then the \ac{sgcm}.
 The performance of three \ac{gcm}, \ac{rtgcm}, \ac{dgcm} and \ac{sgcm} decrease subgroup size increases.
 The mean comfort probability across rooms ranged approximately \qtyrange{78}{93}{\percent} for the \ac{rtgcm}, \qtyrange{73}{95}{\percent} for the \ac{dgcm}, and \qtyrange{71}{86}{\percent} for the \ac{sgcm}.
-The improvement relative to the 24 \si{\celsius} baseline decreased as subgroup size increased.
-The decline of the \ac{sgcm} performance indicates that a fixed room-member aggregation becomes less distinct from the fixed-temperature baseline as more heterogeneous comfort profiles are averaged into a single representation.
-In contrast, the \ac{rtgcm} maintain positive improvements at the largest tested subgroup size for each target rooms with improvement remaining approximately \qtyrange{15}{20}{\percent}.
-The positive improvement maintained by the \ac{rtgcm} indicates that updating the represented occupant group can preserve comfort benefits even when the potential member pool becomes larger.
-For \ac{dgcm} and \ac{sgcm}, \ac{dgcm} maintain positive improvements approximately \qtyrange{4}{5}{\percent} in Office 5B and Shared Office 5B, while approximately \qtyrange{1}{3}{\percent} in Office 5A and Shared Office 5A.
+The difference in mean comfort probability between each \ac{gcm} policy and the fixed \qty{24}{\celsius} baseline generally narrowed as subgroup size increased.
+The \ac{sgcm} produced comfort probabilities closer to the baseline at larger subgroup sizes, consistent with more heterogeneous comfort profiles being combined in a fixed room-member representation.
+At the largest tested subgroup size in each room, however, the \ac{rtgcm} still yielded a higher mean comfort probability than the fixed \qty{24}{\celsius} baseline.
+This indicates that updating the represented occupant group can preserve a comfort advantage over fixed-temperature control even when the sampled member pool is large.
+Compared with the \ac{sgcm}, the \ac{dgcm} yielded higher mean comfort probabilities, with approximately \qtyrange{4}{5}{\percent} in Office 5B and Shared Office 5B, while approximately \qtyrange{1}{3}{\percent} in Office 5A and Shared Office 5A.
 
 \begin{figure}[pos=htbp!]
     \centering
@@ -62,7 +62,7 @@ Considering the difference in triggers for each \ac{gcm}-control type, it is rea
 
 \subsection{Setpoint adjustment characteristics under the \ac{rtgcm}}
 \label{subsec:controleffect}
-The previous subsection showed that the \ac{rtgcm} maintained a \qtyrange{10}{15}{\percent} higher mean comfort probability than the \ac{sgcm} across room member sizes.
+The previous subsection showed that the \ac{rtgcm} yielded higher mean comfort probabilities than the \ac{sgcm} across the tested rooms and subgroup sizes.
 This subsection investigates the setpoint adjustment characteristics introduced by the \ac{rtgcm}.
 Because the \ac{sgcm} and \ac{dgcm} use coarser occupant-composition representations, frequent setpoint updates are primarily required under \ac{rtgcm}-based control.
 

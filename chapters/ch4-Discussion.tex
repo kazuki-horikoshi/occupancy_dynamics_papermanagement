@@ -1,25 +1,23 @@
 \SetPicSubDir{ch5-Discussion}
 
 \subsection{Why aggregation resolution changes the group-size comfort performance}
-% \subsection{Effect of occupancy parameters on comfort performance}
-Simulation studies reported that the combined energy-and-comfort benefit of integrating \acp{pcm} can diminish as more occupants share a thermal zone \cite{jung_energy_2020}. A separate stochastic simulation likewise reported lower potential maximum satisfaction rates for larger groups \cite{wang_enhancing_2026}.
-These studies support a directional expectation that aggregation can dilute the influence of individual preferences, although their numerical results are not directly comparable with the present analysis because the control strategies, populations, and outcome definitions differ.
+Simulation studies reported that the combined energy-and-comfort benefit of integrating \acp{pcm} can diminish as more occupants share a thermal zone \cite{jung_energy_2020}.
+A separate stochastic simulation likewise reported lower potential maximum satisfaction rates for larger groups \cite{wang_enhancing_2026}.
+These studies provide context for the group-size trend observed here, although their numerical results are not directly comparable with the present analysis because the control strategies, populations, and outcome definitions differ.
 
-These results are consistent with prior multi-occupant comfort-control studies showing that the benefit of integrating personal comfort information tends to diminish as more occupants are aggregated within a single thermal zone.
-As shown in \autoref{fig:MeanOccuConf}, the improvement of the \ac{sgcm} relative to the fixed \qty{24}{\celsius} baseline decreases as subgroup size increases and approaches to only \qtyrange{3}{5}{\percent} over subgroup sizes of nine.
-As the realized group becomes larger, individual thermal preferences are averaged within the group representation, reducing the difference among alternative aggregation resolutions.
-At the same time, the \ac{dgcm} and \ac{rtgcm} maintain positive improvement over the fixed \qty{24}{\celsius} baseline even at larger subgroup sizes.
-This indicates that the value of higher-resolution \acp{gcm} depends not only on room-member size, but also on realized occupancy and occupant-composition dynamics.
+As shown in \autoref{fig:MeanOccuConf}, the improvement of the \ac{sgcm} relative to the fixed \qty{24}{\celsius} baseline decreases as subgroup size increases and approaches only \qtyrange{3}{5}{\percent} over subgroup sizes of nine.
+The \ac{dgcm}, by contrast, represented daily attendees rather than all sampled regular members.
+Its comfort advantage over the \ac{sgcm} was smaller in offices with higher daily attendance ratios, consistent with daily attendees more closely matching regular membership (\autoref{fig:DailyOccuDensity}).
+The \ac{rtgcm} represented only the occupants present at each timestep, excluding members who were absent at that time.
+Its higher mean comfort probability than the \ac{dgcm} by \qtyrange{6}{8}{\percent} points reflects the benefit of representing the current occupants rather than everyone who attended that day.
 
 The \ac{sgcm} here follows the same directional pattern, showing limited improvement from baseline $K\approx6$--8.
 \ac{dgcm} showed distinguishable improvements from baseline and \ac{dgcm}, depending on daily attendance.
 \ac{rtgcm} retained positive improvement at the same $K$ by excluding absent members.
-This study therefore extends prior group-size findings by showing that comfort-aggregation outcomes depend not only on potential group size but also on realized occupancy (\autoref{fig:OccuDensity}, \autoref{fig:DailyOccuDensity}) and dynamic changes in occupant composition.
-RT-GCM also exceeded DGCM by \qtyrange{6}{8}{\percent} points after the initial rise with $K$, reflecting the value of knowing who is present now rather than who attended that day.
+These findings extend prior group-size results by showing that comfort-aggregation outcomes depend on daily attendance and within-day occupant composition as well as sampled membership size.
 These predicted gains assume immediate setpoint selection and remain conditional on sensing reliability, HVAC response, and occupant adaptation.
 
 \subsection{From comfort information to actionable control}
-% \subsection{Effect of occupancy parameters on control}
 As examined in \autoref{subsec:controleffect}, the required setpoint adjustment under \ac{rtgcm}-based control can remain operationally distinguishable across a wide range of subgroup sizes and occupancy conditions.
 Even under larger subgroup sizes and higher mean occupancy, the adjustment magnitude often exceeds the common thermostat control step of \qty{0.5}{\celsius}.
 In this simulation, the control temperature was assumed to be adjustable at a resolution of \qty{0.1}{\celsius}, allowing the \ac{rtgcm} to express finer comfort-driven setpoint changes.
@@ -28,7 +26,9 @@ Although the simulation used a \qty{0.1}{\celsius} grid, typical changed steps r
 This indicates actuation-relevant potential; reviews report limited field implementation and persistent data, computation, BAS-integration, and scalability barriers field examples~\cite{xie_review_2020}\cite{soleimanijavid_challenges_2024}.
 The \qty{0.5}{\celsius} threshold is an operational analysis choice in the present study and should not be interpreted as a threshold established by prior work.
 At a different dimension of resolution, \mycite{ono_effects_2022}~\cite{ono_effects_2022} showed through simulation work that the occupant resolution of a comfort model should be aligned with that of the \ac{hvac} control it informs.
-Together, these points distinguish model-information resolution from numerical setpoint resolution and from the physical ability of an \ac{hvac} system to realise a requested change.
+Model-information resolution concerns which occupants are represented by the \ac{gcm} and how often that group is updated.
+Numerical setpoint resolution specifies the temperature increments that the controller can request.
+The physical response of the \ac{hvac} system determines whether those requested changes can be realised within the required time.
 
 The present results show this trade-off from the operational side: the \ac{rtgcm} can improve mean comfort probability, but it also introduces larger and more frequent setpoint adjustments.
 An actionable setpoint difference in simulation does not by itself establish field deployability. 

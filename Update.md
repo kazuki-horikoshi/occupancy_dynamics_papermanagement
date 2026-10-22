@@ -1,7 +1,7 @@
 # OccupancyDynamics chapter update memo
 
 作成日: 2026-06-17  
-更新日: 2026-10-20
+更新日: 2026-10-21
 
 ## 前提
 
@@ -3089,3 +3089,125 @@ This leads to a practical question: when is static, daily, or real-time aggregat
 ### 14.6 確認範囲
 
 今回変更するのはUpdate.mdの更新日と本節の追記のみ。Introductionを含むTeX、図、bibliographyは変更していない。既存のcitation keysと `table:OccuTrack`／`table:OccuIntegration` の参照を保持し、新規文献は加えていない。引用元の内容を新たに検証したレビューではなく、既存本文内の論理構成・配置を整理する提案である。
+
+
+## 15. Resultsの比較表現・Discussionの重複・daily attendanceを含むConclusionの修正案（2026-10-21、TeX未反映）
+
+### 15.1 今回の方針：improvementの対象と比較相手を明示する
+
+対象は `chapters/ch3-Results.tex`、`chapters/ch4-Discussion.tex`、`chapters/ch5-Conclusion.tex`。以下は修正案のみで、TeXには反映しない。行番号は確認時点の補助情報とし、置換時は見出し・文頭・figure labelをアンカーにする。
+
+現行Resultsの `improvement` は、(a)固定24°C baselineとの差、(b)DGCMとSGCMの差、(c)RT-GCMとSGCMの差を行き来し、どの比較なのかが曖昧になっている。`mean comfort probability under X was higher than under Y`、`the difference in mean comfort probability between X and Y` のように、**何の値が、何と比べて高いか**を明示する。これは比較の説明であり、削除済みの独立metric「Comfort probability improvement」を再導入するものではない。
+
+**数値の書き方**：comfort probability自体は%で示し、その絶対差はpercentage points、比較相手に対する相対増加率は%で区別する。例えば80%と70%の差は10 percentage pointsで、相対増加率は約14.3%である。`15--20% improvement` を計算内容の確認なしに `15--20 percentage points` へ変更してはいけない。
+
+現行本文には、RT-GCMとbaselineの `15--20%`、DGCMとSGCMの `4--5%`／`1--3%`、次subsectionのRT-GCMとSGCMの `10--15%` がある。これらは比較相手・対象K・単位が統一されていない。`fig:MeanOccuConf` が使用する `pic/ch4-Results/fig1_gcm_consistent_comfort_rates_room.png` も確認したところ、全てをそのまま「同じKでの絶対差」として読むことはできない。以下の推奨文は**比較関係を確定し、未確認の差分値は置かない**形とする。数値を残す場合は元の集計値から同じroom・同じKの二系列を比較し、rangeが全Kなのか最大Kだけなのかも指定する。
+
+### 15.2 Results第1 subsection：アンカー・比較対象・修正文
+
+対象：`Comfort performance across different resolution of GCM`、`fig:MeanOccuConf` の説明段落。
+
+| 現行アンカー | 方針・比較対象 | 修正案の文章 |
+|---|---|---|
+| `The improvement relative to the 24 ... baseline decreased`（30行） | GCM policyと固定24°C baselineのmean comfort probabilityの差であると明示。 | `The difference in mean comfort probability between each \ac{gcm} policy and the fixed \qty{24}{\celsius} baseline generally narrowed as subgroup size increased.` |
+| `The decline of the SGCM performance indicates`（31行） | 直後のRT-GCMとの対比を読みやすくするため、SGCMの値がbaselineに近づくことを先に述べる。推論はconsistent withとして続ける。 | `The \ac{sgcm} produced comfort probabilities closer to the baseline at larger subgroup sizes, consistent with more heterogeneous comfort profiles being combined in a fixed room-member representation.` |
+| `In contrast, the RTGCM maintain positive improvements`（32行） | RT-GCM対固定24°C baseline。最大tested Kでなお高いことを明示。maintainの主語・時制も整える。15–20%は計算内容確認後に別途追記。 | `At the largest tested subgroup size in each room, however, the \ac{rtgcm} still yielded a higher mean comfort probability than the fixed \qty{24}{\celsius} baseline.` |
+| `The positive improvement maintained by the RTGCM indicates`（33行） | 直前の比較を受け、固定温度制御より高いcomfort probabilityを保てるという意味へ。 | `This indicates that updating the represented occupant group can preserve a comfort advantage over fixed-temperature control even when the sampled member pool is large.` |
+| `For DGCM and SGCM, DGCM maintain positive improvements`（34行） | DGCM対SGCMという比較を文頭に明示し、office間で差の大きさが異なる結果を述べる。baselineとの差と混同しない。 | `Compared with the \ac{sgcm}, the \ac{dgcm} yielded higher mean comfort probabilities, with a larger difference in Office 5B and Shared Office 5B than in Office 5A and Shared Office 5A.` |
+
+推奨する30–34行の置換と、次subsectionへの接続文を含む連続案：
+
+```tex
+The difference in mean comfort probability between each \ac{gcm} policy and the fixed \qty{24}{\celsius} baseline generally narrowed as subgroup size increased.
+The \ac{sgcm} produced comfort probabilities closer to the baseline at larger subgroup sizes, consistent with more heterogeneous comfort profiles being combined in a fixed room-member representation.
+At the largest tested subgroup size in each room, however, the \ac{rtgcm} still yielded a higher mean comfort probability than the fixed \qty{24}{\celsius} baseline.
+This indicates that updating the represented occupant group can preserve a comfort advantage over fixed-temperature control even when the sampled member pool is large.
+Compared with the \ac{sgcm}, the \ac{dgcm} yielded higher mean comfort probabilities, with a larger difference in Office 5B and Shared Office 5B than in Office 5A and Shared Office 5A.
+Across the tested rooms and subgroup sizes, the \ac{rtgcm} also yielded higher mean comfort probabilities than the \ac{sgcm}.
+```
+
+この段落の前にあるbaselineの水準、三モデルの順位、comfort probabilityの範囲の説明は別の役割なので保持する。ただし現行29行の範囲（特にDGCM上限95%）も図との照合が必要であり、今回の文言案をもってその値が検証済みとはしない。
+
+### 15.3 RT-GCMとSGCMの差を先に述べ、setpoint subsectionへつなぐ
+
+| アンカー・挿入位置 | 方針 | 追加・置換案 |
+|---|---|---|
+| 第1 subsection、34行のDGCM–SGCM比較の後／occupancy density図の前 | RT-GCM対SGCMの結果を1文で明示する。全体順位（27行）を、この後のcontrol分析で使う二モデルの比較として受け直す。15.2の連続案では最後の文に相当し、二重には挿入しない。 | `Across the tested rooms and subgroup sizes, the \ac{rtgcm} also yielded higher mean comfort probabilities than the \ac{sgcm}.` |
+| `The previous subsection showed that the RTGCM maintained a ... higher mean comfort probability than the SGCM`（65行） | 前subsectionに追加する文と同じ比較対象・範囲へ合わせる。10–15%は差分の定義と対象Kが未確定なので推奨文には置かない。 | `The previous subsection showed that the \ac{rtgcm} yielded higher mean comfort probabilities than the \ac{sgcm} across the tested rooms and subgroup sizes.` |
+
+この後は既存の `This subsection investigates the setpoint adjustment characteristics introduced by the RTGCM.` を続ける。論理は「RT-GCMのcomfort probabilityが高い → その制御上の要求を調べる」となる。数値を確認して残す場合も、RT-GCMとSGCMの差は前subsectionで一度定量的に示し、ここでは短く受ける。
+
+### 15.4 Discussion 4.1冒頭：重複の圧縮とSGCM周辺の明確化
+
+**確認した問題**：
+
+- 5–6行の先行研究要約と8行の `These results are consistent ... benefit ... diminish` が同じgroup-size傾向を繰り返している。出典と研究間の比較条件の違いは5–6行に集約する。
+- 9行と14行はどちらもSGCMがbaselineに近づくことを述べている。`same directional pattern` の参照先も遠く、`from baseline K≈6--8` はKの位置づけが読みにくい。自分の結果は一度だけ、明示的な比較相手とともに述べる。
+- 15行の `DGCM ... from baseline and DGCM` は自己比較になっている。文脈上はSGCMとの比較が必要。
+- 10行の `As the realized group becomes larger ... reducing the difference among alternative aggregation resolutions` は、sampled subgroup sizeと実在室人数の混同に加え、全モデル間の差が一様に縮小するように読めるため、この一般化を残さない。
+- 16行の `at the same K by excluding absent members` は、どの時刻に不在なのかが不明確。RT-GCMはその時刻の在室者、DGCMはその日のattendees、SGCMはsampled regular membersを代表するという違いを明示する。
+- 18行の `6--8% points after the initial rise with K` は何がinitial riseしたのかが不明。mean comfort probabilityの図はKとともに概ね低下しており、この句を説明なしに残さない。差分値も元データで対象Kを確認してから記す。
+
+| 現行範囲・アンカー | 統合方針 | 修正案・扱い |
+|---|---|---|
+| 5–8行、`Simulation studies reported`／`These studies support`／`These results are consistent` | 5行のJungとWangの二つの研究紹介は保持。次の1文で本研究との関係と比較の限界をまとめ、8行の重複文は省く。 | `These studies provide context for the group-size trend observed here, although their numerical results are not directly comparable with the present analysis because the control strategies, populations, and outcome definitions differ.` |
+| 9–16行、`As shown in`／`The SGCM here follows the same directional pattern` | SGCMの結果を一度だけ明示し、DGCMはdaily attendees、RT-GCMはcurrently present occupantsという説明へ順に進む。 | `As shown in \autoref{fig:MeanOccuConf}, mean comfort probability under the \ac{sgcm} decreased as subgroup size increased and remained closer to the fixed \qty{24}{\celsius} baseline than under the \ac{dgcm} or \ac{rtgcm}.`<br>`The \ac{dgcm}, by contrast, represented daily attendees rather than all sampled regular members.`<br>`Its comfort advantage over the \ac{sgcm} was smaller in offices with higher daily attendance ratios, consistent with daily attendees more closely matching regular membership (\autoref{fig:DailyOccuDensity}).`<br>`The \ac{rtgcm} represented only the occupants present at each timestep, excluding members who were absent at that time.`<br>`Its higher mean comfort probability than the \ac{dgcm} reflects the benefit of representing the current occupants rather than everyone who attended that day.` |
+| 17–19行、`This study therefore extends prior group-size findings`／`RT-GCM also exceeded DGCM` | 新規性の総括を1文にし、RT-GCM–DGCMの差は直前の対象集団の違いとして説明する。19行のsimulation条件の留保は保持。 | `These findings extend prior group-size results by showing that comfort-aggregation outcomes depend on daily attendance and within-day occupant composition as well as sampled membership size.`<br>`These predicted gains assume immediate setpoint selection and remain conditional on sensing reliability, HVAC response, and occupant adaptation.` |
+
+**推奨する5–19行の連続置換案**（この案を採用する場合、表の文を別途追加して重複させない）：
+
+```tex
+Simulation studies reported that the combined energy-and-comfort benefit of integrating \acp{pcm} can diminish as more occupants share a thermal zone \cite{jung_energy_2020}. A separate stochastic simulation likewise reported lower potential maximum satisfaction rates for larger groups \cite{wang_enhancing_2026}.
+These studies provide context for the group-size trend observed here, although their numerical results are not directly comparable with the present analysis because the control strategies, populations, and outcome definitions differ.
+
+As shown in \autoref{fig:MeanOccuConf}, mean comfort probability under the \ac{sgcm} decreased as subgroup size increased and remained closer to the fixed \qty{24}{\celsius} baseline than under the \ac{dgcm} or \ac{rtgcm}.
+The \ac{dgcm}, by contrast, represented daily attendees rather than all sampled regular members.
+Its comfort advantage over the \ac{sgcm} was smaller in offices with higher daily attendance ratios, consistent with daily attendees more closely matching regular membership (\autoref{fig:DailyOccuDensity}).
+The \ac{rtgcm} represented only the occupants present at each timestep, excluding members who were absent at that time.
+Its higher mean comfort probability than the \ac{dgcm} reflects the benefit of representing the current occupants rather than everyone who attended that day.
+These findings extend prior group-size results by showing that comfort-aggregation outcomes depend on daily attendance and within-day occupant composition as well as sampled membership size.
+These predicted gains assume immediate setpoint selection and remain conditional on sensing reliability, HVAC response, and occupant adaptation.
+```
+
+これにより、先行研究のgroup-size傾向 → 本研究のSGCMの結果 → daily attendanceによるDGCM–SGCM差 → 時刻別在室者を使うRT-GCMの結果 → 本研究の追加知見、という一方向の展開になる。先行研究のenergy-and-comfort benefit、potential maximum satisfaction、本研究のmean comfort probabilityは異なるoutcomeなので、同じ数値指標として比較しない。
+
+### 15.5 Discussion 4.2：Together, these points ... の説明を具体化
+
+対象：`From comfort information to actionable control`、`Together, these points distinguish model-information resolution from numerical setpoint resolution ...`（31行）。
+
+元の文は区別すべき三つを挙げるが、何の違いかを読者が前の段落から補う必要がある。次の3文へ分ける。
+
+```tex
+Model-information resolution concerns which occupants are represented by the \ac{gcm} and how often that group is updated.
+Numerical setpoint resolution specifies the temperature increments that the controller can request.
+The physical response of the \ac{hvac} system determines whether those requested changes can be realised within the required time.
+```
+
+| 区別する対象 | この段落での具体的な意味 | 他の対象と混同しない点 |
+|---|---|---|
+| model-information resolution | 誰のcomfort profilesを集約し、その集団をいつ更新するか。 | real-timeの情報があっても、温度刻みが細かいことや実機が速く応答することにはならない。 |
+| numerical setpoint resolution | 選択・指令できる温度刻み。本文では0.1°C grid。 | 0.1°Cで指令できることと、全ての変更がactionableであることは別。0.5°Cは本研究のaction判定閾値。 |
+| physical HVAC response | 要求された温度変化を実際に、必要な時間内に実現できるか。 | 指令値の変更がそのまま室温・comfortの即時変化になるとは限らない。 |
+
+30行のOnoの説明はそのまま前に置き、続く `The present results show this trade-off from the operational side` へつなぐ。Onoのoccupant/control resolutionの整合という議論を、0.1°Cの刻みや本研究の0.5°C閾値を裏づける証拠として扱わない。この置換は元の文の解説を明示するものであり、実機応答を今回検証したという新たな主張は加えない。
+
+### 15.6 Conclusion：daily attendanceの結果とOCC検討指標への追記
+
+daily attendance ratioが高いofficeでDGCM–SGCMの差が小さいという**結果**と、daily attendance patternsもOCCの情報取得・集約resolutionを考える**指標になる**という示唆を分けて記す。
+
+| 現行アンカー・位置 | 方針 | 追加・置換案 |
+|---|---|---|
+| `The advantage of the RTGCM was strongest under sparse or dynamically changing occupancy conditions.`（6行）の後 | モデルのcomfort比較を述べた第1段落の末尾へ、DGCM–SGCM差とdaily attendanceの観察を1文追加。高attendance ratioは在室者の終日在室や低UTRを意味しない。 | `The difference in mean comfort probability between the \ac{dgcm} and \ac{sgcm} was smaller in offices with higher daily attendance ratios, consistent with daily attendees more closely matching the sampled regular-member group.` |
+| `These findings indicate that high-resolution occupancy tracking should be deployed selectively`（12行） | 指標一覧へdaily attendance ratioを加え、OCCでaggregation resolutionと必要なoccupancy informationを選ぶ判断につなげる。 | `These findings suggest that \ac{occ} design should consider subgroup size, daily mean occupancy, daily attendance ratio, and \ac{utr} when selecting the \ac{gcm} resolution and the occupancy information needed to support it.` |
+| `UTR could therefore serve as a screening metric for selecting the aggregation resolution.`（16行、最終文） | UTRだけで終えず、daily attendance ratioとの補完関係を明示する。deploymentを実証済みとはせずscreeningとfurther evaluationの位置づけにする。 | `Daily attendance ratio and \ac{utr} could therefore serve as complementary screening metrics for deciding whether daily or real-time aggregation warrants further evaluation.` |
+
+**本文でのつながり**：第1段落にdaily attendanceの結果を追加 → 第2段落は既存の調整幅・頻度の結果を保持 → 第3段落の指標一覧にattendanceを含める → 最後にdaily attendanceとUTRを補完的なscreening指標とする。15行のcomfort-only simulation scopeは保持する。
+
+ここで得られたのはoffice間の比較とシミュレーション結果であり、「attendance ratioが下がるほど必ず一定量だけDGCMが改善する」という全day・全room共通の因果関係や導入閾値は推定していない。full daily attendanceでも日中の出入りが多ければRT-GCMの価値は残るため、daily attendance ratioをUTRの代用にはしない。
+
+### 15.7 反映範囲・確認事項
+
+- 今回変更したのはUpdate.mdの更新日と本節の追記のみ。Results、Discussion、Conclusionを含む全TeX、図、解析コード、bibliographyは変更していない。
+- 既存のMethodのpolicy group定義とcomfort評価、Resultsのdaily attendanceの説明、Discussionの前後の文章を照合した。`fig:MeanOccuConf` のPNGも視覚的に確認したが、元の集計値から新しい数値差を算出したものではない。
+- 各案は比較対象と条件を明示することを優先し、差分値を推測して埋めていない。数値を採用する際は、相対%／percentage points、同じK、対象office、Kの集約範囲を揃える。既存の数値・統計的有意性を今回検証したとの意味はない。
+- 先行研究の引用は既存のJung／Wang／Onoの文脈に保持し、新規文献・実験結果は追加していない。
